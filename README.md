@@ -22,5 +22,5 @@ Contributions to the Resonate Backend project are welcomed! To contribute:
 4. Push to the branch: `git push origin my-feature`
 5. Submit a pull request
 
-##Discussions
+## Discussions
 for discussions and contributing in this project join this discord channel for further communication:https://ptb.discord.com/channels/1022871757289422898/1073262449219870841

@@ -4,6 +4,12 @@ const port = 3000
 const router = express.Router();
 const admin = require('firebase-admin');
 
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'url'
+});
+
+
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })

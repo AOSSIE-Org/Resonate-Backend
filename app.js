@@ -4,8 +4,8 @@ import { db } from "./firebase.js";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 
 //importing routes
-import {roomRouter} from './routes/Room.js'
-import { tokenRouter } from "./routes/Token.js";
+import {roomRouter} from './routes/room.js'
+import { tokenRouter } from "./routes/token.js";
 
 const PORT = 3000;
 

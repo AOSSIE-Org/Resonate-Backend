@@ -4,7 +4,7 @@ import { db } from "./firebase.js";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 
 //importing routes
-import {roomRouter} from './routes/room.js'
+import { roomRouter } from "./routes/room.js";
 import { tokenRouter } from "./routes/token.js";
 
 const PORT = 3000;
@@ -14,8 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 //Connecting Endpoints to imported routes
-app.use("/Room",roomRouter);
-app.use('/Token',tokenRouter);
+app.use("/Room", roomRouter);
+app.use("/Token", tokenRouter);
 
 app.get("/", async (req, res) => {
   res.send("Hello World");

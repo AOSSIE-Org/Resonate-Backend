@@ -5,7 +5,7 @@ const roomRouter = express.Router();
 import { createRoom } from "../controllers/createRoom.js";
 import { deleteRoom } from "../controllers/deleteRoom.js";
 
-roomRouter.route("/createRoom").post(createRoom);
-roomRouter.route("/deleteRoom").delete(deleteRoom);
+roomRouter.route("/create-room").post(createRoom);
+roomRouter.route("/delete-room").delete(deleteRoom);
 
 export { roomRouter };

@@ -4,6 +4,6 @@ const tokenRouter = express.Router();
 //importing Controllers
 import { generateToken } from "../controllers/generateToken.js";
 
-tokenRouter.route("/generateToken").post(generateToken);
+tokenRouter.route("/generate-token").post(generateToken);
 
 export { tokenRouter };

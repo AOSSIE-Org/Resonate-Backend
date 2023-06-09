@@ -1,8 +1,9 @@
-//livekit-server-sdk imports
 import { RoomServiceClient } from "livekit-server-sdk";
-const livekitHost = "https://my.livekit.host";
+import dotenv from "dotenv";
+dotenv.config();
+
 const svc = new RoomServiceClient(
-  livekitHost,
+  `${process.env.LIVEKIT_HOST}`,
   `${process.env.LIVEKIT_API_KEY}`,
   `${process.env.LIVEKIT_API_SECRET}`
 );

@@ -1,6 +1,6 @@
 import { RoomServiceClient } from "livekit-server-sdk";
 import { db } from "../firebase.js";
-import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+import { collection, doc, setDoc, addDoc, Timestamp } from "firebase/firestore";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -40,6 +40,7 @@ const createRoom = async (req, res) => {
       admin_username: roomAdminUsername,
       tags: roomTags,
       total_participants: 1,
+      created_at: Timestamp.now()
     };
     let firebaseRoomDocId = await createFirebaseRoom(roomData);
     console.log(`Firebase Room created - ${firebaseRoomDocId}`);

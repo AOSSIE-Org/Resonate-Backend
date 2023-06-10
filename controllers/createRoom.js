@@ -1,6 +1,7 @@
 import { RoomServiceClient } from "livekit-server-sdk";
 import { db } from "../firebase.js";
 import { collection, doc, setDoc, addDoc, Timestamp } from "firebase/firestore";
+import { generateToken } from "./generateToken.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -52,7 +53,11 @@ const createRoom = async (req, res) => {
     };
     svc.createRoom(roomOptions).then((room) => {
       console.log(`LiveKit Room created - ${room}`);
-      res.json({ msg: "Room created Successfully", room: room });
+
+      // Creating a token for the admin
+      const token = generateToken(firebaseRoomDocId, roomAdminUsername, true);
+
+      res.json({ msg: "Room created Successfully", livekit_room: room, access_token: token});
     });
   } catch (error) {
     console.log(error);

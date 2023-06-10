@@ -1,6 +1,6 @@
 import { RoomServiceClient, TokenVerifier } from "livekit-server-sdk";
 import { db } from "../firebase.js";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, collection, getDocs } from "firebase/firestore";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,7 +15,21 @@ const tokenVerifier = new TokenVerifier(
   `${process.env.LIVEKIT_API_SECRET}`
 );
 
-const deleteRoom = async (req, res) =>{
+async function deleteFirebaseRoom(roomDocId) {
+  //Deleting participant subcollection inside room doc
+  const roomsCollectionRef = collection(db, `rooms/${roomDocId}/participants`);
+  const querySnapshot = await getDocs(roomsCollectionRef);
+  querySnapshot.forEach(async (doc) => {
+    await deleteDoc(doc.ref);
+    console.log(`deleted ${doc.id}`);
+  });
+
+  //Deleting room document
+  await deleteDoc(doc(db, "rooms", roomDocId));
+  console.log("Firebase Room Doc deleted");
+}
+
+const deleteRoom = async (req, res) => {
   console.log("Deleting room with requested Data:", req.body);
   const firebaseRoomDocId = req.body.firebaseRoomDocId;
   const token = req.body.token;
@@ -25,10 +39,8 @@ const deleteRoom = async (req, res) =>{
       isTokenValid.video.room === firebaseRoomDocId &&
       isTokenValid.video.roomCreate === true
     ) {
-
       //Delete Firebase room doc
-      await deleteDoc(doc(db, "rooms", firebaseRoomDocId));
-      console.log("Firebase Room Doc deleted");
+      await deleteFirebaseRoom(firebaseRoomDocId);
 
       // Delete livekit room
       svc.deleteRoom(firebaseRoomDocId).then(() => {

@@ -14,7 +14,7 @@ async function createFirebaseRoom(roomData) {
   const roomsCollectionRef = collection(db, "rooms");
   const newRoomDocRef = await addDoc(roomsCollectionRef, roomData);
   await setDoc(
-    doc(db, "rooms", newRoomDocRef.id, "participants",roomData.admin_username ),
+    doc(db, "rooms", newRoomDocRef.id, "participants", roomData.admin_username),
     {
       isAdmin: true,
       isModerator: true,
@@ -26,29 +26,12 @@ async function createFirebaseRoom(roomData) {
 }
 
 const createRoom = async (req, res) => {
-  console.log("Requested Room Data:", req.body);
+  console.log("New Room Data: ", req.body);
   try {
-    // list rooms
-    svc.listRooms().then((rooms) => {
-      console.log("existing rooms", rooms);
-    });
-
     const roomName = req.body.name;
     const roomDescription = req.body.description;
     const roomAdminUsername = req.body.admin_username;
     const roomTags = req.body.tags;
-
-    // create a new livekit room
-    const opts = {
-      name: roomName,
-      // timeout in seconds
-      emptyTimeout: 60,
-      maxParticipants: 20,
-    };
-    svc.createRoom(opts).then((room) => {
-      console.log("room created", room);
-      res.json({ msg: "Room created Successfully", room: room });
-    });
 
     // create a new room document on firebase
     const roomData = {
@@ -59,10 +42,21 @@ const createRoom = async (req, res) => {
       total_participants: 1,
     };
     let firebaseRoomDocId = await createFirebaseRoom(roomData);
-    console.log(firebaseRoomDocId);
+    console.log(`Firebase Room created - ${firebaseRoomDocId}`);
+
+    // create a new livekit room
+    const roomOptions = {
+      name: firebaseRoomDocId, // using firebase room doc id as livekit room name
+      emptyTimeout: 60, // timeout in seconds
+    };
+    svc.createRoom(roomOptions).then((room) => {
+      console.log(`LiveKit Room created - ${room}`);
+      res.json({ msg: "Room created Successfully", room: room });
+    });
   } catch (error) {
     console.log(error);
-    res.json({ msg: "Error creating room" });
+    res.statusCode;
+    res.status(500).json({ msg: "Error" });
   }
 };
 

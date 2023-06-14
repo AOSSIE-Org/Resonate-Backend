@@ -14,8 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 //Connecting Endpoints to imported routes
-app.use("/Room", roomRouter);
-app.use("/Token", tokenRouter);
+app.use("/room", roomRouter);
+app.use("/token", tokenRouter);
 
 app.get("/", async (req, res) => {
   res.send("Hello World");

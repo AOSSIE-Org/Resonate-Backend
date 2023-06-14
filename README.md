@@ -15,13 +15,15 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 2. Create a `.env` file using : `touch .env`
 
-3. After creating `.env` file, it should consist of : 
+3. After creating `.env` file, it should consist of :
 
-    (a)`LIVEKIT_API_KEY` 
-    
+    (a)`LIVEKIT_API_KEY`
+
     (b)`LIVEKIT_API_SECRET`
 
-4. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your API-KEY and API-SECRET from [livekit-cloud](https://livekit.io/cloud).
+    (c)`LIVEKIT_HOST`
+
+4. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your HOST, API-KEY, API-SECRET from [livekit-cloud](https://livekit.io/cloud).
 
 
 ## Communication Channels

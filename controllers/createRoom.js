@@ -1,35 +1,68 @@
-//livekit-server-sdk imports
 import { RoomServiceClient } from "livekit-server-sdk";
-const livekitHost = "https://my.livekit.host";
+import { db } from "../firebase.js";
+import { collection, doc, setDoc, addDoc, Timestamp } from "firebase/firestore";
+import { generateToken } from "./generateToken.js";
+import dotenv from "dotenv";
+dotenv.config();
+
 const svc = new RoomServiceClient(
-  livekitHost,
+  `${process.env.LIVEKIT_HOST}`,
   `${process.env.LIVEKIT_API_KEY}`,
   `${process.env.LIVEKIT_API_SECRET}`
 );
 
-const createRoom = (req, res) => {
-  console.log("Requested Room Data:", req.body);
-  try {
-    // list rooms
-    svc.listRooms().then((rooms) => {
-      console.log("existing rooms", rooms);
-    });
+async function createFirebaseRoom(roomData) {
+  const roomsCollectionRef = collection(db, "rooms");
+  const newRoomDocRef = await addDoc(roomsCollectionRef, roomData);
+  await setDoc(
+    doc(db, "rooms", newRoomDocRef.id, "participants", roomData.admin_username),
+    {
+      isAdmin: true,
+      isModerator: true,
+      isSpeaker: true,
+      isMicOn: false,
+    }
+  );
+  return newRoomDocRef.id;
+}
 
-    // create a new room
-    const roomName = req.body.roomName;
-    const opts = {
+const createRoom = async (req, res) => {
+  console.log("New Room Data: ", req.body);
+  try {
+    const roomName = req.body.name;
+    const roomDescription = req.body.description;
+    const roomAdminUsername = req.body.admin_username;
+    const roomTags = req.body.tags;
+
+    // create a new room document on firebase
+    const roomData = {
       name: roomName,
-      // timeout in seconds
-      emptyTimeout: 10 * 60,
-      maxParticipants: 20,
+      description: roomDescription,
+      admin_username: roomAdminUsername,
+      tags: roomTags,
+      total_participants: 1,
+      created_at: Timestamp.now()
     };
-    svc.createRoom(opts).then((room) => {
-      console.log("room created", room);
-      res.json({ msg: "Room created Successfully", room: room });
+    let firebaseRoomDocId = await createFirebaseRoom(roomData);
+    console.log(`Firebase Room created - ${firebaseRoomDocId}`);
+
+    // create a new livekit room
+    const roomOptions = {
+      name: firebaseRoomDocId, // using firebase room doc id as livekit room name
+      emptyTimeout: 60, // timeout in seconds
+    };
+    svc.createRoom(roomOptions).then((room) => {
+      console.log(`LiveKit Room created - ${room}`);
+
+      // Creating a token for the admin
+      const token = generateToken(firebaseRoomDocId, roomAdminUsername, true);
+
+      res.json({ msg: "Room created Successfully", livekit_room: room, access_token: token});
     });
   } catch (error) {
     console.log(error);
-    res.json({ msg: "Error creating room" });
+    res.statusCode;
+    res.status(500).json({ msg: "Error" });
   }
 };
 

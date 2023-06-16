@@ -1,7 +1,5 @@
 import express from "express";
 import cors from "cors";
-import { db } from "./firebase.js";
-import { collection, getDocs, addDoc } from "firebase/firestore";
 
 //importing routes
 import { roomRouter } from "./routes/room.js";

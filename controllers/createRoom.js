@@ -1,6 +1,6 @@
 import { RoomServiceClient } from "livekit-server-sdk";
-import { db } from "../firebase.js";
-import { collection, doc, setDoc, addDoc, Timestamp } from "firebase/firestore";
+import { ID } from "node-appwrite";
+import { db } from "../config/appwrite.js";
 import { generateToken } from "./generateToken.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -11,11 +11,69 @@ const svc = new RoomServiceClient(
   `${process.env.LIVEKIT_API_SECRET}`
 );
 
-async function createFirebaseRoom(roomData) {
-  const roomsCollectionRef = collection(db, "rooms");
-  const newRoomDocRef = await addDoc(roomsCollectionRef, roomData);
-  await setDoc(
-    doc(db, "rooms", newRoomDocRef.id, "participants", roomData.admin_username),
+async function createAppwriteRoom(roomData) {
+  const newRoomDocRef = await db.createDocument(
+    "master",
+    "rooms",
+    ID.unique(),
+    roomData
+  );
+  const newRoomDatabaseId = newRoomDocRef.$id;
+
+  // Creating a new database for the newly created room
+  await db.create(newRoomDatabaseId, roomData.name);
+
+  // Creating a participant collection inside the new room specific database
+  await db.createCollection(newRoomDatabaseId, "participants", "participants");
+
+  // Adding required attributes to the participants collection
+  await db.createBooleanAttribute(
+    newRoomDatabaseId,
+    "participants",
+    "isAdmin",
+    true
+  );
+  await db.createBooleanAttribute(
+    newRoomDatabaseId,
+    "participants",
+    "isModerator",
+    true
+  );
+  await db.createBooleanAttribute(
+    newRoomDatabaseId,
+    "participants",
+    "isSpeaker",
+    true
+  );
+  await db.createBooleanAttribute(
+    newRoomDatabaseId,
+    "participants",
+    "isMicOn",
+    true
+  );
+
+  // Polling until all the required attributes are added to the collection
+  while (true) {
+    let participantCollection = await db.getCollection(
+      newRoomDatabaseId,
+      "participants"
+    );
+    let attributesAvailable = true;
+    participantCollection.attributes.forEach((attribute) => {
+      if (attribute.status != "available") {
+        attributesAvailable = false;
+      }
+    });
+    if (attributesAvailable === true) {
+      break;
+    }
+  }
+
+  // Creating a document for the admin inside participants collection linked to the room
+  await db.createDocument(
+    newRoomDatabaseId,
+    "participants",
+    roomData.admin_username,
     {
       isAdmin: true,
       isModerator: true,
@@ -23,7 +81,8 @@ async function createFirebaseRoom(roomData) {
       isMicOn: false,
     }
   );
-  return newRoomDocRef.id;
+
+  return newRoomDocRef.$id;
 }
 
 const createRoom = async (req, res) => {
@@ -34,30 +93,33 @@ const createRoom = async (req, res) => {
     const roomAdminUsername = req.body.admin_username;
     const roomTags = req.body.tags;
 
-    // create a new room document on firebase
+    // create a new room on appwrite
     const roomData = {
       name: roomName,
       description: roomDescription,
       admin_username: roomAdminUsername,
       tags: roomTags,
       total_participants: 1,
-      created_at: Timestamp.now()
     };
-    let firebaseRoomDocId = await createFirebaseRoom(roomData);
-    console.log(`Firebase Room created - ${firebaseRoomDocId}`);
+    let appwriteRoomDocId = await createAppwriteRoom(roomData);
+    console.log(`Appwrite Room created - ${appwriteRoomDocId}`);
 
     // create a new livekit room
     const roomOptions = {
-      name: firebaseRoomDocId, // using firebase room doc id as livekit room name
+      name: appwriteRoomDocId, // using appwrite room doc id as livekit room name
       emptyTimeout: 60, // timeout in seconds
     };
     svc.createRoom(roomOptions).then((room) => {
       console.log(`LiveKit Room created - ${room}`);
 
       // Creating a token for the admin
-      const token = generateToken(firebaseRoomDocId, roomAdminUsername, true);
+      const token = generateToken(appwriteRoomDocId, roomAdminUsername, true);
 
-      res.json({ msg: "Room created Successfully", livekit_room: room, access_token: token});
+      res.json({
+        msg: "Room created Successfully",
+        livekit_room: room,
+        access_token: token,
+      });
     });
   } catch (error) {
     console.log(error);

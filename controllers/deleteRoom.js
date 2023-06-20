@@ -1,6 +1,5 @@
 import { RoomServiceClient, TokenVerifier } from "livekit-server-sdk";
-import { db } from "../firebase.js";
-import { doc, deleteDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../config/appwrite.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,42 +14,37 @@ const tokenVerifier = new TokenVerifier(
   `${process.env.LIVEKIT_API_SECRET}`
 );
 
-async function deleteFirebaseRoom(roomDocId) {
-  //Deleting participant subcollection inside room doc
-  const roomsCollectionRef = collection(db, `rooms/${roomDocId}/participants`);
-  const querySnapshot = await getDocs(roomsCollectionRef);
-  querySnapshot.forEach(async (doc) => {
-    await deleteDoc(doc.ref);
-    console.log(`deleted ${doc.id}`);
-  });
+async function deleteAppwriteRoom(roomDocId) {
+  //Deleting room doc inside rooms collection in master database
+  await db.deleteDocument("master", "rooms", roomDocId);
 
-  //Deleting room document
-  await deleteDoc(doc(db, "rooms", roomDocId));
-  console.log("Firebase Room Doc deleted");
+  //Deleting room database
+  await db.delete(roomDocId);
+  console.log("Appwrite Room deleted");
 }
 
 const deleteRoom = async (req, res) => {
   console.log("Deleting room with requested Data:", req.body);
-  const firebaseRoomDocId = req.body.firebaseRoomDocId;
+  const appwriteRoomDocId = req.body.appwriteRoomDocId;
   const token = req.body.token;
   try {
     const isTokenValid = tokenVerifier.verify(token);
     if (
-      isTokenValid.video.room === firebaseRoomDocId &&
+      isTokenValid.video.room === appwriteRoomDocId &&
       isTokenValid.video.roomCreate === true
     ) {
-      //Delete Firebase room doc
-      await deleteFirebaseRoom(firebaseRoomDocId);
+      //Delete Appwrite room doc
+      await deleteAppwriteRoom(appwriteRoomDocId);
 
       // Delete livekit room
-      svc.deleteRoom(firebaseRoomDocId).then(() => {
-        console.log("Livekit Room deleted:", firebaseRoomDocId);
+      svc.deleteRoom(appwriteRoomDocId).then(() => {
+        console.log("Livekit Room deleted:", appwriteRoomDocId);
         res.json({ msg: "Success" });
       });
     }
   } catch (e) {
     console.log("Error occured while deleting Room :", e);
-    res.status(400).json({ msg: "Invalid Token" });
+    res.status(400).json({ msg: "Invalid Token or Server Error" });
   }
 };
 

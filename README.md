@@ -16,7 +16,11 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 2. Create a `.env` file using : `touch .env`
 
-3. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your `HOST`, `API-KEY`, `API-SECRET` from [livekit-cloud](https://livekit.io/cloud). Your `.env` file, it should consist of :
+3. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your `HOST`, `API-KEY`, `API-SECRET` from [livekit-cloud](https://livekit.io/cloud).
+
+4. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
+
+5. Create a `.env` file in the project root directory. The file should consist of :
 
     (a)`LIVEKIT_API_KEY`
 
@@ -24,9 +28,11 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
     (c)`LIVEKIT_HOST`
 
-4. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
+    (d)`APPWRITE_ENDPOINT`
 
-5. Update the `appwrite.js` file inside `config` folder with your project credentials.
+    (e)`APPWRITE_PROJECT_ID`
+
+    (f)`APPWRITE_SECRET_API_KEY`
 
 
 ## Communication Channels

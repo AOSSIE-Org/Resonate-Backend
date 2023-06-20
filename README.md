@@ -14,13 +14,13 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
     (b) Run this command to install required dependencies from package.json : `npm install`
 
-2. Create a `.env` file using : `touch .env`
+2. Create a `.env` file in the project's root directory
 
 3. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your `HOST`, `API-KEY`, `API-SECRET` from [livekit-cloud](https://livekit.io/cloud).
 
 4. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
 
-5. Create a `.env` file in the project root directory. The file should consist of :
+5. The `.env` file should consist of :
 
     (a)`LIVEKIT_API_KEY`
 

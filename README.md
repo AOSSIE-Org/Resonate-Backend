@@ -28,11 +28,13 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
     (c)`LIVEKIT_HOST`
 
-    (d)`APPWRITE_ENDPOINT`
+    (d)`LIVEKIT_SOCKET_URL`
 
-    (e)`APPWRITE_PROJECT_ID`
+    (e)`APPWRITE_ENDPOINT`
 
-    (f)`APPWRITE_SECRET_API_KEY`
+    (f)`APPWRITE_PROJECT_ID`
+
+    (g)`APPWRITE_SECRET_API_KEY`
 
 
 ## Communication Channels

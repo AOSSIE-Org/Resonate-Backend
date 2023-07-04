@@ -118,6 +118,7 @@ const createRoom = async (req, res) => {
       res.json({
         msg: "Room created Successfully",
         livekit_room: room,
+        livekit_socket_url: `${process.env.LIVEKIT_SOCKET_URL}`,
         access_token: token,
       });
     });

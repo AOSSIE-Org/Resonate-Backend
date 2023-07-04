@@ -27,6 +27,26 @@ async function createAppwriteRoom(roomData) {
   await db.createCollection(newRoomDatabaseId, "participants", "participants");
 
   // Adding required attributes to the participants collection
+  await db.createEmailAttribute(
+    newRoomDatabaseId,
+    "participants",
+    "participantEmail",
+    true
+  );
+  await db.createStringAttribute(
+    newRoomDatabaseId,
+    "participants",
+    "participantName",
+    100,
+    true
+  );
+  await db.createStringAttribute(
+    newRoomDatabaseId,
+    "participants",
+    "participantDpUrl",
+    500,
+    true
+  );
   await db.createBooleanAttribute(
     newRoomDatabaseId,
     "participants",
@@ -50,36 +70,6 @@ async function createAppwriteRoom(roomData) {
     "participants",
     "isMicOn",
     true
-  );
-
-  // Polling until all the required attributes are added to the collection
-  while (true) {
-    let participantCollection = await db.getCollection(
-      newRoomDatabaseId,
-      "participants"
-    );
-    let attributesAvailable = true;
-    participantCollection.attributes.forEach((attribute) => {
-      if (attribute.status != "available") {
-        attributesAvailable = false;
-      }
-    });
-    if (attributesAvailable === true) {
-      break;
-    }
-  }
-
-  // Creating a document for the admin inside participants collection linked to the room
-  await db.createDocument(
-    newRoomDatabaseId,
-    "participants",
-    roomData.adminEmail,
-    {
-      isAdmin: true,
-      isModerator: true,
-      isSpeaker: true,
-      isMicOn: false,
-    }
   );
 
   return newRoomDocRef.$id;

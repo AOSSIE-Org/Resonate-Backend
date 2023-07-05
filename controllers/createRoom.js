@@ -2,6 +2,7 @@ import { RoomServiceClient } from "livekit-server-sdk";
 import { ID } from "node-appwrite";
 import { db } from "../config/appwrite.js";
 import { generateToken } from "./generateToken.js";
+import { masterDatabaseId, roomsCollectionId } from "../constants/constants.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -13,8 +14,8 @@ const svc = new RoomServiceClient(
 
 async function createAppwriteRoom(roomData) {
   const newRoomDocRef = await db.createDocument(
-    "master",
-    "rooms",
+    masterDatabaseId,
+    roomsCollectionId,
     ID.unique(),
     roomData
   );
@@ -27,24 +28,11 @@ async function createAppwriteRoom(roomData) {
   await db.createCollection(newRoomDatabaseId, "participants", "participants");
 
   // Adding required attributes to the participants collection
-  await db.createEmailAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "participantEmail",
-    true
-  );
   await db.createStringAttribute(
     newRoomDatabaseId,
     "participants",
-    "participantName",
+    "participantUid",
     100,
-    true
-  );
-  await db.createStringAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "participantDpUrl",
-    500,
     true
   );
   await db.createBooleanAttribute(
@@ -89,7 +77,7 @@ const createRoom = async (req, res) => {
       description: roomDescription,
       adminEmail: roomAdminEmail,
       tags: roomTags,
-      total_participants: 1,
+      totalParticipants: 1,
     };
     let appwriteRoomDocId = await createAppwriteRoom(roomData);
     console.log(`Appwrite Room created - ${appwriteRoomDocId}`);

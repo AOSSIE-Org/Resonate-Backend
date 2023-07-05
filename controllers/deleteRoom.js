@@ -1,5 +1,6 @@
 import { RoomServiceClient, TokenVerifier } from "livekit-server-sdk";
 import { db } from "../config/appwrite.js";
+import { masterDatabaseId, roomsCollectionId } from "../constants/constants.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -16,7 +17,7 @@ const tokenVerifier = new TokenVerifier(
 
 async function deleteAppwriteRoom(roomDocId) {
   //Deleting room doc inside rooms collection in master database
-  await db.deleteDocument("master", "rooms", roomDocId);
+  await db.deleteDocument(masterDatabaseId, roomsCollectionId, roomDocId);
 
   //Deleting room database
   await db.delete(roomDocId);

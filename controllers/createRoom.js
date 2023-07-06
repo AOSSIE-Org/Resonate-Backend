@@ -19,46 +19,6 @@ async function createAppwriteRoom(roomData) {
     ID.unique(),
     roomData
   );
-  const newRoomDatabaseId = newRoomDocRef.$id;
-
-  // Creating a new database for the newly created room
-  await db.create(newRoomDatabaseId, roomData.name);
-
-  // Creating a participant collection inside the new room specific database
-  await db.createCollection(newRoomDatabaseId, "participants", "participants");
-
-  // Adding required attributes to the participants collection
-  await db.createStringAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "participantUid",
-    100,
-    true
-  );
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isAdmin",
-    true
-  );
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isModerator",
-    true
-  );
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isSpeaker",
-    true
-  );
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isMicOn",
-    true
-  );
 
   return newRoomDocRef.$id;
 }

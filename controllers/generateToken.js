@@ -1,14 +1,14 @@
 //livekit-server-sdk imports
 import { AccessToken } from "livekit-server-sdk";
 
-const generateToken = (roomName, participantUsername, isRoomAdmin) => {
+const generateToken = (roomName, participantEmail, isRoomAdmin) => {
   //creating a new access token for the participant.
   try {
     const at = new AccessToken(
       `${process.env.LIVEKIT_API_KEY}`,
       `${process.env.LIVEKIT_API_SECRET}`,
       {
-        identity: participantUsername,
+        identity: participantEmail,
       }
     );
 

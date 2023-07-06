@@ -2,6 +2,7 @@ import { RoomServiceClient } from "livekit-server-sdk";
 import { ID } from "node-appwrite";
 import { db } from "../config/appwrite.js";
 import { generateToken } from "./generateToken.js";
+import { masterDatabaseId, roomsCollectionId } from "../constants/constants.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -13,73 +14,10 @@ const svc = new RoomServiceClient(
 
 async function createAppwriteRoom(roomData) {
   const newRoomDocRef = await db.createDocument(
-    "master",
-    "rooms",
+    masterDatabaseId,
+    roomsCollectionId,
     ID.unique(),
     roomData
-  );
-  const newRoomDatabaseId = newRoomDocRef.$id;
-
-  // Creating a new database for the newly created room
-  await db.create(newRoomDatabaseId, roomData.name);
-
-  // Creating a participant collection inside the new room specific database
-  await db.createCollection(newRoomDatabaseId, "participants", "participants");
-
-  // Adding required attributes to the participants collection
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isAdmin",
-    true
-  );
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isModerator",
-    true
-  );
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isSpeaker",
-    true
-  );
-  await db.createBooleanAttribute(
-    newRoomDatabaseId,
-    "participants",
-    "isMicOn",
-    true
-  );
-
-  // Polling until all the required attributes are added to the collection
-  while (true) {
-    let participantCollection = await db.getCollection(
-      newRoomDatabaseId,
-      "participants"
-    );
-    let attributesAvailable = true;
-    participantCollection.attributes.forEach((attribute) => {
-      if (attribute.status != "available") {
-        attributesAvailable = false;
-      }
-    });
-    if (attributesAvailable === true) {
-      break;
-    }
-  }
-
-  // Creating a document for the admin inside participants collection linked to the room
-  await db.createDocument(
-    newRoomDatabaseId,
-    "participants",
-    roomData.admin_username,
-    {
-      isAdmin: true,
-      isModerator: true,
-      isSpeaker: true,
-      isMicOn: false,
-    }
   );
 
   return newRoomDocRef.$id;
@@ -90,16 +28,16 @@ const createRoom = async (req, res) => {
   try {
     const roomName = req.body.name;
     const roomDescription = req.body.description;
-    const roomAdminUsername = req.body.admin_username;
+    const roomAdminEmail = req.body.adminEmail;
     const roomTags = req.body.tags;
 
     // create a new room on appwrite
     const roomData = {
       name: roomName,
       description: roomDescription,
-      admin_username: roomAdminUsername,
+      adminEmail: roomAdminEmail,
       tags: roomTags,
-      total_participants: 1,
+      totalParticipants: 1,
     };
     let appwriteRoomDocId = await createAppwriteRoom(roomData);
     console.log(`Appwrite Room created - ${appwriteRoomDocId}`);
@@ -113,7 +51,7 @@ const createRoom = async (req, res) => {
       console.log(`LiveKit Room created - ${room}`);
 
       // Creating a token for the admin
-      const token = generateToken(appwriteRoomDocId, roomAdminUsername, true);
+      const token = generateToken(appwriteRoomDocId, roomAdminEmail, true);
 
       res.json({
         msg: "Room created Successfully",

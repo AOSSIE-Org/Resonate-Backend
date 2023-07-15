@@ -1,0 +1,26 @@
+{
+    "projectId": "64a12ff22a44f02f0545",
+    "projectName": "Resonate",
+    "functions": [
+        {
+            "$id": "64b291891e5beefab2be",
+            "name": "Set Verified",
+            "runtime": "node-16.0",
+            "path": "functions/Set Verified",
+            "entrypoint": "src/set_verified.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "APPWRITE_FUNCTION_ENDPOINT": "https://cloud.appwrite.io/v1",
+                "APPWRITE_FUNCTION_PROJECT_ID": "64a12ff22a44f02f0545",
+                "APPWRITE_FUNCTION_API_KEY": "d3df56ca8758412f20070d758d008731f60aaa1ddb7d8bc06cc951f140816722f7b4ca0502c3f7d17ab5fc89ad3a18ddbd6909c75f5d2890959f53d1893aadfeeb6397bc53400556e03e639a5a4498e823ba8eba58ec07523fb181d4e473589b02e2be7dd7a038f00fcb785384a994ec22f083933bd8843b16f5bb16638b2428"
+            },
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        }
+    ]
+}

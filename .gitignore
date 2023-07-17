@@ -1,6 +1,9 @@
 node_modules/
 jspm_packages/
 bower_components/
+appwrite_cloud_functions/send_otp/appwrite.json
+appwrite_cloud_functions/set_email_verified/appwrite.json
+appwrite_cloud_functions/verify_otp/appwrite.json
 
 npm-debug.log
 yarn-error.log

@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const joinRoom = async (req, res) => {
-  //TODO: verify if the user with same userEmail has requested for a token.
+  //TODO: verify if the user with uid has requested for a token.
   try {
     console.log("Request Data: ", req.body);
     const roomName = req.body.roomName;
-    const userEmail = req.body.userEmail;
+    const uid = req.body.uid;
     // Creating a token for the user
-    const token = generateToken(roomName, userEmail, false);
+    const token = generateToken(roomName, uid, false);
     res.json({
       msg: "Success",
       livekit_socket_url: `${process.env.LIVEKIT_SOCKET_URL}`,

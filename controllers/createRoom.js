@@ -28,14 +28,14 @@ const createRoom = async (req, res) => {
   try {
     const roomName = req.body.name;
     const roomDescription = req.body.description;
-    const roomAdminEmail = req.body.adminEmail;
+    const roomAdminUid = req.body.adminUid;
     const roomTags = req.body.tags;
 
     // create a new room on appwrite
     const roomData = {
       name: roomName,
       description: roomDescription,
-      adminEmail: roomAdminEmail,
+      adminUid: roomAdminUid,
       tags: roomTags,
       totalParticipants: 1,
     };
@@ -51,7 +51,7 @@ const createRoom = async (req, res) => {
       console.log(`LiveKit Room created - ${room}`);
 
       // Creating a token for the admin
-      const token = generateToken(appwriteRoomDocId, roomAdminEmail, true);
+      const token = generateToken(appwriteRoomDocId, roomAdminUid, true);
 
       res.json({
         msg: "Room created Successfully",

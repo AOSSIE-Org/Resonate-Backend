@@ -11,8 +11,11 @@ module.exports = async function (req, res) {
       .setSelfSigned(true);
   var payload = JSON.parse(req.payload);
   var uid = payload.userID;
-  users.updateEmailVerification(String(uid), true);
+  var error = "null";
+  users.updateEmailVerification(String(uid), true).catch(err=>{
+    error = err.toString()
+  });
   res.json({
-    message: 'set verified'
+    message: String(error)
   });
 };

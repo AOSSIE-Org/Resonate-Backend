@@ -31,10 +31,13 @@ module.exports = async function (req, res) {
     subject: "Email Verification", // Subject line
     text: "Greetings User, here is your email verification OTP " + String(OTP), // plain text body
   });
+  var error = "null";
   await database.createDocument(req.variables['DataBaseID'], req.variables['CollectionID'], otp_ID.toString(), {
     "otp": String(OTP)
+  }).catch(err => {
+    error = err.toString();
   })
   res.json({
-    message: 'mail sent'
+    message: String(error)
   });
 };

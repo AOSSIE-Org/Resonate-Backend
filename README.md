@@ -36,6 +36,114 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
     (g)`APPWRITE_SECRET_API_KEY`
 
+## API Documentation
+
+#### All Post Routes 
+
+
+
+ `POST` `/room/create-room` `(create room in livekit )`
+
+##### Parameters
+
+> | name      |  type     | data type               | description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | None      |  required | object (JSON or YAML)   | N/A  |
+
+
+##### Responses
+
+> | http code     | content-type                      | response                                                            |
+> |---------------|-----------------------------------|---------------------------------------------------------------------|
+> | none          | `application/json`                |  `{msg:Room created successfully ...}`                              |
+> | `500`         | `application/json`                | `{"code":"500","message":"Error"}`                                  |
+
+
+##### Example cURL
+
+> ```javascript
+>  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/
+> ```
+
+
+
+
+
+ `POST` `/room/join-room` `(join room with livekit )`
+##### Parameters
+
+> | name      |  type     | data type               | description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | None      |  required | object (JSON or YAML)   | N/A                                                                   |
+
+
+##### Responses
+
+> | http code     | content-type                      | response                                                            |
+> |---------------|-----------------------------------|---------------------------------------------------------------------|
+> | none          | `application/json`                |  `{msg:Success ...}`                              |
+> | `500`         | `application/json`                | `{"code":"500","message":"Error"}`                                  |
+
+
+##### Example cURL
+
+> ```javascript
+>  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/
+> ```
+
+
+
+#### All Get Routes
+
+
+ `GET` `/` `(Sending Hello World )`
+
+##### Parameters
+
+> `None`
+
+##### Responses
+
+> | http code     | content-type                      | response                                                            |
+> |---------------|-----------------------------------|---------------------------------------------------------------------|
+> | `200`         | `text/plain;charset=UTF-8`        | YAML string                                                         |
+
+##### Example cURL
+
+> ```javascript
+>  curl -X GET -H "Content-Type: application/json" http://localhost:3000/
+> ```
+
+
+
+#### All Deleting Routes
+
+`DELETE` `/room/delete-room` `(delete room from livekit )`
+
+##### Parameters
+
+> | name      |  type     | data type               | description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | None      |  required | object (JSON or YAML)   | N/A                                                                   |
+
+##### Responses
+
+> | http code     | content-type                      | response                                                            |
+> |---------------|-----------------------------------|---------------------------------------------------------------------|
+> | `200`         | `application/json`                | `{msg:"Success"}`                                                   |
+> | `400`         | `application/json`                | `{msg:"Invalid Token or Server Error"}`                                                   |
+
+##### Example cURL
+
+> ```javascript
+>  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/
+> ```
+
+
+
+
+
+------------------------------------------------------------------------------------------
 
 ## Communication Channels
 

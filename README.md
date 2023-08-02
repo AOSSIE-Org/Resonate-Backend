@@ -48,7 +48,7 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 > | name      |  type     | data type               | description                                                           |
 > |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | None      |  required | object (JSON or YAML)   | N/A  |
+> | None      |  required | {name:"gamingRoom",description:"this is a gaming room",adminEmail:"gaming@gmail.cm",tags:"gaming"}   | N/A  |
 
 
 ##### Responses
@@ -74,7 +74,7 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 > | name      |  type     | data type               | description                                                           |
 > |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | None      |  required | object (JSON or YAML)   | N/A                                                                   |
+> | None      |  required | {roomName:"gamingroom",userEmail:"user@gmail.com"}   | N/A                                                                   |
 
 
 ##### Responses
@@ -124,7 +124,7 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 > | name      |  type     | data type               | description                                                           |
 > |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | None      |  required | object (JSON or YAML)   | N/A                                                                   |
+> | None      |  required | {appwriteRoomDocId:"hsae2e41ca",token:"jskandse23234njb3TWZA"}  | N/A                                                                   |
 
 ##### Responses
 

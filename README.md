@@ -36,6 +36,19 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
     (g)`APPWRITE_SECRET_API_KEY`
 
+6. There are 3 appwrite cloud functions needed for maintaining the functionality of Resonate
+
+    (a)`send_otp` - Sending emails to users with the otp while email verification
+
+    (b)`verify_otp` - Verifies the user entered otp with the otp sent to his mail for email verification
+
+    (c)`set_email_verified` - Sets the user account as email verified once email verification is successful
+
+    Each of these functions have their own respective appwrite.json files one for each function which has the API keys used in that function
+    and is necessary while using Appwrite's CLI for deployments (commonly preferred).
+
+    The appwrite.json files are put into .gitignore please do request for them on AOSSIE's discord server in order to contribute to Resonate's appwrite cloud functions
+
 
 ## Communication Channels
 

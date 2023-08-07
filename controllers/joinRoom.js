@@ -1,14 +1,19 @@
 import { generateToken } from "./generateToken.js";
+import { verifyAppwriteToken } from "./verifyAppwriteToken.js";
 import dotenv from "dotenv";
 dotenv.config();
 
 const joinRoom = async (req, res) => {
-  //TODO: verify if the user with uid has requested for a token.
+  const isTokenValid = await verifyAppwriteToken(req.headers.authorization);
+  if (!isTokenValid) {
+    res.status(403).json({ msg: "Invalid Token" });
+    return;
+  }
   try {
     console.log("Request Data: ", req.body);
     const roomName = req.body.roomName;
     const uid = req.body.uid;
-    // Creating a token for the user
+    // Creating a livekit token for the user
     const token = generateToken(roomName, uid, false);
     res.json({
       msg: "Success",
@@ -17,7 +22,7 @@ const joinRoom = async (req, res) => {
     });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Error" });
+    res.status(500).json({ msg: "Server Error" });
   }
 };
 

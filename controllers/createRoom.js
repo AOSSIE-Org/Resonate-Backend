@@ -2,6 +2,7 @@ import { RoomServiceClient } from "livekit-server-sdk";
 import { ID } from "node-appwrite";
 import { db } from "../config/appwrite.js";
 import { generateToken } from "./generateToken.js";
+import { verifyAppwriteToken } from "./verifyAppwriteToken.js";
 import { masterDatabaseId, roomsCollectionId } from "../constants/constants.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -24,6 +25,12 @@ async function createAppwriteRoom(roomData) {
 }
 
 const createRoom = async (req, res) => {
+  const isTokenValid = await verifyAppwriteToken(req.headers.authorization);
+  if (!isTokenValid) {
+    res.status(403).json({ msg: "Invalid Token" });
+    return;
+  }
+
   console.log("New Room Data: ", req.body);
   try {
     const roomName = req.body.name;

@@ -5,17 +5,13 @@ import {
   roomsCollectionId,
   participantsCollectionId,
 } from "../constants/constants.js";
+import { verifyAppwriteToken } from "./verifyAppwriteToken.js";
 import dotenv from "dotenv";
 import { Query } from "node-appwrite";
 dotenv.config();
 
 const svc = new RoomServiceClient(
   `${process.env.LIVEKIT_HOST}`,
-  `${process.env.LIVEKIT_API_KEY}`,
-  `${process.env.LIVEKIT_API_SECRET}`
-);
-
-const tokenVerifier = new TokenVerifier(
   `${process.env.LIVEKIT_API_KEY}`,
   `${process.env.LIVEKIT_API_SECRET}`
 );
@@ -42,15 +38,24 @@ async function deleteAppwriteRoom(roomDocId) {
 }
 
 const deleteRoom = async (req, res) => {
+  const appwriteUser = await verifyAppwriteToken(req.headers.authorization);
+  if (appwriteUser === null) {
+    res.status(403).json({ msg: "Invalid Token" });
+    return;
+  }
+
   console.log("Deleting room with requested Data:", req.body);
   const appwriteRoomDocId = req.body.appwriteRoomDocId;
-  const token = req.body.token;
+  const livekitToken = req.body.token;
+  const roomAdminUid = appwriteUser.$id;
+
   try {
-    const isTokenValid = tokenVerifier.verify(token);
-    if (
-      isTokenValid.video.room === appwriteRoomDocId &&
-      isTokenValid.video.roomCreate === true
-    ) {
+    const appwriteRoomDocument = await db.getDocument(
+      masterDatabaseId,
+      roomsCollectionId,
+      appwriteRoomDocId
+    );
+    if (appwriteRoomDocument.adminUid === roomAdminUid) {
       //Delete Appwrite room doc
       await deleteAppwriteRoom(appwriteRoomDocId);
 
@@ -62,7 +67,7 @@ const deleteRoom = async (req, res) => {
     }
   } catch (e) {
     console.log("Error occured while deleting Room :", e);
-    res.status(400).json({ msg: "Invalid Token or Server Error" });
+    res.status(500).json({ msg: "Server Error" });
   }
 };
 

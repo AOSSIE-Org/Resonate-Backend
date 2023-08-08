@@ -57,22 +57,22 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 ##### Parameters
 
-> | fireld | type     | data type             | description |
-> | ------ | -------- | --------------------- | ----------- |
-> | None   | required | object (JSON or YAML) | N/A         |
+   > | fireld | type     | data type             | description |
+   > | ------ | -------- | --------------------- | ----------- |
+   > | None   | required | object (JSON or YAML) | N/A         |
 
 ##### Responses
 
-> | http code | content-type       | response                            |
-> | --------- | ------------------ | ----------------------------------- |
-> | None      | `application/json` | `{msg:"Room created Successfully"}` |
-> | `500`     | `application/json` | `{msg:"Error"}`                     |
+   > | http code | content-type       | response                            |
+   > | --------- | ------------------ | ----------------------------------- |
+   > | None      | `application/json` | `{msg:"Room created Successfully"}` |
+   > | `500`     | `application/json` | `{msg:"Error"}`                     |
 
 ##### Example cURL
 
-> ```javascript
->  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/create-room
-> ```
+   > ```javascript
+   >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/create-room
+   > ```
 
 </details>
 
@@ -81,22 +81,22 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 ##### Parameters
 
-> | fireld | type     | data type             | description |
-> | ------ | -------- | --------------------- | ----------- |
-> | None   | required | object (JSON or YAML) | N/A         |
+   > | fireld | type     | data type             | description |
+   > | ------ | -------- | --------------------- | ----------- |
+   > | None   | required | object (JSON or YAML) | N/A         |
 
 ##### Responses
 
-> | http code | content-type       | response          |
-> | --------- | ------------------ | ----------------- |
-> | None      | `application/json` | `{msg:"Success"}` |
-> | `500`     | `application/json` | `{msg:"Error"}`   |
+   > | http code | content-type       | response          |
+   > | --------- | ------------------ | ----------------- |
+   > | None      | `application/json` | `{msg:"Success"}` |
+   > | `500`     | `application/json` | `{msg:"Error"}`   |
 
 ##### Example cURL
 
-> ```javascript
->  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/join-room
-> ```
+   > ```javascript
+   >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/join-room
+   > ```
 
 </details>
 
@@ -105,20 +105,20 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 ##### Parameters
 
-> None
+   > None
 
 ##### Responses
 
-> | http code | content-type       | response                                |
-> | --------- | ------------------ | --------------------------------------- |
-> | None      | `application/json` | `{msg:"Success"}`                       |
-> | `400`     | `application/json` | `{msg:"Invalid Token or Server Error"}` |
+   > | http code | content-type       | response                                |
+   > | --------- | ------------------ | --------------------------------------- |
+   > | None      | `application/json` | `{msg:"Success"}`                       |
+   > | `400`     | `application/json` | `{msg:"Invalid Token or Server Error"}` |
 
 ##### Example cURL
 
-> ```javascript
->  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/delete-room
-> ```
+   > ```javascript
+   >  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/delete-room
+   > ```
 
 </details>
 

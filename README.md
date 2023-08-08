@@ -52,66 +52,75 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 7. API Documentation :
 
-   (a) `POST` `/create-room` `(for creating new LiveKit room)`
+<details>
+   <summary>(a) <code>`POST`</code> <code>`/create-room`</code> <code>`(for creating new LiveKit room)`</code></summary>
 
-   ##### Parameters
+##### Parameters
 
-   > | fireld | type     | data type             | description |
-   > | ------ | -------- | --------------------- | ----------- |
-   > | None   | required | object (JSON or YAML) | N/A         |
+> | fireld | type     | data type             | description |
+> | ------ | -------- | --------------------- | ----------- |
+> | None   | required | object (JSON or YAML) | N/A         |
 
-   ##### Responses
+##### Responses
 
-   > | http code | content-type       | response                            |
-   > | --------- | ------------------ | ----------------------------------- |
-   > | None      | `application/json` | `{msg:"Room created Successfully"}` |
-   > | `500`     | `application/json` | `{msg:"Error"}`                     |
+> | http code | content-type       | response                            |
+> | --------- | ------------------ | ----------------------------------- |
+> | None      | `application/json` | `{msg:"Room created Successfully"}` |
+> | `500`     | `application/json` | `{msg:"Error"}`                     |
 
-   ##### Example cURL
+##### Example cURL
 
-   > ```javascript
-   >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/create-room
-   > ```
+> ```javascript
+>  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/create-room
+> ```
 
-   (b) `POST` `/join-room` `(for joining an existing LiveKit room)`
+</details>
 
-   ##### Parameters
+<details>
+   <summary>(b) <code>`POST`</code> <code>`/join-room`</code> <code>`(for joining an existing LiveKit room)`</code></summary>
 
-   > | fireld | type     | data type             | description |
-   > | ------ | -------- | --------------------- | ----------- |
-   > | None   | required | object (JSON or YAML) | N/A         |
+##### Parameters
 
-   ##### Responses
+> | fireld | type     | data type             | description |
+> | ------ | -------- | --------------------- | ----------- |
+> | None   | required | object (JSON or YAML) | N/A         |
 
-   > | http code | content-type       | response          |
-   > | --------- | ------------------ | ----------------- |
-   > | None      | `application/json` | `{msg:"Success"}` |
-   > | `500`     | `application/json` | `{msg:"Error"}`   |
+##### Responses
 
-   ##### Example cURL
+> | http code | content-type       | response          |
+> | --------- | ------------------ | ----------------- |
+> | None      | `application/json` | `{msg:"Success"}` |
+> | `500`     | `application/json` | `{msg:"Error"}`   |
 
-   > ```javascript
-   >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/join-room
-   > ```
+##### Example cURL
 
-   (c) `DELETE` `/delete-room` `(for deleting a LiveKit room )`
+> ```javascript
+>  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/join-room
+> ```
 
-   ##### Parameters
+</details>
 
-   > None
+<details>
+   <summary>(c) <code>`DELETE`</code> <code>`/delete-room`</code> <code>`(for deleting a LiveKit room )`</code></summary>
 
-   ##### Responses
+##### Parameters
 
-   > | http code | content-type       | response                                |
-   > | --------- | ------------------ | --------------------------------------- |
-   > | None      | `application/json` | `{msg:"Success"}`                       |
-   > | `400`     | `application/json` | `{msg:"Invalid Token or Server Error"}` |
+> None
 
-   ##### Example cURL
+##### Responses
 
-   > ```javascript
-   >  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/delete-room
-   > ```
+> | http code | content-type       | response                                |
+> | --------- | ------------------ | --------------------------------------- |
+> | None      | `application/json` | `{msg:"Success"}`                       |
+> | `400`     | `application/json` | `{msg:"Invalid Token or Server Error"}` |
+
+##### Example cURL
+
+> ```javascript
+>  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/delete-room
+> ```
+
+</details>
 
 ## Communication Channels
 

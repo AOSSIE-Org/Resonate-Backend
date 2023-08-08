@@ -9,6 +9,7 @@ const verifyAppwriteToken = async (authorizationHeader) => {
     }
 
     const appwriteToken = authorizationHeader.substring("Bearer ".length);
+    console.log(appwriteToken);
 
     // Init SDK
     const client = new Client();
@@ -21,10 +22,11 @@ const verifyAppwriteToken = async (authorizationHeader) => {
       .setJWT(appwriteToken); // Received secret JSON Web Token
 
     const tokenUser = await account.get();
-    return true;
+    console.log(tokenUser);
+    return tokenUser;
   } catch (e) {
     console.log("Invalid Token");
-    return false;
+    return null;
   }
 };
 

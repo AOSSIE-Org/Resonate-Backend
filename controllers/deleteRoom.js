@@ -1,4 +1,4 @@
-import { RoomServiceClient, TokenVerifier } from "livekit-server-sdk";
+import { RoomServiceClient } from "livekit-server-sdk";
 import { db } from "../config/appwrite.js";
 import {
   masterDatabaseId,
@@ -46,7 +46,7 @@ const deleteRoom = async (req, res) => {
 
   console.log("Deleting room with requested Data:", req.body);
   const appwriteRoomDocId = req.body.appwriteRoomDocId;
-  const livekitToken = req.body.token;
+  const livekitToken = req.body.token; //If required in future
   const roomAdminUid = appwriteUser.$id;
 
   try {
@@ -55,15 +55,17 @@ const deleteRoom = async (req, res) => {
       roomsCollectionId,
       appwriteRoomDocId
     );
-    if (appwriteRoomDocument.adminUid === roomAdminUid) {
+    if (appwriteRoomDocument.adminUid != roomAdminUid) {
+      console.log("User not room admin");
+      return res.status(403).json({ msg: "User not room admin" });
+    } else {
       //Delete Appwrite room doc
       await deleteAppwriteRoom(appwriteRoomDocId);
 
       // Delete livekit room
-      svc.deleteRoom(appwriteRoomDocId).then(() => {
-        console.log("Livekit Room deleted:", appwriteRoomDocId);
-        res.json({ msg: "Success" });
-      });
+      await svc.deleteRoom(appwriteRoomDocId);
+      console.log("Livekit Room deleted:", appwriteRoomDocId);
+      res.json({ msg: "Success" });
     }
   } catch (e) {
     console.log("Error occured while deleting Room :", e);

@@ -25,8 +25,8 @@ async function createAppwriteRoom(roomData) {
 }
 
 const createRoom = async (req, res) => {
-  const isTokenValid = await verifyAppwriteToken(req.headers.authorization);
-  if (!isTokenValid) {
+  const appwriteUser = await verifyAppwriteToken(req.headers.authorization);
+  if (appwriteUser === null) {
     res.status(403).json({ msg: "Invalid Token" });
     return;
   }

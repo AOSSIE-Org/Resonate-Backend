@@ -53,22 +53,22 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 7. API Documentation :
 
 <details>
-   <summary>(a) <code>`POST`</code> <code>`/create-room`</code> <code>`(for creating new LiveKit room)`</code></summary>
+   <summary>(a) <code>POST</code> <code>/create-room</code> <code>(for creating new LiveKit room)</code></summary>
 
-##### Parameters
+   ##### Parameters
 
    > | fireld | type     | data type             | description |
    > | ------ | -------- | --------------------- | ----------- |
    > | None   | required | object (JSON or YAML) | N/A         |
 
-##### Responses
+   ##### Responses
 
    > | http code | content-type       | response                            |
    > | --------- | ------------------ | ----------------------------------- |
    > | None      | `application/json` | `{msg:"Room created Successfully"}` |
    > | `500`     | `application/json` | `{msg:"Error"}`                     |
 
-##### Example cURL
+   ##### Example cURL
 
    > ```javascript
    >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/create-room
@@ -77,22 +77,22 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 </details>
 
 <details>
-   <summary>(b) <code>`POST`</code> <code>`/join-room`</code> <code>`(for joining an existing LiveKit room)`</code></summary>
+   <summary>(b) <code>POST</code> <code>/join-room</code> <code>(for joining an existing LiveKit room)</code></summary>
 
-##### Parameters
+   ##### Parameters
 
    > | fireld | type     | data type             | description |
    > | ------ | -------- | --------------------- | ----------- |
    > | None   | required | object (JSON or YAML) | N/A         |
 
-##### Responses
+   ##### Responses
 
    > | http code | content-type       | response          |
    > | --------- | ------------------ | ----------------- |
    > | None      | `application/json` | `{msg:"Success"}` |
    > | `500`     | `application/json` | `{msg:"Error"}`   |
 
-##### Example cURL
+   ##### Example cURL
 
    > ```javascript
    >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/join-room
@@ -101,25 +101,24 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 </details>
 
 <details>
-   <summary>(c) <code>`DELETE`</code> <code>`/delete-room`</code> <code>`(for deleting a LiveKit room )`</code></summary>
+   <summary>(c) <code>DELETE</code> <code>/delete-room</code> <code>(for deleting a LiveKit room )</code></summary>
 
-##### Parameters
+   ##### Parameters
 
    > None
 
-##### Responses
+   ##### Responses
 
    > | http code | content-type       | response                                |
    > | --------- | ------------------ | --------------------------------------- |
    > | None      | `application/json` | `{msg:"Success"}`                       |
    > | `400`     | `application/json` | `{msg:"Invalid Token or Server Error"}` |
 
-##### Example cURL
+   ##### Example cURL
 
    > ```javascript
    >  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/delete-room
    > ```
-
 </details>
 
 ## Communication Channels

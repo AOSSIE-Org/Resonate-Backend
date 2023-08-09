@@ -5,9 +5,9 @@ import {
   roomsCollectionId,
   participantsCollectionId,
 } from "../constants/constants.js";
-import { verifyAppwriteToken } from "./verifyAppwriteToken.js";
 import dotenv from "dotenv";
 import { Query } from "node-appwrite";
+import { verifyAppwriteToken } from "./verifyAppwriteToken.js";
 dotenv.config();
 
 const svc = new RoomServiceClient(
@@ -38,15 +38,10 @@ async function deleteAppwriteRoom(roomDocId) {
 }
 
 const deleteRoom = async (req, res) => {
-  const appwriteUser = await verifyAppwriteToken(req.headers.authorization);
-  if (appwriteUser === null) {
-    res.status(403).json({ msg: "Invalid Token" });
-    return;
-  }
-
   console.log("Deleting room with requested Data:", req.body);
   const appwriteRoomDocId = req.body.appwriteRoomDocId;
   const livekitToken = req.body.token; //If required in future
+  const appwriteUser = await verifyAppwriteToken(req.headers.authorization);
   const roomAdminUid = appwriteUser.$id;
 
   try {

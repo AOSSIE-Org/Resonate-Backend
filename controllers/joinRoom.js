@@ -1,14 +1,8 @@
 import { generateToken } from "./generateToken.js";
-import { verifyAppwriteToken } from "./verifyAppwriteToken.js";
 import dotenv from "dotenv";
 dotenv.config();
 
 const joinRoom = async (req, res) => {
-  const appwriteUser = await verifyAppwriteToken(req.headers.authorization);
-  if (appwriteUser === null) {
-    res.status(403).json({ msg: "Invalid Token" });
-    return;
-  }
   try {
     console.log("Request Data: ", req.body);
     const roomName = req.body.roomName;

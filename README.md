@@ -55,70 +55,100 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 <details>
    <summary>(a) <code>POST</code> <code>/create-room</code> <code>(for creating new LiveKit room)</code></summary>
 
-   ##### Parameters
+##### Parameters
 
-   > | fireld | type     | data type             | description |
-   > | ------ | -------- | --------------------- | ----------- |
-   > | None   | required | object (JSON or YAML) | N/A         |
+> | field | type     | data type             | description |
+> | ----- | -------- | --------------------- | ----------- |
+> | None  | required | object (JSON or YAML) | N/A         |
 
-   ##### Responses
+##### Request Body
 
-   > | http code | content-type       | response                            |
-   > | --------- | ------------------ | ----------------------------------- |
-   > | None      | `application/json` | `{msg:"Room created Successfully"}` |
-   > | `500`     | `application/json` | `{msg:"Error"}`                     |
+> | field         | type     | data type          | description                                          |
+> | ------------- | -------- | ------------------ | ---------------------------------------------------- |
+> | `name`        | required | `string`           | The name of the room                                 |
+> | `description` | required | `string`           | A description of the room                            |
+> | `adminUid`    | required | `string`           | The unique identifier(UID) of the room administrator |
+> | `tags`        | optional | `array of strings` | An array of tags associated with the room            |
 
-   ##### Example cURL
+##### Responses
 
-   > ```javascript
-   >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/create-room
-   > ```
+> | http code | content-type       | response                            |
+> | --------- | ------------------ | ----------------------------------- |
+> | `200`     | `application/json` | `{msg:"Room created Successfully"}` |
+> | `500`     | `application/json` | `{msg:"Error"}`                     |
+
+##### Example cURL
+
+> ```javascript
+>  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/create-room
+> ```
 
 </details>
 
 <details>
    <summary>(b) <code>POST</code> <code>/join-room</code> <code>(for joining an existing LiveKit room)</code></summary>
 
-   ##### Parameters
+##### Parameters
 
-   > | fireld | type     | data type             | description |
-   > | ------ | -------- | --------------------- | ----------- |
-   > | None   | required | object (JSON or YAML) | N/A         |
+> | field | type     | data type             | description |
+> | ----- | -------- | --------------------- | ----------- |
+> | None  | required | object (JSON or YAML) | N/A         |
 
-   ##### Responses
+##### Request Body
 
-   > | http code | content-type       | response          |
-   > | --------- | ------------------ | ----------------- |
-   > | None      | `application/json` | `{msg:"Success"}` |
-   > | `500`     | `application/json` | `{msg:"Error"}`   |
+> | field  | type     | data type | description                                                        |
+> | ------ | -------- | --------- | ------------------------------------------------------------------ |
+> | `name` | required | `string`  | The name of the room user intends to join                          |
+> | `uid`  | required | `string`  | The unique identifier(UID) of the user requesting to join the room |
 
-   ##### Example cURL
+##### Responses
 
-   > ```javascript
-   >  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/join-room
-   > ```
+> | http code | content-type       | response          |
+> | --------- | ------------------ | ----------------- |
+> | `200`     | `application/json` | `{msg:"Success"}` |
+> | `500`     | `application/json` | `{msg:"Error"}`   |
+
+##### Example cURL
+
+> ```javascript
+>  curl -X POST -H "Content-Type: application/json" --data @post.json http://localhost:3000/join-room
+> ```
 
 </details>
 
 <details>
    <summary>(c) <code>DELETE</code> <code>/delete-room</code> <code>(for deleting a LiveKit room )</code></summary>
 
-   ##### Parameters
+##### Parameters
 
-   > None
+> None
 
-   ##### Responses
+##### Request Body
 
-   > | http code | content-type       | response                                |
-   > | --------- | ------------------ | --------------------------------------- |
-   > | None      | `application/json` | `{msg:"Success"}`                       |
-   > | `400`     | `application/json` | `{msg:"Invalid Token or Server Error"}` |
+> | field               | type     | data type | description                                                                 |
+> | ------------------- | -------- | --------- | --------------------------------------------------------------------------- |
+> | `appwriteRoomDocid` | required | `string`  | The document ID of the room in Appwrite database                            |
+> | `token`             | required | `string`  | The access token used for verification and authorization to delete the room |
 
-   ##### Example cURL
+##### Responses
 
-   > ```javascript
-   >  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/delete-room
-   > ```
+> | http code | content-type       | response                                |
+> | --------- | ------------------ | --------------------------------------- |
+> | `200`     | `application/json` | `{msg:"Success"}`                       |
+> | `400`     | `application/json` | `{msg:"Invalid Token or Server Error"}` |
+
+##### Example cURL
+
+> ```javascript
+>  curl -X DELETE -H "Content-Type: application/json" http://localhost:3000/delete-room
+> ```
+
+</details>
+<details>
+   <summary>User needs to pass Appwrite JWT token in the HTTP headers, under the "Authorization" Header.The format is mentioned below:</summary>
+
+> Authorization : Bearer {token}
+
 </details>
 
 ## Communication Channels

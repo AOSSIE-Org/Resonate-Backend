@@ -26,6 +26,18 @@ module.exports = async function (req, res) {
 
   console.log(documents); // We get all the requests
 
+  // To create an active pair document
+  var newPairDoc = await db.createDocument(
+    databaseId,
+    activePairsCollectionId,
+    sdk.ID.unique(),
+    {
+      uid1: "chandan",
+      uid2: "jaideep",
+    }
+  );
+  console.log(newPairDoc);
+
   res.json({
     isResonateAwesome: true,
     variables: req.variables,

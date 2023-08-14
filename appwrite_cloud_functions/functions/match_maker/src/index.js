@@ -43,59 +43,47 @@ module.exports = async function (req, res) {
   //Check if any other request can be matched
   for (let index = 0; index < requestDocsRef.total; index++) {
     try {
-      let requestDocSecondCheck = await db.getDocument(
+      // Create an active pair document (Gives error if a record with same userDocId exists and then we move to the next request)
+      var newPairDoc = await db.createDocument(
+        databaseId,
+        activePairsCollectionId,
+        sdk.ID.unique(),
+        {
+          userDocId1: newRequestDocId,
+          userDocId2: requestDocsRef.documents[index].$id,
+        }
+      );
+      console.log(newPairDoc);
+
+      // Delete requests since we have paired them
+      await db.deleteDocument(
         databaseId,
         requestsCollectionId,
         requestDocsRef.documents[index].$id
       );
-      console.log("Second check" + requestDocSecondCheck);
-
-      if (requestDocSecondCheck != null) {
-        console.log(
-          "This is the second user doc id: " + requestDocSecondCheck.$id
-        );
-        secondUserDocId = requestDocSecondCheck.$id;
-
-        // Delete requests since we will pair them
-        await db.deleteDocument(
-          databaseId,
-          requestsCollectionId,
-          requestDocSecondCheck.$id
-        );
-        await db.deleteDocument(
-          databaseId,
-          requestsCollectionId,
-          newRequestDocId
-        );
-        break;
-      }
+      await db.deleteDocument(
+        databaseId,
+        requestsCollectionId,
+        newRequestDocId
+      );
+      secondUserDocId = requestDocsRef.documents[index].$id;
+      break;
     } catch (e) {
-      console.log("Race condition error: " + e);
+      console.log("That request is already paired: " + e);
     }
   }
 
-  // If there is no second user, end the execution
+  // If there is no second user or new request was paired with another request, end the execution
   if (secondUserDocId == null) {
     res.json({
-      message: "Request in queue",
+      message: "Request in queue or was paired already. ",
     });
     return;
+    // If the request was paired
+  } else {
+    res.json({
+      message: "Request was paired",
+      newPair: newPairDoc,
+    });
   }
-
-  // To create an active pair document
-  var newPairDoc = await db.createDocument(
-    databaseId,
-    activePairsCollectionId,
-    sdk.ID.unique(),
-    {
-      userDocId1: newRequestDocId,
-      userDocId2: secondUserDocId,
-    }
-  );
-  console.log(newPairDoc);
-
-  res.json({
-    message: "Request was paired",
-    newPair: newPairDoc,
-  });
 };

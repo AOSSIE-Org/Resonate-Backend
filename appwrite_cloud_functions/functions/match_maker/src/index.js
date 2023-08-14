@@ -19,12 +19,54 @@ module.exports = async function (req, res) {
       .setSelfSigned(true);
   }
 
+  var newRequestDoc = JSON.parse(req.variables["APPWRITE_FUNCTION_EVENT_DATA"]);
+  var newRequestDocId = newRequestDoc.$id;
+  console.log(newRequestDocId);
+
   let databaseId = req.variables["databaseId"];
   let requestsCollectionId = req.variables["requestsCollectionId"];
   let activePairsCollectionId = req.variables["activePairsCollectionId"];
-  var documents = await db.listDocuments(databaseId, requestsCollectionId);
+  var requestDocsRef = await db.listDocuments(
+    databaseId,
+    requestsCollectionId,
+    [
+      sdk.Query.notEqual("$id", [newRequestDocId]),
+      sdk.Query.equal("languageIso", [newRequestDoc.languageIso]),
+      sdk.Query.orderAsc("$createdAt"),
+    ]
+  );
+  var secondUserDocId = null;
 
-  console.log(documents); // We get all the requests
+  console.log(requestDocsRef); // We get all the requests
+
+  // Check if any other request can be matched
+  // requestDocsRef.documents.every(async (requestDoc) => {
+  //   if (
+  //     requestDoc.$id != newRequestDocId &&
+  //     requestDoc.languageIso == newRequestDoc.languageIso
+  //   ) {
+  //     console.log("This is the second user doc id: " + requestDoc.$id);
+  //     secondUserDocId = requestDoc.$id;
+
+  //     // Delete requests since we will pair them
+  //     await db.deleteDocument(databaseId, requestsCollectionId, requestDoc.$id);
+  //     await db.deleteDocument(
+  //       databaseId,
+  //       requestsCollectionId,
+  //       newRequestDocId
+  //     );
+  //     return false;
+  //   }
+  //   return true;
+  // });
+
+  // If there is no second user, end the execution
+  if (secondUserDocId == null) {
+    res.json({
+      message: "Request in queue",
+    });
+    return;
+  }
 
   // To create an active pair document
   var newPairDoc = await db.createDocument(
@@ -32,15 +74,16 @@ module.exports = async function (req, res) {
     activePairsCollectionId,
     sdk.ID.unique(),
     {
-      uid1: "chandan",
-      uid2: "jaideep",
+      userDocId1: newRequestDocId,
+      userDocId2: secondUserDocId,
     }
   );
   console.log(newPairDoc);
 
   res.json({
-    isResonateAwesome: true,
+    message: "Request was paired",
+    newPair: newPairDoc,
     variables: req.variables,
-    event: req.variables["APPWRITE_FUNCTION_EVENT"],
+    newRequest: newRequestDocId,
   });
 };

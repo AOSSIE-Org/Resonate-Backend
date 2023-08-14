@@ -33,32 +33,46 @@ module.exports = async function (req, res) {
       sdk.Query.notEqual("$id", [newRequestDocId]),
       sdk.Query.equal("languageIso", [newRequestDoc.languageIso]),
       sdk.Query.orderAsc("$createdAt"),
+      sdk.Query.limit(25),
     ]
   );
   var secondUserDocId = null;
 
-  console.log(requestDocsRef); // We get all the requests
+  console.log(requestDocsRef.documents); // We get all the requests
 
-  // Check if any other request can be matched
-  // requestDocsRef.documents.every(async (requestDoc) => {
-  //   if (
-  //     requestDoc.$id != newRequestDocId &&
-  //     requestDoc.languageIso == newRequestDoc.languageIso
-  //   ) {
-  //     console.log("This is the second user doc id: " + requestDoc.$id);
-  //     secondUserDocId = requestDoc.$id;
+  //Check if any other request can be matched
+  for (let index = 0; index < requestDocsRef.total; index++) {
+    try {
+      let requestDocSecondCheck = await db.getDocument(
+        databaseId,
+        requestsCollectionId,
+        requestDocsRef.documents[index].$id
+      );
+      console.log("Second check" + requestDocSecondCheck);
 
-  //     // Delete requests since we will pair them
-  //     await db.deleteDocument(databaseId, requestsCollectionId, requestDoc.$id);
-  //     await db.deleteDocument(
-  //       databaseId,
-  //       requestsCollectionId,
-  //       newRequestDocId
-  //     );
-  //     return false;
-  //   }
-  //   return true;
-  // });
+      if (requestDocSecondCheck != null) {
+        console.log(
+          "This is the second user doc id: " + requestDocSecondCheck.$id
+        );
+        secondUserDocId = requestDocSecondCheck.$id;
+
+        // Delete requests since we will pair them
+        await db.deleteDocument(
+          databaseId,
+          requestsCollectionId,
+          requestDocSecondCheck.$id
+        );
+        await db.deleteDocument(
+          databaseId,
+          requestsCollectionId,
+          newRequestDocId
+        );
+        break;
+      }
+    } catch (e) {
+      console.log("Race condition error: " + e);
+    }
+  }
 
   // If there is no second user, end the execution
   if (secondUserDocId == null) {
@@ -83,7 +97,5 @@ module.exports = async function (req, res) {
   res.json({
     message: "Request was paired",
     newPair: newPairDoc,
-    variables: req.variables,
-    newRequest: newRequestDocId,
   });
 };

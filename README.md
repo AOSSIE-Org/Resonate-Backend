@@ -145,7 +145,7 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 </details>
 <details>
-   <summary><code>Important</code> User needs to pass Appwrite JWT token in the HTTP headers, under the "Authorization" Header.The format is mentioned below:</summary>
+   <summary>Kindly ensure the inclusion of the Appwrite JWT token within the HTTP headers, specifically placing it in the designated "Authorization" header, as exemplified in the following format:</summary>
 
 > Authorization : Bearer {token}
 

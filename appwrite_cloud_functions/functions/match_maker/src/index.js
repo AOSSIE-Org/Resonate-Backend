@@ -49,6 +49,8 @@ module.exports = async function (req, res) {
         activePairsCollectionId,
         sdk.ID.unique(),
         {
+          uid1: newRequestDoc.uid,
+          uid2: requestDocsRef.documents[index].uid,
           userDocId1: newRequestDocId,
           userDocId2: requestDocsRef.documents[index].$id,
         }

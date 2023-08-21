@@ -12,6 +12,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", async (req, res) => {
+  res.send("Let's Resonate!");
+});
+
 app.use(async (req, res, next) => {
   const appwriteUser = await verifyAppwriteToken(req.headers.authorization);
   if (appwriteUser === null) {
@@ -25,10 +29,6 @@ app.use(async (req, res, next) => {
 //Connecting Endpoints to imported routes
 app.use("/room", roomRouter);
 app.use("/token", tokenRouter);
-
-app.get("/", async (req, res) => {
-  res.send("Let's Resonate!");
-});
 
 app.listen(PORT, () => {
   console.log(`Resonate Backend listening on port ${PORT}`);

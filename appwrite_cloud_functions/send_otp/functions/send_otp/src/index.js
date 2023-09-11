@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: 'aossieorgforu@gmail.com',
-    pass: 'rkrioqpxlqfnbbpk'
+    pass: '[get app password from discord server]'
   }
 });
 

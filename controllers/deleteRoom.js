@@ -68,4 +68,4 @@ const deleteRoom = async (req, res) => {
   }
 };
 
-export { deleteRoom };
+export { deleteRoom, deleteAppwriteRoom };

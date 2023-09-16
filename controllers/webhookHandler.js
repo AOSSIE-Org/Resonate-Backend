@@ -29,9 +29,12 @@ const webhookHandler = async (req, res) => {
       if (appwriteRoomDocument) {
         deleteAppwriteRoom(appwriteRoomDocId);
       }
+
+      return res.status(200).json({ msg: "OK" });
     }
   } catch (e) {
     console.log("Webhhok error", e);
+    return res.status(500).json({ msg: "Server Error" });
   }
 };
 

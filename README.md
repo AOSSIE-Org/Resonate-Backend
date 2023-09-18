@@ -178,7 +178,7 @@ If you have any questions, need clarifications, or want to discuss ideas, feel f
 
 </details>
 
-### Deleting exitsing
+### Deleting existing
 
 <details>
 

@@ -45,25 +45,23 @@ const createRoom = async (req, res) => {
     // create a new livekit room
     const roomOptions = {
       name: appwriteRoomDocId, // using appwrite room doc id as livekit room name
-      emptyTimeout: 60, // timeout in seconds
+      emptyTimeout: 300, // timeout in seconds
     };
-    svc.createRoom(roomOptions).then((room) => {
-      console.log(`LiveKit Room created - ${room}`);
+    const liveKitRoom = await svc.createRoom(roomOptions);
+    console.log(`LiveKit Room created - ${liveKitRoom.name}`);
 
-      // Creating a token for the admin
-      const token = generateToken(appwriteRoomDocId, roomAdminUid, true);
+    // Creating a token for the admin
+    const token = generateToken(appwriteRoomDocId, roomAdminUid, true);
 
-      res.json({
-        msg: "Room created Successfully",
-        livekit_room: room,
-        livekit_socket_url: `${process.env.LIVEKIT_SOCKET_URL}`,
-        access_token: token,
-      });
+    res.json({
+      msg: "Room created Successfully",
+      livekit_room: liveKitRoom,
+      livekit_socket_url: `${process.env.LIVEKIT_SOCKET_URL}`,
+      access_token: token,
     });
   } catch (error) {
     console.log(error);
-    res.statusCode;
-    res.status(500).json({ msg: "Error" });
+    res.status(500).json({ msg: "Server Error" });
   }
 };
 

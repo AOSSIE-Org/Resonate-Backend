@@ -1,4 +1,4 @@
-import { RoomServiceClient, TokenVerifier } from "livekit-server-sdk";
+import { RoomServiceClient } from "livekit-server-sdk";
 import { db } from "../config/appwrite.js";
 import {
   masterDatabaseId,
@@ -7,15 +7,11 @@ import {
 } from "../constants/constants.js";
 import dotenv from "dotenv";
 import { Query } from "node-appwrite";
+import { verifyAppwriteToken } from "./verifyAppwriteToken.js";
 dotenv.config();
 
 const svc = new RoomServiceClient(
   `${process.env.LIVEKIT_HOST}`,
-  `${process.env.LIVEKIT_API_KEY}`,
-  `${process.env.LIVEKIT_API_SECRET}`
-);
-
-const tokenVerifier = new TokenVerifier(
   `${process.env.LIVEKIT_API_KEY}`,
   `${process.env.LIVEKIT_API_SECRET}`
 );
@@ -44,25 +40,31 @@ async function deleteAppwriteRoom(roomDocId) {
 const deleteRoom = async (req, res) => {
   console.log("Deleting room with requested Data:", req.body);
   const appwriteRoomDocId = req.body.appwriteRoomDocId;
-  const token = req.body.token;
+  const livekitToken = req.body.token; //If required in future
+  const appwriteUser = await verifyAppwriteToken(req.headers.authorization);
+  const roomAdminUid = appwriteUser.$id;
+
   try {
-    const isTokenValid = tokenVerifier.verify(token);
-    if (
-      isTokenValid.video.room === appwriteRoomDocId &&
-      isTokenValid.video.roomCreate === true
-    ) {
+    const appwriteRoomDocument = await db.getDocument(
+      masterDatabaseId,
+      roomsCollectionId,
+      appwriteRoomDocId
+    );
+    if (appwriteRoomDocument.adminUid != roomAdminUid) {
+      console.log("User not room admin");
+      return res.status(403).json({ msg: "User not room admin" });
+    } else {
       //Delete Appwrite room doc
       await deleteAppwriteRoom(appwriteRoomDocId);
 
       // Delete livekit room
-      svc.deleteRoom(appwriteRoomDocId).then(() => {
-        console.log("Livekit Room deleted:", appwriteRoomDocId);
-        res.json({ msg: "Success" });
-      });
+      await svc.deleteRoom(appwriteRoomDocId);
+      console.log("Livekit Room deleted:", appwriteRoomDocId);
+      res.json({ msg: "Success" });
     }
   } catch (e) {
     console.log("Error occured while deleting Room :", e);
-    res.status(400).json({ msg: "Invalid Token or Server Error" });
+    res.status(500).json({ msg: "Server Error" });
   }
 };
 

@@ -44,6 +44,8 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
    (b)`verify_otp` - Verifies the user entered otp with the otp sent to his mail for email verification
 
    (c)`set_email_verified` - Sets the user account as email verified once email verification is successful
+   
+   (d)`match_maker` - Used to match requests in pair chat feature
 
    Each of these functions have their own respective appwrite.json files one for each function which has the API keys used in that function
    and is necessary while using Appwrite's CLI for deployments (commonly preferred).

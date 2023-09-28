@@ -27,3 +27,6 @@ lerna-debug.log
 # vs editor-related files
 .vscode-test
 .vscode
+
+appwrite.json
+.prettierrc.json

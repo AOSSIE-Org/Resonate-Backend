@@ -35,6 +35,7 @@ export default async ({ req, res, log, error }) => {
         [
             Query.notEqual('$id', [newRequestDocId]),
             Query.equal('languageIso', [newRequestDoc.languageIso]),
+            Query.equal('isAnonymous', [newRequestDoc.isAnonymous]),
             Query.orderAsc('$createdAt'),
             Query.limit(25),
         ]
@@ -54,6 +55,13 @@ export default async ({ req, res, log, error }) => {
                     uid2: requestDocsRef.documents[index].uid,
                     userDocId1: newRequestDocId,
                     userDocId2: requestDocsRef.documents[index].$id,
+                    ...(newRequestDoc.isAnonymous
+                        ? {}
+                        : {
+                              userName1: newRequestDoc.userName,
+                              userName2:
+                                  requestDocsRef.documents[index].userName,
+                          }),
                 }
             );
             log(newPairDoc);

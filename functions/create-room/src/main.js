@@ -17,13 +17,9 @@ export default async ({ req, res, log, error }) => {
     const livekit = new LivekitService();
 
     try {
-        throwIfMissing(JSON.parse(req.body), [
-            "name",
-            "description",
-            "adminUid",
-            "tags",
-        ]);
+        throwIfMissing(JSON.parse(req.body), ["name", "adminUid", "tags"]);
     } catch (err) {
+        error(err.message);
         return res.json({ msg: err.message }, 400);
     }
 

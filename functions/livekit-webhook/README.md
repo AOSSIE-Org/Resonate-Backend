@@ -1,18 +1,6 @@
-# Verify OTP function
+# Livekit Webhook Receiver function
 
-Function to verify OTPs.
-
-## 🧰 Usage
-
-### POST /
-
-**Parameters**
-
-| Name           | Description               | Location | Type   | Sample Value       |
-| -------------- | ------------------------- | -------- | ------ | ------------------ |
-| otpId          | Document ID of the otp    | Body     | String | `jcbd...kdsn`      |
-| userOTP | otp sent by user | Body     | String | `123456` |
-| verify_ID | Document ID of the otp | Body     | String | `jcbd...kdsn` |
+Function to receive webhooks from Livekit.
 
 ## ⚙️ Configuration
 
@@ -21,7 +9,7 @@ Function to verify OTPs.
 | Runtime           | Node (18.0)                    |
 | Entrypoint        | `src/main.js`                  |
 | Build Commands    | `npm install && npm run start` |
-| Permissions       | `Users`                          |
+| Permissions       | `any`                          |
 | Timeout (Seconds) | 15                             |
 
 ## 🔒 Environment Variables
@@ -36,9 +24,9 @@ API Key to use Appwrite Sever SDK.
 | Sample Value  | `62...97`                                                                |
 | Documentation | [Appwrite API Keys](https://appwrite.io/docs/advanced/platform/api-keys) |
 
-### VERIFICATION_DATABASE_ID
+### MASTER_DATABASE_ID
 
-Database ID of verification database in appwrite.
+Database ID of master database in appwrite.
 
 | Question      | Answer                                                                                  |
 | ------------- | --------------------------------------------------------------------------------------- |
@@ -46,9 +34,19 @@ Database ID of verification database in appwrite.
 | Sample Value  | `Zjc...5PH`                                                                             |
 | Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
 
-### OTP_COLLECTION_ID
+### ROOMS_COLLECTION_ID
 
-Collection ID of otp collection.
+Collection ID of rooms collection.
+
+| Question      | Answer                                                                                  |
+| ------------- | --------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                     |
+| Sample Value  | `NXOi3...IBHDa`                                                                         |
+| Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
+
+### PARTICIPANTS_COLLECTION_ID
+
+Collection ID of participants collection.
 
 | Question      | Answer                                                                                  |
 | ------------- | --------------------------------------------------------------------------------------- |
@@ -56,12 +54,32 @@ Collection ID of otp collection.
 | Sample Value  | `NXOi3...IBHDa`                                                                         |
 | Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
 
-### VERIFY_COLLECTION_ID
+### LIVEKIT_HOST
 
-Collection ID of verify collection.
+Host URL of Livekit instance.
 
-| Question      | Answer                                                                                  |
-| ------------- | --------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                     |
-| Sample Value  | `NXOi3...IBHDa`                                                                         |
-| Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
+| Question      | Answer                                       |
+| ------------- | -------------------------------------------- |
+| Required      | Yes                                          |
+| Sample Value  | `https://******.livekit.cloud`               |
+| Documentation | [Livekit](https://docs.livekit.io/realtime/) |
+
+### LIVEKIT_API_KEY
+
+API Key to use Livekit Server SDK.
+
+| Question      | Answer                                       |
+| ------------- | -------------------------------------------- |
+| Required      | Yes                                          |
+| Sample Value  | `AP......9X`                                 |
+| Documentation | [Livekit](https://docs.livekit.io/realtime/) |
+
+### LIVEKIT_API_SECRET
+
+API Secret to use Livekit Server SDK.
+
+| Question      | Answer                                       |
+| ------------- | -------------------------------------------- |
+| Required      | Yes                                          |
+| Sample Value  | `HC1Itf...........dAAKF5o`                   |
+| Documentation | [Livekit](https://docs.livekit.io/realtime/) |

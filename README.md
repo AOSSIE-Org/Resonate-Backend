@@ -1,6 +1,7 @@
 # Resonate - An Open Source Social Voice Platform
 
 ### This project is divided into two repositories:
+
 1. [Resonate Flutter App](https://github.com/AOSSIE-Org/Resonate)
 2. Resonate Backend (You are here)
 
@@ -10,47 +11,31 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 1. Pre-requisites :
 
-    (a) Clone the Repo : `git clone https://github.com/AOSSIE-Org/Resonate-Backend`
+    (a) Fork the Repo
 
-    (b) Run this command to install required dependencies from package.json : `npm install`
+    (b) Clone the Repo : `git clone https://github.com/AOSSIE-Org/Resonate-Backend`
 
-2. Create a `.env` file in the project's root directory
+2. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your `HOST`, `API-KEY`, `API-SECRET` from [livekit-cloud](https://livekit.io/cloud).
 
-3. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your `HOST`, `API-KEY`, `API-SECRET` from [livekit-cloud](https://livekit.io/cloud).
+3. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
 
-4. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
+## Functions :
 
-5. The `.env` file should consist of :
+(a) [Room Creation function](functions/create-room) : Function to create rooms in Appwrite and Livekit.
 
-    (a)`LIVEKIT_API_KEY`
+(b) [Room Deletion function](functions/delete-room) : Function to remove rooms from Appwrite and Livekit.
 
-    (b)`LIVEKIT_API_SECRET`
+(c) [Room Joining function](functions/join-room) : Function to join room in Livekit.
 
-    (c)`LIVEKIT_HOST`
+(d) [Livekit Webhook Receiver function](functions/livekit-webhook) : Function to receive webhooks from Livekit.
 
-    (d)`LIVEKIT_SOCKET_URL`
+(e) [Match Maker function](functions/match-maker) : Function to pair users for pair-chat feature.
 
-    (e)`APPWRITE_ENDPOINT`
+(f) [Send OTP function](functions/send-otp) : Function to send OTPs.
 
-    (f)`APPWRITE_PROJECT_ID`
+(g) [Verify OTP function](functions/verify-otp) : Function to verify OTPs.
 
-    (g)`APPWRITE_SECRET_API_KEY`
-
-6. There are 3 appwrite cloud functions needed for maintaining the functionality of Resonate
-
-    (a)`send_otp` - Sending emails to users with the otp while email verification
-
-    (b)`verify_otp` - Verifies the user entered otp with the otp sent to his mail for email verification
-
-    (c)`set_email_verified` - Sets the user account as email verified once email verification is successful
-
-    (d)`match_maker` - Used to match requests in pair chat feature
-
-    Each of these functions have their own respective appwrite.json files one for each function which has the API keys used in that function
-    and is necessary while using Appwrite's CLI for deployments (commonly preferred).
-
-    The appwrite.json files are put into .gitignore please do request for them on AOSSIE's discord server in order to contribute to Resonate's appwrite cloud functions
-
+(h) [Verify Email function](functions/verify-email) : Function to verify email ID of users.
 
 ## Communication Channels
 

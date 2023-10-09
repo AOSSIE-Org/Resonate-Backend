@@ -1,18 +1,6 @@
-# Verify OTP function
+# Match Maker function
 
-Function to verify OTPs.
-
-## 🧰 Usage
-
-### POST /
-
-**Parameters**
-
-| Name           | Description               | Location | Type   | Sample Value       |
-| -------------- | ------------------------- | -------- | ------ | ------------------ |
-| otpId          | Document ID of the otp    | Body     | String | `jcbd...kdsn`      |
-| userOTP | otp sent by user | Body     | String | `123456` |
-| verify_ID | Document ID of the otp | Body     | String | `jcbd...kdsn` |
+Function to pair users for pair-chat feature.
 
 ## ⚙️ Configuration
 
@@ -21,7 +9,7 @@ Function to verify OTPs.
 | Runtime           | Node (18.0)                    |
 | Entrypoint        | `src/main.js`                  |
 | Build Commands    | `npm install && npm run start` |
-| Permissions       | `Users`                          |
+| Permissions       | `Users`                        |
 | Timeout (Seconds) | 15                             |
 
 ## 🔒 Environment Variables
@@ -36,9 +24,9 @@ API Key to use Appwrite Sever SDK.
 | Sample Value  | `62...97`                                                                |
 | Documentation | [Appwrite API Keys](https://appwrite.io/docs/advanced/platform/api-keys) |
 
-### VERIFICATION_DATABASE_ID
+### DATABASE_ID
 
-Database ID of verification database in appwrite.
+Database ID of master database in appwrite.
 
 | Question      | Answer                                                                                  |
 | ------------- | --------------------------------------------------------------------------------------- |
@@ -46,9 +34,9 @@ Database ID of verification database in appwrite.
 | Sample Value  | `Zjc...5PH`                                                                             |
 | Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
 
-### OTP_COLLECTION_ID
+### REQUESTS_COLLECTION_ID
 
-Collection ID of otp collection.
+Collection ID of requests collection.
 
 | Question      | Answer                                                                                  |
 | ------------- | --------------------------------------------------------------------------------------- |
@@ -56,9 +44,9 @@ Collection ID of otp collection.
 | Sample Value  | `NXOi3...IBHDa`                                                                         |
 | Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
 
-### VERIFY_COLLECTION_ID
+### ACTIVE_PAIRS_COLLECTION_ID
 
-Collection ID of verify collection.
+Collection ID of active_pairs collection.
 
 | Question      | Answer                                                                                  |
 | ------------- | --------------------------------------------------------------------------------------- |

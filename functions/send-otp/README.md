@@ -1,6 +1,6 @@
-# Verify OTP function
+# Send OTP function
 
-Function to verify OTPs.
+Function to send OTPs.
 
 ## 🧰 Usage
 
@@ -11,8 +11,17 @@ Function to verify OTPs.
 | Name           | Description               | Location | Type   | Sample Value       |
 | -------------- | ------------------------- | -------- | ------ | ------------------ |
 | otpId          | Document ID of the otp    | Body     | String | `jcbd...kdsn`      |
-| userOTP | otp sent by user | Body     | String | `123456` |
-| verify_ID | Document ID of the otp | Body     | String | `jcbd...kdsn` |
+| recipientEmail | Email ID of the recipient | Body     | String | `jcbd...@mail.com` |
+
+**Response**
+
+Sample `200` Response:
+
+```json
+{
+    "msg": "mail sent"
+}
+```
 
 ## ⚙️ Configuration
 
@@ -21,7 +30,7 @@ Function to verify OTPs.
 | Runtime           | Node (18.0)                    |
 | Entrypoint        | `src/main.js`                  |
 | Build Commands    | `npm install && npm run start` |
-| Permissions       | `Users`                          |
+| Permissions       | `any`                          |
 | Timeout (Seconds) | 15                             |
 
 ## 🔒 Environment Variables
@@ -56,12 +65,22 @@ Collection ID of otp collection.
 | Sample Value  | `NXOi3...IBHDa`                                                                         |
 | Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
 
-### VERIFY_COLLECTION_ID
+### SENDER_MAIL
 
-Collection ID of verify collection.
+Email of the sender.
 
-| Question      | Answer                                                                                  |
-| ------------- | --------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                     |
-| Sample Value  | `NXOi3...IBHDa`                                                                         |
-| Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
+| Question      | Answer                                           |
+| ------------- | ------------------------------------------------ |
+| Required      | Yes                                              |
+| Sample Value  | `jsch...@mail.com`                               |
+| Documentation | [Discord](https://discord.com/invite/6mFZ2S846n) |
+
+### SENDER_PASSWORD
+
+Password of the sender's account.
+
+| Question      | Answer                                           |
+| ------------- | ------------------------------------------------ |
+| Required      | Yes                                              |
+| Sample Value  | `HC1Itf...........dAAKF5o`                       |
+| Documentation | [Discord](https://discord.com/invite/6mFZ2S846n) |

@@ -1,17 +1,17 @@
-import AppwriteService from './appwrite.js';
-import LivekitService from './livekit.js';
-import { throwIfMissing } from './utils.js';
+import AppwriteService from "./appwrite.js";
+import LivekitService from "./livekit.js";
+import { throwIfMissing } from "./utils.js";
 
 export default async (context) => {
     const { req, res, log, error } = context;
 
     throwIfMissing(process.env, [
-        'APPWRITE_API_KEY',
-        'MASTER_DATABASE_ID',
-        'ROOMS_COLLECTION_ID',
-        'PARTICIPANTS_COLLECTION_ID',
-        'LIVEKIT_API_KEY',
-        'LIVEKIT_API_SECRET',
+        "APPWRITE_API_KEY",
+        "MASTER_DATABASE_ID",
+        "ROOMS_COLLECTION_ID",
+        "PARTICIPANTS_COLLECTION_ID",
+        "LIVEKIT_API_KEY",
+        "LIVEKIT_API_SECRET",
     ]);
 
     const appwrite = new AppwriteService();
@@ -25,13 +25,13 @@ export default async (context) => {
 
         log(event);
 
-        if (event.event === 'room_finished') {
+        if (event.event === "room_finished") {
             // Appwrite room id is same as Livekit room name
             const appwriteRoomDocId = event.room.name;
 
             // Delete the room in appwrite if it still exists
-            log(appwrite.doesRoomExist(appwriteRoomDocId));
-            if (appwrite.doesRoomExist(appwriteRoomDocId)) {
+            log(await appwrite.doesRoomExist(appwriteRoomDocId));
+            if (await appwrite.doesRoomExist(appwriteRoomDocId)) {
                 appwrite.deleteRoom(appwriteRoomDocId);
             }
         }

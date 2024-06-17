@@ -21,7 +21,7 @@
                 "any"
             ],
             "events": [],
-            "schedule": "",
+            "schedule": "*/5 * * * *",
             "timeout": 15,
             "commands": "npm install"
         },
@@ -140,7 +140,7 @@
                 "any"
             ],
             "events": [],
-            "schedule": "",
+            "schedule": "0 4 * * *",
             "timeout": 15,
             "commands": "npm install"
         },

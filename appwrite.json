@@ -1,0 +1,1016 @@
+{
+    "projectId": "resonate",
+    "projectName": "Resonate",
+    "functions": [
+        {
+            "$id": "65368a58ef47cf6861200",
+            "name": "Discussion Time Checker",
+            "runtime": "node-16.0",
+            "path": "functions/discussion-isTime-checker",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "DiscussionsDataBaseID": "6522fcf27a1bbc4238df",
+                "DiscussionCollectionID": "6522fd163103bd453183",
+                "SubscriberCollectionID": "6522fd267db6fdad3392"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "6513e9d40b57c6ec156f",
+            "name": "Send OTP",
+            "runtime": "node-16.0",
+            "path": "functions/send-otp",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "SENDER_MAIL": "aossieorgforu@gmail.com",
+                "VERIFICATION_DATABASE_ID": "64a7bfd6b09121548bfe",
+                "SENDER_PASSWORD": "xizkyvzhduejxjel",
+                "OTP_COLLECTION_ID": "64a7bfe3a3a7ee5bf7f8"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "6513df34a0de595ccfb3",
+            "name": "Verify Email",
+            "runtime": "node-16.0",
+            "path": "functions/verify-email",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {},
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "651303df122abc151bf3",
+            "name": "Verify OTP",
+            "runtime": "node-16.0",
+            "path": "functions/verify-otp",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "VERIFY_COLLECTION_ID": "64a7c0100eabfe8d3844",
+                "OTP_COLLECTION_ID": "64a7bfe3a3a7ee5bf7f8",
+                "VERIFICATION_DATABASE_ID": "64a7bfd6b09121548bfe"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "651e2670b1e4a26e3cf1",
+            "name": "Create Room",
+            "runtime": "node-16.0",
+            "path": "functions/create-room",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "MASTER_DATABASE_ID": "64a521785f5be62b796f",
+                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
+                "LIVEKIT_HOST": "https://resonate-backend-z09heoru.livekit.cloud",
+                "LIVEKIT_SOCKET_URL": "wss://resonate-backend-z09heoru.livekit.cloud",
+                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X",
+                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "6534b7949d12c9867bd2",
+            "name": "Database Cleaner",
+            "runtime": "node-16.0",
+            "path": "functions/database-cleaner",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "OTP_COLLECTION_ID": "64a7bfe3a3a7ee5bf7f8",
+                "VERIFICATION_DATABASE_ID": "64a7bfd6b09121548bfe",
+                "RETENTION_PERIOD_DAYS": "0",
+                "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
+                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
+                "ACTIVE_PAIRS_COLLECTION_ID": "64d980cd65ff2e08ab97",
+                "MASTER_DATABASE_ID": "64a521785f5be62b796f"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "651e348775f28d84e11e",
+            "name": "Delete Room",
+            "runtime": "node-16.0",
+            "path": "functions/delete-room",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
+                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
+                "MASTER_DATABASE_ID": "64a521785f5be62b796f",
+                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o",
+                "LIVEKIT_HOST": "https://resonate-backend-z09heoru.livekit.cloud",
+                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "651e3d8fa35c690ed957",
+            "name": "Join Room",
+            "runtime": "node-16.0",
+            "path": "functions/join-room",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o",
+                "LIVEKIT_SOCKET_URL": "wss://resonate-backend-z09heoru.livekit.cloud",
+                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "6513ed3a0ac8808c33e4",
+            "name": "Livekit Webhook",
+            "runtime": "node-16.0",
+            "path": "functions/livekit-webhook",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
+                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X",
+                "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
+                "MASTER_DATABASE_ID": "64a521785f5be62b796f",
+                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        },
+        {
+            "$id": "6513f1648a9654b77b7c",
+            "name": "Match Maker",
+            "runtime": "node-16.0",
+            "path": "functions/match-maker",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "variables": {
+                "ACTIVE_PAIRS_COLLECTION_ID": "64d980cd65ff2e08ab97",
+                "DATABASE_ID": "64a521785f5be62b796f",
+                "REQUESTS_COLLECTION_ID": "64d980211f1395263ebe"
+            },
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install"
+        }
+    ],
+    "buckets": [
+        {
+            "$id": "64a13095a4c87fd78bc6",
+            "$createdAt": "2023-07-02T08:08:53.675+00:00",
+            "$updatedAt": "2023-07-05T08:32:38.642+00:00",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "fileSecurity": false,
+            "name": "assets",
+            "enabled": true,
+            "maximumFileSize": 29000000,
+            "allowedFileExtensions": [],
+            "compression": "none",
+            "encryption": true,
+            "antivirus": true
+        },
+        {
+            "$id": "64a52ab306331f167ce6",
+            "$createdAt": "2023-07-05T08:32:51.026+00:00",
+            "$updatedAt": "2023-07-05T08:38:46.490+00:00",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "fileSecurity": false,
+            "name": "user-images",
+            "enabled": true,
+            "maximumFileSize": 29000000,
+            "allowedFileExtensions": [],
+            "compression": "none",
+            "encryption": true,
+            "antivirus": true
+        }
+    ],
+    "databases": [
+        {
+            "$id": "64a1319104a149e16f5c",
+            "name": "user-data",
+            "$createdAt": "2023-07-02T08:13:05.020+00:00",
+            "$updatedAt": "2023-07-02T08:13:05.020+00:00",
+            "enabled": true
+        },
+        {
+            "$id": "64a521785f5be62b796f",
+            "name": "master",
+            "$createdAt": "2023-07-05T07:53:28.391+00:00",
+            "$updatedAt": "2023-07-05T07:53:28.391+00:00",
+            "enabled": true
+        },
+        {
+            "$id": "64a7bfd6b09121548bfe",
+            "name": "verification",
+            "$createdAt": "2023-07-07T07:33:42.724+00:00",
+            "$updatedAt": "2023-07-07T07:33:42.724+00:00",
+            "enabled": true
+        },
+        {
+            "$id": "6522fcf27a1bbc4238df",
+            "name": "discussions",
+            "$createdAt": "2023-10-08T19:03:14.501+00:00",
+            "$updatedAt": "2023-10-08T19:03:14.501+00:00",
+            "enabled": true
+        }
+    ],
+    "collections": [
+        {
+            "$id": "64a131980b5388c2a0af",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "usernames",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "email",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a52f0a6c41ded09def",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "users",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "dob",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 15,
+                    "default": null
+                },
+                {
+                    "key": "username",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "profileImageUrl",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 500,
+                    "default": null
+                },
+                {
+                    "key": "email",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                },
+                {
+                    "key": "profileImageID",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 300,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a5217e695bf2c4ec9c",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "rooms",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 200,
+                    "default": null
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": true,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 1024,
+                    "default": null
+                },
+                {
+                    "key": "totalParticipants",
+                    "type": "integer",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000000,
+                    "default": 0
+                },
+                {
+                    "key": "adminUid",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a63e508145d1084abf",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "participants",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "uid",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "isAdmin",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "isModerator",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "isSpeaker",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "isMicOn",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "roomId",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "hasRequestedToBeSpeaker",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "roomId",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "roomId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "uid",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "uid"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "roomUser",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "uid",
+                        "roomId"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "64d980211f1395263ebe",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "pair-requests",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "languageIso",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "isAnonymous",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "uid",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "userName",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "languageIso",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "languageIso"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "docId",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "$id"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "createdAt",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "$createdAt"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "requestIndex",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "$id",
+                        "languageIso",
+                        "$createdAt"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC",
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "requestIndex1",
+                    "type": "key",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "$id",
+                        "languageIso"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "64d980cd65ff2e08ab97",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "active-pairs",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "userDocId1",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "userDocId2",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "userName1",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 50,
+                    "default": "Anonymous "
+                },
+                {
+                    "key": "userName2",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 50,
+                    "default": "Anonymous"
+                },
+                {
+                    "key": "uid1",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "uid2",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "userDocId1",
+                    "type": "unique",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "userDocId1"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "userDocId2",
+                    "type": "unique",
+                    "status": "available",
+                    "error": "",
+                    "attributes": [
+                        "userDocId2"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "64a7bfe3a3a7ee5bf7f8",
+            "$permissions": [],
+            "databaseId": "64a7bfd6b09121548bfe",
+            "name": "OTP's",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "otp",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 100000,
+                    "default": null
+                },
+                {
+                    "key": "date",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 50,
+                    "default": "None"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a7c0100eabfe8d3844",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a7bfd6b09121548bfe",
+            "name": "Verifications",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "status",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 1000000,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "6522fd163103bd453183",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6522fcf27a1bbc4238df",
+            "name": "Discussions",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "isTime",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "scheduledDateTime",
+                    "type": "datetime",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": true,
+                    "size": 10000,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 100000,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "6522fd267db6fdad3392",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6522fcf27a1bbc4238df",
+            "name": "Subscribed Users",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "isCreator",
+                    "type": "boolean",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "userID",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 10000,
+                    "default": null
+                },
+                {
+                    "key": "discussionID",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 100000,
+                    "default": null
+                },
+                {
+                    "key": "userProfileUrl",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": false,
+                    "size": 100000,
+                    "default": null
+                },
+                {
+                    "key": "registrationTokens",
+                    "type": "string",
+                    "status": "available",
+                    "error": "",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        }
+    ]
+}

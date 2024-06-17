@@ -13,14 +13,14 @@ var subscribersTokens = [];
   const database = new sdk.Databases(client);
   const query = sdk.Query;
   log("here");
-  client
-  .setEndpoint("https://cloud.appwrite.io/v1")
+  client.setEndpoint(
+      process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
+  )
   .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-  .setKey(process.env.APPWRITE_FUNCTION_API_KEY)
-  .setSelfSigned(true);
+  .setKey(process.env.APPWRITE_API_KEY);
   log(process.env.APPWRITE_FUNCTION_PROJECT_ID);
   log("here also");
-let discussionList = await database.listDocuments(process.env.DataBaseID, process.env.DiscussionCollectionID);
+let discussionList = await database.listDocuments(process.env.DiscussionsDataBaseID, process.env.DiscussionCollectionID);
 log("here as well");
 for (const document of discussionList.documents){
   log("now here");
@@ -45,11 +45,11 @@ for (const document of discussionList.documents){
   var timeLeftInMinutes = timeLeft / (1000 * 60);
   log(timeLeftInMinutes);
   if (timeLeftInMinutes <= 5 && timeLeftInMinutes >= 0){
-    await database.updateDocument(process.env.DataBaseID, process.env.DiscussionCollectionID, document.$id, {
+    await database.updateDocument(process.env.DiscussionsDataBaseID, process.env.DiscussionCollectionID, document.$id, {
       "isTime": true
     })
     log("Send Notification");
-    let subscriberList = await database.listDocuments(process.env.DataBaseID, process.env.SubscriberCollectionID, [query.equal('discussionID', [document.$id])]);
+    let subscriberList = await database.listDocuments(process.env.DiscussionsDataBaseID, process.env.SubscriberCollectionID, [query.equal('discussionID', [document.$id])]);
     log("here as well")
     subscriberList.documents.forEach(subscriber=>{
       for(const token of subscriber["registrationTokens"]){

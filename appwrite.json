@@ -103,11 +103,7 @@
             ],
             "variables": {
                 "MASTER_DATABASE_ID": "64a521785f5be62b796f",
-                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
-                "LIVEKIT_HOST": "https://resonate-backend-z09heoru.livekit.cloud",
-                "LIVEKIT_SOCKET_URL": "wss://resonate-backend-z09heoru.livekit.cloud",
-                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X",
-                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o"
+                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c"
             },
             "execute": [
                 "any"
@@ -157,10 +153,7 @@
             "variables": {
                 "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
                 "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
-                "MASTER_DATABASE_ID": "64a521785f5be62b796f",
-                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o",
-                "LIVEKIT_HOST": "https://resonate-backend-z09heoru.livekit.cloud",
-                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X"
+                "MASTER_DATABASE_ID": "64a521785f5be62b796f"
             },
             "execute": [
                 "any"
@@ -180,11 +173,7 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o",
-                "LIVEKIT_SOCKET_URL": "wss://resonate-backend-z09heoru.livekit.cloud",
-                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X"
-            },
+            "variables": {},
             "execute": [
                 "any"
             ],
@@ -205,10 +194,8 @@
             ],
             "variables": {
                 "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
-                "LIVEKIT_API_KEY": "APIYWDtgdM9Wn9X",
                 "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
-                "MASTER_DATABASE_ID": "64a521785f5be62b796f",
-                "LIVEKIT_API_SECRET": "HC1ItfN9gIt2oVaTC9U7K0e6F76Ai2LmTQpDdAAKF5o"
+                "MASTER_DATABASE_ID": "64a521785f5be62b796f"
             },
             "execute": [
                 "any"

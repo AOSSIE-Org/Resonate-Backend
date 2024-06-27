@@ -13,7 +13,14 @@ projectId="resonate"
 rm -rf ~/.appwrite | bash 
 
 # Ask contributor account credentials   
-appwrite login
+while true; do
+    appwrite login
+    if [ $? -eq 0 ]; then
+        break
+    else
+        echo "Login failed. Please try again."
+    fi
+done
 
 # Get team id for project creation
 read -p "Please provide the team Id as instructed in the Resonate Set Up Guide: " teamId

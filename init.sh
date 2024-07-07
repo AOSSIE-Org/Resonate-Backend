@@ -1,5 +1,30 @@
 #!/usr/bin/env sh
 
+OS="$(uname -s)"
+
+case "$OS" in
+    Linux*)     OS_TYPE=Linux;;
+    Darwin*)    OS_TYPE=Mac;;
+    *)          OS_TYPE="UNKNOWN:$OS"
+esac
+
+
+echo "Operating System: $OS_TYPE"
+
+echo "Installing Dependencies...."
+
+if [ "$OS_TYPE" = "Mac" ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew install appwrite
+    brew install livekit
+    brew install livekit-cli
+else
+    curl -sL https://appwrite.io/cli/install.sh | bash
+    curl -sSL https://get.livekit.io | bash
+    curl -sSL https://get.livekit.io/cli | bash
+fi
+
+
 docker run -it --add-host host.docker.internal:host-gateway --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
@@ -12,6 +37,7 @@ projectId="resonate"
 
 # Remove previous Appwrite Cli data
 rm -rf ~/.appwrite | bash 
+
 
 # Ask contributor account credentials   
 while true; do
@@ -93,9 +119,8 @@ echo "Setting Up Livekit now ..."
 while true; do
     read -p "Do you wish to opt for Livekit Cloud or Host Livekit locally? For Locally: y, For Cloud: n (y/n)" isLocalDeployment
     if [[ $isLocalDeployment == "y" || $isLocalDeployment == "Y" ]]; then
+
         echo "You chose to host Livekit locally."
-        brew install livekit
-        brew install livekit-cli
 
         # check if Livekit server already running
         PROCESS_ID=$(pgrep -f "livekit-server")

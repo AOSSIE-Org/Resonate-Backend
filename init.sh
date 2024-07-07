@@ -9,6 +9,7 @@ docker run -it --add-host host.docker.internal:host-gateway --rm \
 
 projectId="resonate"
 
+
 # Remove previous Appwrite Cli data
 rm -rf ~/.appwrite | bash 
 
@@ -23,7 +24,7 @@ while true; do
 done
 
 # Get team id for project creation
-read -p "Please provide the team Id as instructed in the Resonate Set Up Guide: " teamId
+read -p "Please provide the team Id as instructed in the Resonate Set Up Guide:" teamId
 
 # Creating the project
 appwrite projects create --projectId resonate --name Resonate --teamId "$teamId"
@@ -48,8 +49,30 @@ appwrite project createVariable --key APPWRITE_API_KEY --value "$secret"
 appwrite project createVariable --key APPWRITE_ENDPOINT --value "http://host.docker.internal:80/v1"
 
 
+
 # Ask contributor for Oauth2 provider config (Google. Github)
 echo "Please follow the Set Up Guide on Resonate to create the Oauth2 credentials for Google and Github"
+
+
+
+# start ngrok tunnel
+echo "Starting Ngrok tunnel to get the url to provide as redirect for Oauth "
+ngrok http 5050 > /dev/null &
+ngrok_pid=$!
+
+if [ $? -eq 0 ]; then
+    echo "ngrok tunnel started successfully."
+else
+    echo "Error: ngrok tunnel start up failed."
+    exit 1
+fi
+
+sleep 1
+
+ngrok_url=$(curl -s http://localhost:4040/api/tunnels | awk -F '"public_url":"https://' '{print $2}' | cut -d '"' -f 1)
+
+echo "ngrok tunnel Domain Name: $ngrok_url"
+
 
 read -p "Enter the Google App ID: " googleAppId
 read -p "Enter the Google App Secret: " googleSecret
@@ -113,3 +136,38 @@ appwrite project createVariable --key LIVEKIT_HOST --value "$livekitHostURL"
 appwrite project createVariable --key LIVEKIT_SOCKET_URL --value "$livekitSocketURL"
 appwrite project createVariable --key LIVEKIT_API_KEY --value "$livekitAPIKey"
 appwrite project createVariable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
+
+echo "Starting Caddy Web-Server to serve as a proxy to redirect trafic from one tunnel to two services i.e appwrite livekit"
+
+echo "Creating Caddy file"
+cat <<EOF > Caddyfile
+:5050 {
+    # Handle LiveKit requests
+    route /livekit/* {
+        uri strip_prefix /livekit
+        reverse_proxy http://localhost:7880 {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+            header_up X-Forwarded-For {remote}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # Default site
+    reverse_proxy /* http://localhost:80 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    log {
+        output file caddy_access.log
+    }
+}
+EOF
+
+echo "Caddyfile created successfully."
+caddy run > caddy.log 2>&1 &
+echo "Your ngrok tunnel domain: $ngrok_url"
+echo "For ngrok logs visit http://localhost:4040"

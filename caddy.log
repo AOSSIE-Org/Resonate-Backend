@@ -1,14 +1,14 @@
-{"level":"info","ts":1720275421.4577,"msg":"using adjacent Caddyfile"}
-{"level":"warn","ts":1720275421.4580731,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-For: the reverse proxy's default behavior is to pass headers to the upstream"}
-{"level":"warn","ts":1720275421.45809,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-Proto: the reverse proxy's default behavior is to pass headers to the upstream"}
-{"level":"warn","ts":1720275421.4583051,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-For: the reverse proxy's default behavior is to pass headers to the upstream"}
-{"level":"warn","ts":1720275421.458315,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-Proto: the reverse proxy's default behavior is to pass headers to the upstream"}
-{"level":"info","ts":1720275421.4587672,"msg":"adapted config to JSON","adapter":"caddyfile"}
-{"level":"warn","ts":1720275421.458787,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"Caddyfile","line":2}
-{"level":"info","ts":1720275421.461718,"logger":"admin","msg":"admin endpoint started","address":"localhost:2019","enforce_origin":false,"origins":["//[::1]:2019","//127.0.0.1:2019","//localhost:2019"]}
-{"level":"info","ts":1720275421.461941,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x1400061f600"}
-{"level":"info","ts":1720275421.463781,"logger":"http.log","msg":"server running","name":"srv0","protocols":["h1","h2","h3"]}
-{"level":"info","ts":1720275421.464113,"msg":"autosaved config (load with --resume flag)","file":"/Users/drnitashahasteer/Library/Application Support/Caddy/autosave.json"}
-{"level":"info","ts":1720275421.464963,"msg":"serving initial configuration"}
-{"level":"info","ts":1720275421.468408,"logger":"tls","msg":"storage cleaning happened too recently; skipping for now","storage":"FileStorage:/Users/drnitashahasteer/Library/Application Support/Caddy","instance":"bfd9b3b7-c62f-40f6-89bd-e2dc7bba30f8","try_again":1720361821.468405,"try_again_in":86399.999999292}
-{"level":"info","ts":1720275421.4685912,"logger":"tls","msg":"finished cleaning storage units"}
+{"level":"info","ts":1720522344.716894,"msg":"using adjacent Caddyfile"}
+{"level":"warn","ts":1720522344.717262,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-For: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"warn","ts":1720522344.71727,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-Proto: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"warn","ts":1720522344.717453,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-For: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"warn","ts":1720522344.71746,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-Proto: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"info","ts":1720522344.717768,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1720522344.717773,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"Caddyfile","line":2}
+{"level":"info","ts":1720522344.719521,"logger":"admin","msg":"admin endpoint started","address":"localhost:2019","enforce_origin":false,"origins":["//[::1]:2019","//127.0.0.1:2019","//localhost:2019"]}
+{"level":"info","ts":1720522344.7196748,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x14000359a80"}
+{"level":"info","ts":1720522344.7199922,"logger":"http.log","msg":"server running","name":"srv0","protocols":["h1","h2","h3"]}
+{"level":"info","ts":1720522344.7231958,"msg":"autosaved config (load with --resume flag)","file":"/Users/drnitashahasteer/Library/Application Support/Caddy/autosave.json"}
+{"level":"info","ts":1720522344.723207,"msg":"serving initial configuration"}
+{"level":"info","ts":1720522344.729147,"logger":"tls","msg":"storage cleaning happened too recently; skipping for now","storage":"FileStorage:/Users/drnitashahasteer/Library/Application Support/Caddy","instance":"bfd9b3b7-c62f-40f6-89bd-e2dc7bba30f8","try_again":1720608744.729142,"try_again_in":86399.999999667}
+{"level":"info","ts":1720522344.729276,"logger":"tls","msg":"finished cleaning storage units"}

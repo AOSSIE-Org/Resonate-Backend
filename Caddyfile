@@ -19,6 +19,6 @@
     }
 
     log {
-        output file ./caddy_access.log
+        output file caddy_access.log
     }
 }

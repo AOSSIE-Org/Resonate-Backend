@@ -49,6 +49,39 @@ while true; do
     fi
 done
 
+# start ngrok tunnel
+echo "Starting Ngrok tunnel to get the url to provide as redirect for Oauth "
+
+while true; do
+  read -p "Please provide the ngrok auth token in order to start the tunnel: " ngrokOauthToken
+  
+  if [ -z "$ngrokOauthToken" ]; then
+    echo "Auth token cannot be empty. Please try again."
+    continue
+  fi
+
+  # Stop any existing ngrok container
+  docker stop ngrok &> /dev/null && docker rm ngrok &> /dev/null
+  
+  # Run the ngrok container
+  docker run -d --name ngrok -p 4040:4040 -e NGROK_AUTHTOKEN=$ngrokOauthToken ngrok/ngrok:latest http host.docker.internal:5050
+  
+  sleep 2
+
+  if docker ps | grep -q ngrok; then
+    echo "Ngrok tunnel started successfully."
+    sleep 1
+    ngrok_url=$(curl -s http://localhost:4040/api/tunnels | awk -F '"public_url":"https://' '{print $2}' | cut -d '"' -f 1)
+    echo "ngrok tunnel Domain Name: $ngrok_url"
+    
+    break
+  else
+    echo "Failed to start ngrok tunnel. Please try again."
+  fi
+done
+
+
+echo "Starting resonate project set up...."
 # Get team id for project creation
 read -p "Please provide the team Id as instructed in the Resonate Set Up Guide:" teamId
 
@@ -79,47 +112,7 @@ appwrite project createVariable --key APPWRITE_ENDPOINT --value "http://host.doc
 # Ask contributor for Oauth2 provider config (Google. Github)
 echo "Please follow the Set Up Guide on Resonate to create the Oauth2 credentials for Google and Github"
 
-
-
-# start ngrok tunnel
-echo "Starting Ngrok tunnel to get the url to provide as redirect for Oauth "
-
-while true; do
-  read -p "Please provide the ngrok auth token in order to start the tunnel: " ngrokOauthToken
-  
-  if [ -z "$ngrokOauthToken" ]; then
-    echo "Auth token cannot be empty. Please try again."
-    continue
-  fi
-  
-  docker run -it -p 4040:4040 -e NGROK_AUTHTOKEN=$ngrokOauthToken ngrok/ngrok:latest http host.docker.internal:8080 > /dev/null &
-  
-  sleep 2
-
-  if docker ps | grep -q ngrok; then
-    echo "Ngrok tunnel started successfully."
-    break
-  else
-    echo "Failed to start ngrok tunnel. Please try again."
-  fi
-done
-
-
-
-if [ $? -eq 0 ]; then
-    echo "ngrok tunnel started successfully."
-else
-    echo "Error: ngrok tunnel start up failed."
-    exit 1
-fi
-
-sleep 1
-
-ngrok_url=$(curl -s http://localhost:4040/api/tunnels | awk -F '"public_url":"https://' '{print $2}' | cut -d '"' -f 1)
-
 echo "ngrok tunnel Domain Name: $ngrok_url"
-
-
 read -p "Enter the Google App ID: " googleAppId
 read -p "Enter the Google App Secret: " googleSecret
 appwrite projects updateOAuth2 --projectId "$projectId" --provider 'google' --appId "$googleAppId" --secret "$googleSecret" --enabled true

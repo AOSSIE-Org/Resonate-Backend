@@ -2,7 +2,7 @@
     # Handle LiveKit requests
     route /livekit/* {
         uri strip_prefix /livekit
-        reverse_proxy http://localhost:7880 {
+        reverse_proxy http://host.docker.internal:7880 {
             header_up Host {host}
             header_up X-Real-IP {remote}
             header_up X-Forwarded-For {remote}
@@ -11,7 +11,7 @@
     }
 
     # Default site
-    reverse_proxy /* http://localhost:80 {
+    reverse_proxy /* http://host.docker.internal:80 {
         header_up Host {host}
         header_up X-Real-IP {remote}
         header_up X-Forwarded-For {remote}

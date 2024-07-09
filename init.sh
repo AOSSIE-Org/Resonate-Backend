@@ -183,7 +183,7 @@ cat <<EOF > Caddyfile
     # Handle LiveKit requests
     route /livekit/* {
         uri strip_prefix /livekit
-        reverse_proxy http://localhost:7880 {
+        reverse_proxy http://host.docker.internal:7880 {
             header_up Host {host}
             header_up X-Real-IP {remote}
             header_up X-Forwarded-For {remote}
@@ -192,7 +192,7 @@ cat <<EOF > Caddyfile
     }
 
     # Default site
-    reverse_proxy /* http://localhost:80 {
+    reverse_proxy /* http://host.docker.internal:80 {
         header_up Host {host}
         header_up X-Real-IP {remote}
         header_up X-Forwarded-For {remote}
@@ -206,7 +206,8 @@ cat <<EOF > Caddyfile
 EOF
 
 echo "Caddyfile created successfully."
-caddy stop
-caddy run > caddy.log 2>&1 &
+
+docker stop caddy &> /dev/null && docker rm caddy &> /dev/null
+docker run -d --name caddy -p 5050:5050 -v $PWD/Caddyfile:/etc/caddy/Caddyfile -v caddy_data:/data caddy
 echo "Your ngrok tunnel domain: $ngrok_url"
 echo "For ngrok logs visit http://localhost:4040"

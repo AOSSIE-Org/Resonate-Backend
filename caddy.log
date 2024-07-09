@@ -12,3 +12,8 @@
 {"level":"info","ts":1720522344.723207,"msg":"serving initial configuration"}
 {"level":"info","ts":1720522344.729147,"logger":"tls","msg":"storage cleaning happened too recently; skipping for now","storage":"FileStorage:/Users/drnitashahasteer/Library/Application Support/Caddy","instance":"bfd9b3b7-c62f-40f6-89bd-e2dc7bba30f8","try_again":1720608744.729142,"try_again_in":86399.999999667}
 {"level":"info","ts":1720522344.729276,"logger":"tls","msg":"finished cleaning storage units"}
+{"level":"info","ts":1720522878.718821,"logger":"admin.api","msg":"received request","method":"POST","host":"localhost:2019","uri":"/stop","remote_ip":"127.0.0.1","remote_port":"60482","headers":{"Accept-Encoding":["gzip"],"Content-Length":["0"],"Origin":["http://localhost:2019"],"User-Agent":["Go-http-client/1.1"]}}
+{"level":"warn","ts":1720522878.72018,"logger":"admin.api","msg":"exiting; byeee!! 👋"}
+{"level":"info","ts":1720522878.720444,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1720522878.7232819,"logger":"admin","msg":"stopped previous server","address":"localhost:2019"}
+{"level":"info","ts":1720522878.723337,"logger":"admin.api","msg":"shutdown complete","exit_code":0}

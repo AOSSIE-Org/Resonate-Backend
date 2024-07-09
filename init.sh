@@ -83,8 +83,28 @@ echo "Please follow the Set Up Guide on Resonate to create the Oauth2 credential
 
 # start ngrok tunnel
 echo "Starting Ngrok tunnel to get the url to provide as redirect for Oauth "
-ngrok http 5050 > /dev/null &
-ngrok_pid=$!
+
+while true; do
+  read -p "Please provide the ngrok auth token in order to start the tunnel: " ngrokOauthToken
+  
+  if [ -z "$ngrokOauthToken" ]; then
+    echo "Auth token cannot be empty. Please try again."
+    continue
+  fi
+  
+  docker run -it -p 4040:4040 -e NGROK_AUTHTOKEN=$ngrokOauthToken ngrok/ngrok:latest http host.docker.internal:8080 > /dev/null &
+  
+  sleep 2
+
+  if docker ps | grep -q ngrok; then
+    echo "Ngrok tunnel started successfully."
+    break
+  else
+    echo "Failed to start ngrok tunnel. Please try again."
+  fi
+done
+
+
 
 if [ $? -eq 0 ]; then
     echo "ngrok tunnel started successfully."
@@ -193,6 +213,7 @@ cat <<EOF > Caddyfile
 EOF
 
 echo "Caddyfile created successfully."
+caddy stop
 caddy run > caddy.log 2>&1 &
 echo "Your ngrok tunnel domain: $ngrok_url"
 echo "For ngrok logs visit http://localhost:4040"

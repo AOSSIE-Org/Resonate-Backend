@@ -1,7 +1,33 @@
 Write-Host "Installing Dependencies...."
 
-Invoke-WebRequest -useb https://appwrite.io/cli/install.ps1 | Invoke-Expression
 
+# Set the execution policy to RemoteSigned for the current user
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+
+# Function to check if Scoop is installed
+function Is-ScoopInstalled {
+    $scoopPath = "$env:USERPROFILE\scoop\shims\scoop.ps1"
+    return Test-Path $scoopPath
+}
+
+# Check if Scoop is installed
+if (Is-ScoopInstalled) {
+    Write-Host "Scoop is already installed."
+} else {
+    Write-Host "Scoop is not installed. Installing Scoop..."
+    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+}
+
+# Verify installation
+if (Is-ScoopInstalled) {
+    Write-Host "Scoop has been successfully installed."
+} else {
+    Write-Host "Failed to install Scoop."
+}
+
+
+Write-Host "Install Appwrite-cli using Scoop"
+scoop install https://raw.githubusercontent.com/appwrite/sdk-for-cli/master/scoop/appwrite.json
 
 docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
@@ -113,7 +139,7 @@ while ($true) {
         }
 
         # Command to Start Livekit Server
-        Start-Process -FilePath "livekit-server" -ArgumentList "--dev --bind 0.0.0.0" -RedirectStandardOutput livekit.log -RedirectStandardError livekit.log
+        Start-Process -FilePath "livekit-server" -ArgumentList "--dev --bind 0.0.0.0" -RedirectStandardOutput livekit.log -RedirectStandardError livekit-error.log
 
         $livekitHostURL = "http://host.docker.internal:7880"
         $livekitSocketURL = "wss://host.docker.internal:7880"

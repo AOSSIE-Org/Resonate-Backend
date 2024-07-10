@@ -1,10 +1,8 @@
-#!/usr/bin/env bash
-
 Write-Host "Installing Dependencies...."
 
 Invoke-WebRequest -useb https://appwrite.io/cli/install.ps1 | Invoke-Expression
 
-s
+
 docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `

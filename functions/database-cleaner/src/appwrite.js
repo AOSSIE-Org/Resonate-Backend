@@ -39,7 +39,7 @@ class AppwriteService {
                 await this.databases.deleteDocument(
                     process.env.MASTER_DATABASE_ID,
                     process.env.PARTICIPANTS_COLLECTION_ID,
-                    participantDoc.$id
+                    participantDoc.$otp
                 );
             }
         });

@@ -51,58 +51,84 @@ while ($true) {
 }
 
 # start ngrok tunnel
-Write-Host "Starting Ngrok tunnel to get the url to provide as redirect for Oauth "
+Write-Host "Installing devtunnels"
+
+Invoke-WebRequest -Uri https://aka.ms/TunnelsCliDownload/win-x64 -OutFile devtunnel.exe
+.\devtunnel.exe -h
 
 while ($true) {
-    $ngrokOauthToken = Read-Host "Please provide the ngrok auth token in order to start the tunnel"
-
-    if (-not $ngrokOauthToken) {
-        Write-Host "Auth token cannot be empty. Please try again."
-        continue
-    }
-
-    # Stop any existing ngrok container
-    docker stop ngrok | Out-Null
-    docker rm ngrok | Out-Null
-
-    # Run the ngrok container
-    docker run -d --name ngrok -p 4040:4040 -e NGROK_AUTHTOKEN=$ngrokOauthToken ngrok/ngrok:latest http host.docker.internal:5050
-
-    Start-Sleep -Seconds 2
-
-    if (docker ps | Select-String -Pattern "ngrok") {
-        Write-Host "Ngrok tunnel started successfully."
-        Start-Sleep -Seconds 1
-        $ngrok_url = (Invoke-RestMethod -Uri http://localhost:4040/api/tunnels).tunnels[0].public_url
-        Write-Host "ngrok tunnel Domain Name: $ngrok_url"
+    devtunnel login
+    if ($LASTEXITCODE -eq 0) {
         break
     } else {
-        Write-Host "Failed to start ngrok tunnel. Please try again."
+        Write-Host "devtunnel login failed. Please try again."
     }
 }
+
+function Check-Status {
+    param ($processName)
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Error: $processName failed to start. Exiting script."
+        exit 1
+    }
+}
+
+# Start the first devtunnel on port 80
+Write-Host "Starting devtunnel on port 80..."
+Start-Process "devtunnel" -ArgumentList "host -p 80 --allow-anonymous --protocol http --host-header unchanged" -NoNewWindow -RedirectStandardOutput $null -RedirectStandardError $null
+Start-Sleep -Seconds 2
+Check-Status "devtunnel on port 80"
+
+# Start the second devtunnel on port 7880
+Write-Host "Starting devtunnel on port 7880..."
+Start-Process "devtunnel" -ArgumentList "host -p 7880 --allow-anonymous --protocol http --host-header unchanged" -NoNewWindow -RedirectStandardOutput $null -RedirectStandardError $null
+Start-Sleep -Seconds 2
+Check-Status "devtunnel on port 7880"
+
+Write-Host "Both devtunnels started successfully."
+
+# Get the list of active tunnels and extract the URLs
+Write-Host "Fetching the list of active tunnels"
+$tunnel_list = devtunnel list
+
+Write-Host $tunnel_list
+
+# Extract tunnel IDs from the list
+$tunnel_ids = $tunnel_list -match '\b[a-z0-9-]*\.inc1\b' | ForEach-Object { $_.Matches.Value }
+
+# Split the IDs into individual variables if needed
+$tunnel_id_1 = $tunnel_ids[0]
+$tunnel_id_2 = $tunnel_ids[1]
+
+# Output the extracted tunnel IDs
+Write-Host "Tunnel ID for Appwrite: $tunnel_id_1"
+Write-Host "Tunnel ID for Livekit: $tunnel_id_2"
+
+
 
 Write-Host "Starting resonate project set up...."
 # Get team id for project creation
 $teamId = Read-Host "Please provide the team Id as instructed in the Resonate Set Up Guide"
 
 # Creating the project
-appwrite projects create --projectId resonate --name Resonate --teamId $teamId
+appwrite projects create --project-id resonate --name Resonate --teamId $teamId
 
 # Creating IOS and Android platforms
-appwrite projects createPlatform --projectId $projectId --type flutter-android --key com.resonate.resonate --name Resonate
-appwrite projects createPlatform --projectId $projectId --type flutter-ios --key com.resonate.resonate --name Resonate
+appwrite projects create-platform --project-id $projectId --type flutter-android --key com.resonate.resonate --name Resonate
+appwrite projects create-platform --project-id $projectId --type flutter-ios --key com.resonate.resonate --name Resonate
 
 # Creating Server Key and Retrieving it from response
-$create_key_response = appwrite projects createKey --projectId $projectId --name "Appwrite Server Key" --scopes 'sessions.write' 'users.read' 'users.write' 'teams.read' 'teams.write' 'databases.read' 'databases.write' 'collections.read' 'collections.write' 'attributes.read' 'attributes.write' 'indexes.read' 'indexes.write' 'documents.read' 'documents.write' 'files.read' 'files.write' 'buckets.read' 'buckets.write' 'functions.read' 'functions.write' 'execution.read' 'execution.write' 'locale.read' 'avatars.read' 'health.read' 'providers.read' 'providers.write' 'messages.read' 'messages.write' 'topics.read' 'topics.write' 'subscribers.read' 'subscribers.write' 'targets.read' 'targets.write' 'rules.read' 'rules.write' 'migrations.read' 'migrations.write' 'vcs.read' 'vcs.write' 'assistant.read'
+$create_key_response = appwrite projects create-key --project-id $projectId --name "Appwrite Server Key" --scopes 'sessions.write' 'users.read' 'users.write' 'teams.read' 'teams.write' 'databases.read' 'databases.write' 'collections.read' 'collections.write' 'attributes.read' 'attributes.write' 'indexes.read' 'indexes.write' 'documents.read' 'documents.write' 'files.read' 'files.write' 'buckets.read' 'buckets.write' 'functions.read' 'functions.write' 'execution.read' 'execution.write' 'locale.read' 'avatars.read' 'health.read' 'providers.read' 'providers.write' 'messages.read' 'messages.write' 'topics.read' 'topics.write' 'subscribers.read' 'subscribers.write' 'targets.read' 'targets.write' 'rules.read' 'rules.write' 'migrations.read' 'migrations.write' 'vcs.read' 'vcs.write' 'assistant.read'
 $secret = ($create_key_response -split ' : ')[1].Trim()
 Write-Host $create_key_response
 Write-Host $secret
 
 # Pushing Server Key as env variable for cloud functions to use
-appwrite project createVariable --key APPWRITE_API_KEY --value $secret
+appwrite project create-variable --key APPWRITE_API_KEY --value $secret
 
 # Push endpoint as environment variable for functions to use (host.docker.internal used to access localhost from inside of script)
-appwrite project createVariable --key APPWRITE_ENDPOINT --value "http://host.docker.internal:80/v1"
+appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.docker.internal:80/v1"
 
 # Ask contributor for Oauth2 provider config (Google. Github)
 Write-Host "Please follow the Set Up Guide on Resonate to create the Oauth2 credentials for Google and Github"
@@ -110,11 +136,11 @@ Write-Host "Please follow the Set Up Guide on Resonate to create the Oauth2 cred
 Write-Host "ngrok tunnel Domain Name: $ngrok_url"
 $googleAppId = Read-Host "Enter the Google App ID"
 $googleSecret = Read-Host "Enter the Google App Secret"
-appwrite projects updateOAuth2 --projectId $projectId --provider 'google' --appId $googleAppId --secret $googleSecret --enabled $true
+appwrite projects update-o-auth-2 --project-id $projectId --provider 'google' --appId $googleAppId --secret $googleSecret --enabled $true
 
 $githubAppId = Read-Host "Enter the GitHub App ID"
 $githubSecret = Read-Host "Enter the GitHub App Secret"
-appwrite projects updateOAuth2 --projectId $projectId --provider 'github' --appId $githubAppId --secret $githubSecret --enabled $true
+appwrite projects update-o-auth-2 --project-id $projectId --provider 'github' --appId $githubAppId --secret $githubSecret --enabled $true
 
 # Pushing the project's core defined in appwrite.json
 appwrite deploy collection
@@ -163,45 +189,7 @@ while ($true) {
 
 # Push Livekit credentials as env variables for functions to use
 Write-Host "Pushing Livekit credentials as env variables if you need any changes do them in your Appwrite Resonate project's Global Env variables"
-appwrite project createVariable --key LIVEKIT_HOST --value $livekitHostURL
-appwrite project createVariable --key LIVEKIT_SOCKET_URL --value $livekitSocketURL
-appwrite project createVariable --key LIVEKIT_API_KEY --value $livekitAPIKey
-appwrite project createVariable --key LIVEKIT_API_SECRET --value $livekitAPISecret
-
-Write-Host "Starting Caddy Web-Server to serve as a proxy to redirect traffic from one tunnel to two services i.e appwrite livekit"
-
-Write-Host "Creating Caddy file"
-$caddyfileContent = @"
-:5050 {
-    # Handle LiveKit requests
-    route /livekit/* {
-        uri strip_prefix /livekit
-        reverse_proxy http://host.docker.internal:7880 {
-            header_up Host {host}
-            header_up X-Real-IP {remote}
-            header_up X-Forwarded-For {remote}
-            header_up X-Forwarded-Proto {scheme}
-        }
-    }
-
-    # Default site
-    reverse_proxy /* http://host.docker.internal:80 {
-        header_up Host {host}
-        header_up X-Real-IP {remote}
-        header_up X-Forwarded-For {remote}
-        header_up X-Forwarded-Proto {scheme}
-    }
-
-    log {
-        output file caddy_access.log
-    }
-}
-"@
-Write-Host "Caddyfile created successfully."
-
-# Run Caddy server in a Docker container
-docker stop caddy 2>$null; docker rm caddy 2>$null
-docker run -d --name caddy -p 5050:5050 -v ${PWD}/Caddyfile:/etc/caddy/Caddyfile -v caddy_data:/data caddy
-
-Write-Host "Your ngrok tunnel domain: $ngrok_url"
-Write-Host "For ngrok logs visit http://localhost:4040"
+appwrite project create-variable --key LIVEKIT_HOST --value $livekitHostURL
+appwrite project create-variable --key LIVEKIT_SOCKET_URL --value $livekitSocketURL
+appwrite project create-variable --key LIVEKIT_API_KEY --value $livekitAPIKey
+appwrite project create-variable --key LIVEKIT_API_SECRET --value $livekitAPISecret

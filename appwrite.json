@@ -273,29 +273,26 @@
         {
             "$id": "64a1319104a149e16f5c",
             "name": "user-data",
-            "$createdAt": "2023-07-02T08:13:05.020+00:00",
-            "$updatedAt": "2023-07-02T08:13:05.020+00:00",
             "enabled": true
         },
         {
             "$id": "64a521785f5be62b796f",
             "name": "master",
-            "$createdAt": "2023-07-05T07:53:28.391+00:00",
-            "$updatedAt": "2023-07-05T07:53:28.391+00:00",
             "enabled": true
         },
         {
             "$id": "64a7bfd6b09121548bfe",
             "name": "verification",
-            "$createdAt": "2023-07-07T07:33:42.724+00:00",
-            "$updatedAt": "2023-07-07T07:33:42.724+00:00",
             "enabled": true
         },
         {
             "$id": "6522fcf27a1bbc4238df",
-            "name": "discussions",
-            "$createdAt": "2023-10-08T19:03:14.501+00:00",
-            "$updatedAt": "2023-10-08T19:03:14.501+00:00",
+            "name": "upcoming-rooms",
+            "enabled": true
+        },
+        {
+            "$id": "stories",
+            "name": "stories",
             "enabled": true
         }
     ],
@@ -316,8 +313,6 @@
                 {
                     "key": "email",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "format": "email",
@@ -342,8 +337,6 @@
                 {
                     "key": "name",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 100,
@@ -352,8 +345,6 @@
                 {
                     "key": "dob",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 15,
@@ -362,8 +353,6 @@
                 {
                     "key": "username",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 100,
@@ -372,8 +361,6 @@
                 {
                     "key": "profileImageUrl",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 500,
@@ -382,8 +369,6 @@
                 {
                     "key": "email",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "format": "email",
@@ -392,8 +377,6 @@
                 {
                     "key": "profileImageID",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 300,
@@ -418,8 +401,6 @@
                 {
                     "key": "name",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 200,
@@ -428,8 +409,6 @@
                 {
                     "key": "tags",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": true,
                     "size": 50,
@@ -438,8 +417,6 @@
                 {
                     "key": "description",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 1024,
@@ -448,8 +425,6 @@
                 {
                     "key": "totalParticipants",
                     "type": "integer",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "min": 0,
@@ -459,8 +434,6 @@
                 {
                     "key": "adminUid",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 255,
@@ -485,8 +458,6 @@
                 {
                     "key": "uid",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 100,
@@ -495,8 +466,6 @@
                 {
                     "key": "isAdmin",
                     "type": "boolean",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "default": null
@@ -504,8 +473,6 @@
                 {
                     "key": "isModerator",
                     "type": "boolean",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "default": null
@@ -513,8 +480,6 @@
                 {
                     "key": "isSpeaker",
                     "type": "boolean",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "default": null
@@ -522,8 +487,6 @@
                 {
                     "key": "isMicOn",
                     "type": "boolean",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "default": null
@@ -531,8 +494,6 @@
                 {
                     "key": "roomId",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 100,
@@ -541,8 +502,6 @@
                 {
                     "key": "hasRequestedToBeSpeaker",
                     "type": "boolean",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "default": null
@@ -553,7 +512,6 @@
                     "key": "roomId",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "roomId"
                     ],
@@ -565,7 +523,6 @@
                     "key": "uid",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "uid"
                     ],
@@ -577,7 +534,6 @@
                     "key": "roomUser",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "uid",
                         "roomId"
@@ -605,8 +561,6 @@
                 {
                     "key": "languageIso",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 20,
@@ -615,8 +569,6 @@
                 {
                     "key": "isAnonymous",
                     "type": "boolean",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "default": null
@@ -624,8 +576,6 @@
                 {
                     "key": "uid",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 100,
@@ -634,8 +584,6 @@
                 {
                     "key": "userName",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 100,
@@ -647,7 +595,6 @@
                     "key": "languageIso",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "languageIso"
                     ],
@@ -659,7 +606,6 @@
                     "key": "docId",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "$id"
                     ],
@@ -671,7 +617,6 @@
                     "key": "createdAt",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "$createdAt"
                     ],
@@ -683,7 +628,6 @@
                     "key": "requestIndex",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "$id",
                         "languageIso",
@@ -699,7 +643,6 @@
                     "key": "requestIndex1",
                     "type": "key",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "$id",
                         "languageIso"
@@ -727,8 +670,6 @@
                 {
                     "key": "userDocId1",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 100,
@@ -737,8 +678,6 @@
                 {
                     "key": "userDocId2",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 100,
@@ -747,8 +686,6 @@
                 {
                     "key": "userName1",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 50,
@@ -757,8 +694,6 @@
                 {
                     "key": "userName2",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 50,
@@ -767,8 +702,6 @@
                 {
                     "key": "uid1",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 50,
@@ -777,8 +710,6 @@
                 {
                     "key": "uid2",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": true,
                     "array": false,
                     "size": 50,
@@ -790,7 +721,6 @@
                     "key": "userDocId1",
                     "type": "unique",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "userDocId1"
                     ],
@@ -802,7 +732,6 @@
                     "key": "userDocId2",
                     "type": "unique",
                     "status": "available",
-                    "error": "",
                     "attributes": [
                         "userDocId2"
                     ],
@@ -823,8 +752,6 @@
                 {
                     "key": "otp",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 100000,
@@ -833,8 +760,6 @@
                 {
                     "key": "date",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 50,
@@ -859,8 +784,6 @@
                 {
                     "key": "status",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 1000000,
@@ -878,15 +801,13 @@
                 "delete(\"any\")"
             ],
             "databaseId": "6522fcf27a1bbc4238df",
-            "name": "Discussions",
+            "name": "Upcoming Rooms",
             "enabled": true,
             "documentSecurity": false,
             "attributes": [
                 {
                     "key": "isTime",
                     "type": "boolean",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "default": false
@@ -894,8 +815,6 @@
                 {
                     "key": "name",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 1000,
@@ -904,8 +823,6 @@
                 {
                     "key": "scheduledDateTime",
                     "type": "datetime",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "format": "",
@@ -914,8 +831,6 @@
                 {
                     "key": "tags",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": true,
                     "size": 10000,
@@ -924,11 +839,17 @@
                 {
                     "key": "description",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 100000,
+                    "default": null
+                },
+                {
+                    "key": "creatorUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
                     "default": null
                 }
             ],
@@ -948,39 +869,16 @@
             "documentSecurity": false,
             "attributes": [
                 {
-                    "key": "isCreator",
-                    "type": "boolean",
-                    "status": "available",
-                    "error": "",
-                    "required": false,
-                    "array": false,
-                    "default": false
-                },
-                {
                     "key": "userID",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 10000,
                     "default": null
                 },
                 {
-                    "key": "discussionID",
-                    "type": "string",
-                    "status": "available",
-                    "error": "",
-                    "required": false,
-                    "array": false,
-                    "size": 100000,
-                    "default": null
-                },
-                {
                     "key": "userProfileUrl",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": false,
                     "size": 100000,
@@ -989,10 +887,16 @@
                 {
                     "key": "registrationTokens",
                     "type": "string",
-                    "status": "available",
-                    "error": "",
                     "required": false,
                     "array": true,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "upcomingRoomId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
                     "size": 1000,
                     "default": null
                 }

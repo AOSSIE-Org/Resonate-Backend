@@ -4,17 +4,17 @@
     "functions": [
         {
             "$id": "65368a58ef47cf6861200",
-            "name": "Discussion Time Checker",
+            "name": "Upcoming Rooms Time Checker",
             "runtime": "node-16.0",
-            "path": "functions/discussion-isTime-checker",
+            "path": "functions/upcoming-Room-isTime-checker",
             "entrypoint": "src/main.js",
             "ignore": [
                 "node_modules",
                 ".npm"
             ],
             "variables": {
-                "DiscussionsDataBaseID": "6522fcf27a1bbc4238df",
-                "DiscussionCollectionID": "6522fd163103bd453183",
+                "UpcomingRoomsDataBaseID": "6522fcf27a1bbc4238df",
+                "UpcomingRoomsCollectionID": "6522fd163103bd453183",
                 "SubscriberCollectionID": "6522fd267db6fdad3392"
             },
             "execute": [
@@ -851,6 +851,14 @@
                     "array": false,
                     "size": 1000,
                     "default": null
+                },
+                {
+                    "key": "creator_fcm_tokens",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
                 }
             ],
             "indexes": []
@@ -885,18 +893,18 @@
                     "default": null
                 },
                 {
-                    "key": "registrationTokens",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 1000,
-                    "default": null
-                },
-                {
                     "key": "upcomingRoomId",
                     "type": "string",
                     "required": false,
                     "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "registrationTokens",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
                     "size": 1000,
                     "default": null
                 }

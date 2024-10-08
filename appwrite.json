@@ -910,6 +910,126 @@
                 }
             ],
             "indexes": []
+        },
+        {
+            "$id": "670259e20000ddda49a0",
+            "$permissions": [],
+            "databaseId": "stories",
+            "name": "Likes",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "670277ad002530531daf",
+            "$permissions": [],
+            "databaseId": "stories",
+            "name": "Chapters",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
+        },
+        {
+            "$id": "670259e900321c12a5a2",
+            "$permissions": [],
+            "databaseId": "stories",
+            "name": "Stories",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2000,
+                    "default": null
+                },
+                {
+                    "key": "category",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "dramma",
+                        "horror",
+                        "comedy",
+                        "thriller",
+                        "romance",
+                        "spiritual"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "coverImgUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "creatorId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "creatorName",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "creatorImgUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "likes",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000000,
+                    "default": null
+                },
+                {
+                    "key": "totalMin",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "tintColor",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                }
+            ],
+            "indexes": []
         }
     ]
 }

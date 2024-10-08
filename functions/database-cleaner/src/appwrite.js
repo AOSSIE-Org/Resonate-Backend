@@ -69,6 +69,43 @@ class AppwriteService {
             done = activePairDocs.total === 0;
         } while (!done);
     }
-}
+
+
+    // Clear all OTPs which are one day old
+    async clearOldOTPs() {
+
+        let done;
+
+        const currentDate = new Date().toDateString();
+
+        const queries = [
+            Query.notEqual("date", currentDate),
+            Query.limit(100),
+        ];
+
+        //
+        do {
+            const oneDayOldOTPs = await this.databases.listDocuments(
+                process.env.VERIFICATION_DATABASE_ID,
+                process.env.OTP_COLLECTION_ID,
+                queries
+            );
+    
+            await Promise.all(
+                oneDayOldOTPs.documents.map(async (otp) => {
+                    await this.databases.deleteDocument(
+                        process.env.VERIFICATION_DATABASE_ID,
+                        process.env.OTP_COLLECTION_ID,
+                        otp.$id
+                    );
+                })
+            )
+
+            done = oneDayOldOTPs.total === 0;
+
+        } while (!done);
+
+        
+    }
 
 export default AppwriteService;

@@ -1,0 +1,24 @@
+:5050 {
+    # Handle LiveKit requests
+    route /livekit/* {
+        uri strip_prefix /livekit
+        reverse_proxy http://host.docker.internal:7880 {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+            header_up X-Forwarded-For {remote}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # Default site
+    reverse_proxy /* http://host.docker.internal:80 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    log {
+        output file caddy_access.log
+    }
+}

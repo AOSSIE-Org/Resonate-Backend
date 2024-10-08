@@ -8,6 +8,8 @@ export default async (context) => {
         "PARTICIPANTS_COLLECTION_ID",
         "ACTIVE_PAIRS_COLLECTION_ID",
         "RETENTION_PERIOD_DAYS",
+        "VERIFICATION_DATABASE_ID",
+        "OTP_COLLECTION_ID"
     ]);
 
     const appwrite = new AppwriteService();
@@ -24,5 +26,11 @@ export default async (context) => {
         context.error(String(e));
     }
 
-    return context.res.send("Database Cleanup completed");
+    try {
+        await appwrite.clearOldOTPs();
+    } catch (e) {
+        context.error(String(e));
+    }
+
+    return context.res.send("Database Cleanup completed. And unnecessary OTPs are also cleared.");
 };

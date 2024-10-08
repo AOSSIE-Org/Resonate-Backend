@@ -1,0 +1,19 @@
+{"level":"info","ts":1720522344.716894,"msg":"using adjacent Caddyfile"}
+{"level":"warn","ts":1720522344.717262,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-For: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"warn","ts":1720522344.71727,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-Proto: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"warn","ts":1720522344.717453,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-For: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"warn","ts":1720522344.71746,"logger":"caddyfile","msg":"Unnecessary header_up X-Forwarded-Proto: the reverse proxy's default behavior is to pass headers to the upstream"}
+{"level":"info","ts":1720522344.717768,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1720522344.717773,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"Caddyfile","line":2}
+{"level":"info","ts":1720522344.719521,"logger":"admin","msg":"admin endpoint started","address":"localhost:2019","enforce_origin":false,"origins":["//[::1]:2019","//127.0.0.1:2019","//localhost:2019"]}
+{"level":"info","ts":1720522344.7196748,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x14000359a80"}
+{"level":"info","ts":1720522344.7199922,"logger":"http.log","msg":"server running","name":"srv0","protocols":["h1","h2","h3"]}
+{"level":"info","ts":1720522344.7231958,"msg":"autosaved config (load with --resume flag)","file":"/Users/drnitashahasteer/Library/Application Support/Caddy/autosave.json"}
+{"level":"info","ts":1720522344.723207,"msg":"serving initial configuration"}
+{"level":"info","ts":1720522344.729147,"logger":"tls","msg":"storage cleaning happened too recently; skipping for now","storage":"FileStorage:/Users/drnitashahasteer/Library/Application Support/Caddy","instance":"bfd9b3b7-c62f-40f6-89bd-e2dc7bba30f8","try_again":1720608744.729142,"try_again_in":86399.999999667}
+{"level":"info","ts":1720522344.729276,"logger":"tls","msg":"finished cleaning storage units"}
+{"level":"info","ts":1720522878.718821,"logger":"admin.api","msg":"received request","method":"POST","host":"localhost:2019","uri":"/stop","remote_ip":"127.0.0.1","remote_port":"60482","headers":{"Accept-Encoding":["gzip"],"Content-Length":["0"],"Origin":["http://localhost:2019"],"User-Agent":["Go-http-client/1.1"]}}
+{"level":"warn","ts":1720522878.72018,"logger":"admin.api","msg":"exiting; byeee!! 👋"}
+{"level":"info","ts":1720522878.720444,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1720522878.7232819,"logger":"admin","msg":"stopped previous server","address":"localhost:2019"}
+{"level":"info","ts":1720522878.723337,"logger":"admin.api","msg":"shutdown complete","exit_code":0}

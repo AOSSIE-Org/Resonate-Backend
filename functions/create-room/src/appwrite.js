@@ -9,7 +9,6 @@ class AppwriteService {
             )
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
             .setKey(process.env.APPWRITE_API_KEY);
-
         this.databases = new Databases(client);
     }
 

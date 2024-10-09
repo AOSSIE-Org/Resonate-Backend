@@ -232,8 +232,6 @@
     "buckets": [
         {
             "$id": "64a13095a4c87fd78bc6",
-            "$createdAt": "2023-07-02T08:08:53.675+00:00",
-            "$updatedAt": "2023-07-05T08:32:38.642+00:00",
             "$permissions": [
                 "create(\"any\")",
                 "read(\"any\")",
@@ -251,8 +249,6 @@
         },
         {
             "$id": "64a52ab306331f167ce6",
-            "$createdAt": "2023-07-05T08:32:51.026+00:00",
-            "$updatedAt": "2023-07-05T08:38:46.490+00:00",
             "$permissions": [
                 "create(\"any\")",
                 "read(\"any\")",
@@ -263,6 +259,23 @@
             "name": "user-images",
             "enabled": true,
             "maximumFileSize": 29000000,
+            "allowedFileExtensions": [],
+            "compression": "none",
+            "encryption": true,
+            "antivirus": true
+        },
+        {
+            "$id": "6703f4c70037edfd8429",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "fileSecurity": false,
+            "name": "stories",
+            "enabled": true,
+            "maximumFileSize": 30000000,
             "allowedFileExtensions": [],
             "compression": "none",
             "encryption": true,

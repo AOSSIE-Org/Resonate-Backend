@@ -6,7 +6,7 @@
             "$id": "65368a58ef47cf6861200",
             "name": "Upcoming Rooms Time Checker",
             "runtime": "node-16.0",
-            "path": "functions/upcoming-Room-isTime-checker",
+            "path": "functions/upcomingRoom-isTime-checker",
             "entrypoint": "src/main.js",
             "ignore": [
                 "node_modules",
@@ -743,7 +743,12 @@
         },
         {
             "$id": "64a7bfe3a3a7ee5bf7f8",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
             "databaseId": "64a7bfd6b09121548bfe",
             "name": "OTP's",
             "enabled": true,
@@ -913,27 +918,159 @@
         },
         {
             "$id": "670259e20000ddda49a0",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
             "databaseId": "stories",
             "name": "Likes",
             "enabled": true,
             "documentSecurity": false,
-            "attributes": [],
-            "indexes": []
+            "attributes": [
+                {
+                    "key": "uId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "storyId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "uId_index",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "uId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "storyId_index",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "storyId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
         },
         {
             "$id": "670277ad002530531daf",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
             "databaseId": "stories",
             "name": "Chapters",
             "enabled": true,
             "documentSecurity": false,
-            "attributes": [],
-            "indexes": []
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2000,
+                    "default": null
+                },
+                {
+                    "key": "coverImgUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "lyrics",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 50000,
+                    "default": null
+                },
+                {
+                    "key": "totalMin",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "tintColor",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "storyId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "audioFileUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "storyId_index",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "storyId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
         },
         {
             "$id": "670259e900321c12a5a2",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
             "databaseId": "stories",
             "name": "Stories",
             "enabled": true,
@@ -942,7 +1079,7 @@
                 {
                     "key": "title",
                     "type": "string",
-                    "required": false,
+                    "required": true,
                     "array": false,
                     "size": 100,
                     "default": null
@@ -958,7 +1095,7 @@
                 {
                     "key": "category",
                     "type": "string",
-                    "required": false,
+                    "required": true,
                     "array": false,
                     "elements": [
                         "dramma",
@@ -982,7 +1119,7 @@
                 {
                     "key": "creatorId",
                     "type": "string",
-                    "required": false,
+                    "required": true,
                     "array": false,
                     "size": 50,
                     "default": null
@@ -990,7 +1127,7 @@
                 {
                     "key": "creatorName",
                     "type": "string",
-                    "required": false,
+                    "required": true,
                     "array": false,
                     "size": 20,
                     "default": null
@@ -998,7 +1135,7 @@
                 {
                     "key": "creatorImgUrl",
                     "type": "string",
-                    "required": false,
+                    "required": true,
                     "array": false,
                     "format": "url",
                     "default": null
@@ -1015,7 +1152,7 @@
                 {
                     "key": "totalMin",
                     "type": "string",
-                    "required": false,
+                    "required": true,
                     "array": false,
                     "size": 20,
                     "default": null

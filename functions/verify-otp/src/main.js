@@ -31,7 +31,13 @@ export default async ({ req, res, log, error }) => {
             process.env.OTP_COLLECTION_ID,
             otpID
         );
+    } catch (e) {
+        log("error in getting the otp doc")
+        error(String(e));
+        return res.json({ message: String(e) }, 500);
+    }
 
+    try {
         await db.createDocument(
             process.env.VERIFICATION_DATABASE_ID,
             process.env.VERIFY_COLLECTION_ID,
@@ -41,9 +47,9 @@ export default async ({ req, res, log, error }) => {
             }
         );
     } catch (e) {
+        log("error in creating the verification doc")
         error(String(e));
         return res.json({ message: String(e) }, 500);
     }
-
     return res.json({ message: 'null' }, 200);
 };

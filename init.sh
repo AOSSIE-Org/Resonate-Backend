@@ -77,7 +77,7 @@ appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.do
 
 # Pushing the project's core defined in appwrite.json
 appwrite push collection
-appwrite push function
+appwrite push function --with-variables
 appwrite push bucket
 echo "---- Appwrite Set Up complete ----"
 

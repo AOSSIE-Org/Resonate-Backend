@@ -33,7 +33,7 @@ docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `
     --entrypoint="install" `
-    appwrite/appwrite:1.5.7
+    appwrite/appwrite:1.6.0
 
 $projectId = "resonate"
 
@@ -75,7 +75,7 @@ appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.do
 
 # Pushing the project's core defined in appwrite.json
 appwrite deploy collection
-appwrite deploy function
+appwrite deploy function --with-variables
 appwrite deploy bucket
 Write-Host "---- Appwrite Set Up complete ----"
 
@@ -97,7 +97,7 @@ while ($true) {
         }
 
         # Command to Start Livekit Server
-        Start-Process -FilePath "livekit-server" -ArgumentList "--dev --bind 0.0.0.0" -RedirectStandardOutput livekit.log -RedirectStandardError livekit-error.log
+        docker run -d --name livekit -p 7880:7880 livekit/livekit-server --dev --bind 0.0.0.0
 
         $livekitHostURL = "http://host.docker.internal:7880"
         $livekitSocketURL = "wss://host.docker.internal:7880"

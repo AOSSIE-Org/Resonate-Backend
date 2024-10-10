@@ -12,11 +12,20 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "UpcomingRoomsDataBaseID": "6522fcf27a1bbc4238df",
-                "UpcomingRoomsCollectionID": "6522fd163103bd453183",
-                "SubscriberCollectionID": "6522fd267db6fdad3392"
-            },
+            "vars": [
+                {
+                    "key": "UpcomingRoomsDataBaseID",
+                    "value": "6522fcf27a1bbc4238df"
+                },
+                {
+                    "key": "UpcomingRoomsCollectionID",
+                    "value": "6522fd163103bd453183"
+                },
+                {
+                    "key": "SubscriberCollectionID",
+                    "value": "6522fd267db6fdad3392"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -35,12 +44,24 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "SENDER_MAIL": "aossieorgforu@gmail.com",
-                "VERIFICATION_DATABASE_ID": "64a7bfd6b09121548bfe",
-                "SENDER_PASSWORD": "xizkyvzhduejxjel",
-                "OTP_COLLECTION_ID": "64a7bfe3a3a7ee5bf7f8"
-            },
+            "vars": [
+                {
+                    "key": "SENDER_MAIL",
+                    "value": "aossieorgforu@gmail.com"
+                },
+                {
+                    "key": "VERIFICATION_DATABASE_ID",
+                    "value": "64a7bfd6b09121548bfe"
+                },
+                {
+                    "key": "SENDER_PASSWORD",
+                    "value": "xizkyvzhduejxjel"
+                },
+                {
+                    "key": "OTP_COLLECTION_ID",
+                    "value": "64a7bfe3a3a7ee5bf7f8"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -59,7 +80,7 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {},
+            "vars": [],
             "execute": [
                 "any"
             ],
@@ -78,11 +99,20 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "VERIFY_COLLECTION_ID": "64a7c0100eabfe8d3844",
-                "OTP_COLLECTION_ID": "64a7bfe3a3a7ee5bf7f8",
-                "VERIFICATION_DATABASE_ID": "64a7bfd6b09121548bfe"
-            },
+            "vars": [
+                {
+                    "key": "VERIFY_COLLECTION_ID",
+                    "value": "64a7c0100eabfe8d3844"
+                },
+                {
+                    "key": "OTP_COLLECTION_ID",
+                    "value": "64a7bfe3a3a7ee5bf7f8"
+                },
+                {
+                    "key": "VERIFICATION_DATABASE_ID",
+                    "value": "64a7bfd6b09121548bfe"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -101,10 +131,16 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "MASTER_DATABASE_ID": "64a521785f5be62b796f",
-                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c"
-            },
+            "vars": [
+                {
+                    "key": "MASTER_DATABASE_ID",
+                    "value": "64a521785f5be62b796f"
+                },
+                {
+                    "key": "ROOMS_COLLECTION_ID",
+                    "value": "64a5217e695bf2c4ec9c"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -123,15 +159,36 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "OTP_COLLECTION_ID": "64a7bfe3a3a7ee5bf7f8",
-                "VERIFICATION_DATABASE_ID": "64a7bfd6b09121548bfe",
-                "RETENTION_PERIOD_DAYS": "0",
-                "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
-                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
-                "ACTIVE_PAIRS_COLLECTION_ID": "64d980cd65ff2e08ab97",
-                "MASTER_DATABASE_ID": "64a521785f5be62b796f"
-            },
+            "vars": [
+                {
+                    "key": "OTP_COLLECTION_ID",
+                    "value": "64a7bfe3a3a7ee5bf7f8"
+                },
+                {
+                    "key": "VERIFICATION_DATABASE_ID",
+                    "value": "64a7bfd6b09121548bfe"
+                },
+                {
+                    "key": "RETENTION_PERIOD_DAYS",
+                    "value": "0"
+                },
+                {
+                    "key": "PARTICIPANTS_COLLECTION_ID",
+                    "value": "64a63e508145d1084abf"
+                },
+                {
+                    "key": "ROOMS_COLLECTION_ID",
+                    "value": "64a5217e695bf2c4ec9c"
+                },
+                {
+                    "key": "ACTIVE_PAIRS_COLLECTION_ID",
+                    "value": "64d980cd65ff2e08ab97"
+                },
+                {
+                    "key": "MASTER_DATABASE_ID",
+                    "value": "64a521785f5be62b796f"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -150,11 +207,20 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
-                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
-                "MASTER_DATABASE_ID": "64a521785f5be62b796f"
-            },
+            "vars": [
+                {
+                    "key": "PARTICIPANTS_COLLECTION_ID",
+                    "value": "64a63e508145d1084abf"
+                },
+                {
+                    "key": "ROOMS_COLLECTION_ID",
+                    "value": "64a5217e695bf2c4ec9c"
+                },
+                {
+                    "key": "MASTER_DATABASE_ID",
+                    "value": "64a521785f5be62b796f"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -173,7 +239,7 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {},
+            "vars": [],
             "execute": [
                 "any"
             ],
@@ -192,11 +258,20 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "ROOMS_COLLECTION_ID": "64a5217e695bf2c4ec9c",
-                "PARTICIPANTS_COLLECTION_ID": "64a63e508145d1084abf",
-                "MASTER_DATABASE_ID": "64a521785f5be62b796f"
-            },
+            "vars": [
+                {
+                    "key": "ROOMS_COLLECTION_ID",
+                    "value": "64a5217e695bf2c4ec9c"
+                },
+                {
+                    "key": "PARTICIPANTS_COLLECTION_ID",
+                    "value": "64a63e508145d1084abf"
+                },
+                {
+                    "key": "MASTER_DATABASE_ID",
+                    "value": "64a521785f5be62b796f"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -215,11 +290,20 @@
                 "node_modules",
                 ".npm"
             ],
-            "variables": {
-                "ACTIVE_PAIRS_COLLECTION_ID": "64d980cd65ff2e08ab97",
-                "DATABASE_ID": "64a521785f5be62b796f",
-                "REQUESTS_COLLECTION_ID": "64d980211f1395263ebe"
-            },
+            "vars": [
+                {
+                    "key": "ACTIVE_PAIRS_COLLECTION_ID",
+                    "value": "64d980cd65ff2e08ab97"
+                },
+                {
+                    "key": "DATABASE_ID",
+                    "value": "64a521785f5be62b796f"
+                },
+                {
+                    "key": "REQUESTS_COLLECTION_ID",
+                    "value": "64e92b41656c6a01b1e1"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -227,7 +311,7 @@
             "schedule": "",
             "timeout": 15,
             "commands": "npm install"
-        }
+        }        
     ],
     "buckets": [
         {

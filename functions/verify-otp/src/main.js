@@ -17,15 +17,14 @@ export default async ({ req, res, log, error }) => {
         .setKey(process.env.APPWRITE_API_KEY);
 
     const db = new Databases(client);
+    log(req.body);
+    const {
+        otpID,
+        userOTP: userOtp,
+        verify_ID: verificationId,
+    } = JSON.parse(req.body);
 
     try {
-        log(req.body);
-        const {
-            otpID,
-            userOTP: userOtp,
-            verify_ID: verificationId,
-        } = JSON.parse(req.body);
-
         const otpDocument = await db.getDocument(
             process.env.VERIFICATION_DATABASE_ID,
             process.env.OTP_COLLECTION_ID,

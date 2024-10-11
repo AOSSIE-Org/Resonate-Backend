@@ -8,21 +8,20 @@ case "$OS" in
     *)          OS_TYPE="UNKNOWN:$OS"
 esac
 
-
 echo "Operating System: $OS_TYPE"
 
 echo "Installing Dependencies...."
-
 if [ "$OS_TYPE" = "Mac" ]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # Check if Homebrew is installed
+    if ! command -v brew &> /dev/null; then
+        echo "Homebrew not found. Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    else
+        echo "Homebrew is already installed."
+    fi
     brew install appwrite
-    brew install livekit
-
-    brew install livekit-cli
 else
     curl -sL https://appwrite.io/cli/install.sh | bash
-    curl -sSL https://get.livekit.io | bash
-    curl -sSL https://get.livekit.io/cli | bash
 fi
 
 
@@ -77,9 +76,9 @@ appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.do
 
 # Pushing the project's core defined in appwrite.json
 appwrite push collection
-appwrite push function --with-variables
 appwrite push bucket
-echo "---- Appwrite Set Up complete ----"
+appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "pink_profile_image.jpeg"
+echo "---- Appwrite Set Up complete (only functions left) ----"
 
 
 echo "Setting Up Livekit now ..."
@@ -99,7 +98,7 @@ while true; do
         fi
 
         # Command to Start Livekit Server
-        livekit-server --dev --bind 0.0.0.0 > livekit.log 2>&1 &
+        docker run -d --name livekit -p 7880:7880 livekit/livekit-server --dev --bind 0.0.0.0
 
         livekitHostURL="http://host.docker.internal:7880"
         livekitSocketURL="wss://host.docker.internal:7880"
@@ -127,4 +126,7 @@ echo "Pushing Livekit credentials as env variables if you need any changes do th
 appwrite project create-variable --key LIVEKIT_HOST --value "$livekitHostURL"
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value "$livekitSocketURL"
 appwrite project create-variable --key LIVEKIT_API_KEY --value "$livekitAPIKey"
-dcreate-variable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
+appwrite project create-variable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
+appwrite push function --with-variables
+
+echo "Many Contratulations Resonate Backend set up is complete !!! please further read the onboarding guide for connecting frontend to backend"

@@ -42,7 +42,7 @@ Remove-Item -Recurse -Force $HOME\.appwrite
 
 # Ask contributor account credentials   
 while ($true) {
-    appwrite login
+    appwrite login --endpoint "http://localhost:80/v1"
     if ($LASTEXITCODE -eq 0) {
         break
     } else {
@@ -75,9 +75,9 @@ appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.do
 
 # Pushing the project's core defined in appwrite.json
 appwrite deploy collection
-appwrite deploy function --with-variables
 appwrite deploy bucket
-Write-Host "---- Appwrite Set Up complete ----"
+appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "pink_profile_image.jpeg"
+Write-Host "---- Appwrite Set Up complete (only functions left)----"
 
 
 Write-Host "Setting Up Livekit now ..."
@@ -125,3 +125,4 @@ appwrite project create-variable --key LIVEKIT_HOST --value $livekitHostURL
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value $livekitSocketURL
 appwrite project create-variable --key LIVEKIT_API_KEY --value $livekitAPIKey
 appwrite project create-variable --key LIVEKIT_API_SECRET --value $livekitAPISecret
+appwrite deploy function --with-variables

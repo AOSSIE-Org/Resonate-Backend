@@ -24,8 +24,10 @@ export default async ({ req, res, log, error }) => {
         verify_ID: verificationId,
     } = JSON.parse(req.body);
 
+    let otpDocument;
+
     try {
-        const otpDocument = await db.getDocument(
+        otpDocument = await db.getDocument(
             process.env.VERIFICATION_DATABASE_ID,
             process.env.OTP_COLLECTION_ID,
             otpID

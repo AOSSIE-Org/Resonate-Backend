@@ -76,9 +76,9 @@ appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.do
 
 # Pushing the project's core defined in appwrite.json
 appwrite push collection
-appwrite push function --with-variables
 appwrite push bucket
-echo "---- Appwrite Set Up complete ----"
+appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "pink_profile_image.jpeg"
+echo "---- Appwrite Set Up complete (only functions left) ----"
 
 
 echo "Setting Up Livekit now ..."
@@ -127,6 +127,6 @@ appwrite project create-variable --key LIVEKIT_HOST --value "$livekitHostURL"
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value "$livekitSocketURL"
 appwrite project create-variable --key LIVEKIT_API_KEY --value "$livekitAPIKey"
 appwrite project create-variable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
-
+appwrite push function --with-variables
 
 echo "Many Contratulations Resonate Backend set up is complete !!! please further read the onboarding guide for connecting frontend to backend"

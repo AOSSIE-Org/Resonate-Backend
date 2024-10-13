@@ -78,6 +78,8 @@ appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.do
 appwrite push collection
 appwrite push bucket
 appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "pink_profile_image.jpeg"
+appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "story.png"
+appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "chapter.png"
 echo "---- Appwrite Set Up complete (only functions left) ----"
 
 

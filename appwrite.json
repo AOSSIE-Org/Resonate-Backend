@@ -311,7 +311,7 @@
             "schedule": "",
             "timeout": 15,
             "commands": "npm install"
-        }        
+        }
     ],
     "buckets": [
         {
@@ -1263,7 +1263,63 @@
                     "default": null
                 }
             ],
-            "indexes": []
+            "indexes": [
+                {
+                    "key": "title_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "attributes": [
+                        "title"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "creatorname_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "attributes": [
+                        "creatorName"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "description_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "attributes": [
+                        "description"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "creatorId",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "creatorId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "categoryIndex",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "category"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
         }
     ]
 }

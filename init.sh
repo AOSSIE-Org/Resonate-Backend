@@ -137,6 +137,6 @@ appwrite project create-variable --key LIVEKIT_HOST --value "$livekitHostURL"
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value "$livekitSocketURL"
 appwrite project create-variable --key LIVEKIT_API_KEY --value "$livekitAPIKey"
 appwrite project create-variable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
-appwrite push function --with-variables
+appwrite push functions --with-variables
 
 echo "Many Contratulations Resonate Backend set up is complete !!! please further read the onboarding guide for connecting frontend to backend"

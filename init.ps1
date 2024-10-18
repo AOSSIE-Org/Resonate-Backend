@@ -55,7 +55,7 @@ Write-Host "Starting resonate project set up...."
 $teamId = Read-Host "Please provide the team Id as instructed in the Resonate Set Up Guide"
 
 # Creating the project
-appwrite projects create --project-id resonate --name Resonate --teamId $teamId
+appwrite projects create --project-id resonate --name Resonate --team-id $teamId
 
 # Creating IOS and Android platforms
 appwrite projects create-platform --project-id $projectId --type flutter-android --key com.resonate.resonate --name Resonate
@@ -74,11 +74,19 @@ appwrite project create-variable --key APPWRITE_API_KEY --value $secret
 appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.docker.internal:80/v1"
 
 # Pushing the project's core defined in appwrite.json
-appwrite deploy collection
-appwrite deploy bucket
-appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "pink_profile_image.jpeg"
-appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "story.png"
-appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "chapter.png"
+appwrite push collections
+appwrite push buckets
+$bucketId = "64a13095a4c87fd78bc6"
+$files = @("amber_profile_image.jpeg", "classic_profile_image.jpeg", "cream_profile_image.jpeg", "forest_profile_image.jpeg", "time_profile_image.jpeg", "vintage_profile_image.jpeg", "story.png", "chapter.png")
+
+foreach ($file in $files) {
+    # Create a unique file ID for each file
+    $fileId = "unique()"
+
+    # Execute the Appwrite command to create the file in storage
+    appwrite storage create-file --bucket-id $bucketId --file-id $fileId --file $file
+}
+
 Write-Host "---- Appwrite Set Up complete (only functions left)----"
 
 
@@ -127,4 +135,4 @@ appwrite project create-variable --key LIVEKIT_HOST --value $livekitHostURL
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value $livekitSocketURL
 appwrite project create-variable --key LIVEKIT_API_KEY --value $livekitAPIKey
 appwrite project create-variable --key LIVEKIT_API_SECRET --value $livekitAPISecret
-appwrite deploy function --with-variables
+appwrite push functions --with-variables

@@ -77,9 +77,17 @@ appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.do
 # Pushing the project's core defined in appwrite.json
 appwrite push collection
 appwrite push bucket
-appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "pink_profile_image.jpeg"
-appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "story.png"
-appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e12" --file "chapter.png"
+bucketId="64a13095a4c87fd78bc6"
+files=("amber_profile_image.jpeg" "classic_profile_image.jpeg" "cream_profile_image.jpeg" "forest_profile_image.jpeg" "time_profile_image.jpeg" "vintage_profile_image.jpeg" "story.png" "chapter.png")
+
+for file in "${files[@]}"; do
+    # Create a unique file ID for each file
+    fileId="unique()"
+
+    # Execute the Appwrite command to create the file in storage
+    appwrite storage create-file --bucket-id "$bucketId" --file-id "$fileId" --file "$file"
+done
+
 echo "---- Appwrite Set Up complete (only functions left) ----"
 
 

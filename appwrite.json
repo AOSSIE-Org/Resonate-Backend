@@ -1114,22 +1114,6 @@
                     "default": null
                 },
                 {
-                    "key": "totalMin",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 20,
-                    "default": null
-                },
-                {
-                    "key": "tintColor",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 20,
-                    "default": null
-                },
-                {
                     "key": "storyId",
                     "type": "string",
                     "required": true,
@@ -1143,6 +1127,23 @@
                     "required": false,
                     "array": false,
                     "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "tintColor",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "playDuration",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 3600000,
                     "default": null
                 }
             ],
@@ -1247,19 +1248,20 @@
                     "default": null
                 },
                 {
-                    "key": "totalMin",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 20,
-                    "default": null
-                },
-                {
                     "key": "tintColor",
                     "type": "string",
                     "required": false,
                     "array": false,
                     "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "playDuration",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 3600000,
                     "default": null
                 }
             ],
@@ -1320,6 +1322,16 @@
                     ]
                 }
             ]
+        },
+        {
+            "$id": "670d812c0002c33c09a8",
+            "$permissions": [],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "comments",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [],
+            "indexes": []
         }
     ]
 }

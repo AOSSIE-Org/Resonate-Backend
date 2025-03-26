@@ -1227,7 +1227,7 @@
                     "type": "string",
                     "required": true,
                     "array": false,
-                    "size": 20,
+                    "size": 100,
                     "default": null
                 },
                 {

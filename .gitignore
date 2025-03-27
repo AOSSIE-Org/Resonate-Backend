@@ -2,3 +2,4 @@ functions/discussion-isTime-checker/src/resonate-service-account.json
 .DS_Store
 livekit.log
 appwrite
+.vscode/

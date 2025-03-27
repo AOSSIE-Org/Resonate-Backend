@@ -1,4 +1,4 @@
-# Rn this file contains chunks of commands that could help get the auth initialisation set up quickily
+# Rn this file contains chunks of commands that could help get the auth initialization set up quickly
 
 ## Install devtunnel command for macOS
 # brew install --cask devtunnel
@@ -55,7 +55,7 @@
 # echo "Tunnel ID for Livekit: $tunnel_id_2"
 
 
-## Start initialising Auth
+## Start initializing Auth
 
 # Ask contributor for Oauth2 provider config (Google. Github)
 # echo "Please follow the Set Up Guide on Resonate to create the Oauth2 credentials for Google and Github"

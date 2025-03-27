@@ -37,7 +37,7 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 (h) [Verify Email function](functions/verify-email) : Function to verify email ID of users.
 
-(i) [discussion-isTime-checker](functions/discussion-isTime-checker/) : A Cron Fuction to check all the exsistent Discussion scheduled timings and comparing to current time in order to activate a discussion if the current time is less than 5 minutes away from the scheduled time
+(i) [discussion-isTime-checker](functions/discussion-isTime-checker/) : A Cron Function to check all the existent Discussion scheduled timings and comparing to current time in order to activate a discussion if the current time is less than 5 minutes away from the scheduled time
 
 (j) [database-cleaner](functions/database-cleaner/) : Function to cleanup active pairs and participants collections in the database.
 

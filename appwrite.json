@@ -478,7 +478,22 @@
                     "array": false,
                     "size": 300,
                     "default": null
-                }
+                },
+                
+                {
+                    "key": "followers",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 256
+                },
+                {
+                    "key": "following",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 256
+                } 
             ],
             "indexes": []
         },

@@ -29,7 +29,7 @@ docker run -it --add-host host.docker.internal:host-gateway --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
     --entrypoint="install" \
-    appwrite/appwrite:1.6.0
+    appwrite/appwrite:1.6.1
 
 projectId="resonate"
 
@@ -56,11 +56,11 @@ read -p "Please provide the team Id as instructed in the Resonate Set Up Guide:"
 appwrite projects create --project-id resonate --name Resonate --team-id "$teamId"
 
 
-# Creating IOS and Andriod platforms
+# Creating IOS and Android platforms
 appwrite projects create-platform --project-id "$projectId" --type flutter-android --key com.resonate.resonate --name Resonate
 appwrite projects create-platform --project-id "$projectId" --type flutter-ios --key com.resonate.resonate --name Resonate
 
-# Creating Server Key and Retreiving it from response
+# Creating Server Key and Retrieving it from response
 create_key_response=$(appwrite projects create-key --project-id "$projectId" --name "Appwrite Server Key" --scopes 'sessions.write' 'users.read' 'users.write' 'teams.read' 'teams.write' 'databases.read' 'databases.write' 'collections.read' 'collections.write' 'attributes.read' 'attributes.write' 'indexes.read' 'indexes.write' 'documents.read' 'documents.write' 'files.read' 'files.write' 'buckets.read' 'buckets.write' 'functions.read' 'functions.write' 'execution.read' 'execution.write' 'locale.read' 'avatars.read' 'health.read' 'providers.read' 'providers.write' 'messages.read' 'messages.write' 'topics.read' 'topics.write' 'subscribers.read' 'subscribers.write' 'targets.read' 'targets.write' 'rules.read' 'rules.write' 'migrations.read' 'migrations.write' 'vcs.read' 'vcs.write' 'assistant.read')
 secret=$(echo "$create_key_response" | awk -F' : ' '/secret/ {print $2}')
 echo $create_key_response
@@ -102,7 +102,7 @@ while true; do
         PROCESS_ID=$(pgrep -f "livekit-server")
         if [ ! -z "$PROCESS_ID" ]; then
             kill $PROCESS_ID
-            echo "Livekit Server Already Runing Terminating and Starting Again..."
+            echo "Livekit Server Already Running Terminating and Starting Again..."
         else
             echo "Starting Livekit Server"
         fi
@@ -132,11 +132,11 @@ done
 
 
 # Push Livekit credentials as env variables for functions to use
-echo "Pushing Livekit credentials as env variables if you need any changes do them in your Appwrtie Resoante projects Global Env variables"
+echo "Pushing Livekit credentials as env variables if you need any changes do them in your Appwrite Resonate projects Global Env variables"
 appwrite project create-variable --key LIVEKIT_HOST --value "$livekitHostURL"
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value "$livekitSocketURL"
 appwrite project create-variable --key LIVEKIT_API_KEY --value "$livekitAPIKey"
 appwrite project create-variable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
 appwrite push functions --with-variables
 
-echo "Many Contratulations Resonate Backend set up is complete !!! please further read the onboarding guide for connecting frontend to backend"
+echo "Many Congratulations Resonate Backend set up is complete !!! please further read the onboarding guide for connecting frontend to backend"

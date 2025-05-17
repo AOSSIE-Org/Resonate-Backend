@@ -1,4 +1,4 @@
-# Rn this file contains chunks of commands that could help get the auth initialisation set up quickily
+# Rn this file contains chunks of commands that could help get the auth initialization set up quickly
 
 
 # Write-Host "Installing devtunnels"

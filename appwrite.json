@@ -301,13 +301,19 @@
                 },
                 {
                     "key": "REQUESTS_COLLECTION_ID",
-                    "value": "64e92b41656c6a01b1e1"
+                    "value": "64d980211f1395263ebe"
+                },
+                {
+                    "key": "APPWRITE_FUNCTION_PROJECT_ID",
+                    "value": "resonate"
                 }
             ],
             "execute": [
                 "any"
             ],
-            "events": [],
+            "events": [
+                "databases.64a521785f5be62b796f.collections.64d980211f1395263ebe.documents.*.create"
+            ],
             "schedule": "",
             "timeout": 15,
             "commands": "npm install"

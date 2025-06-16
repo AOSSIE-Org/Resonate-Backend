@@ -33,7 +33,7 @@ docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `
     --entrypoint="install" `
-    appwrite/appwrite:1.6.1
+    appwrite/appwrite:1.7.0
 
 $projectId = "resonate"
 

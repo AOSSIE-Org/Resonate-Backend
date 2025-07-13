@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "firebase-admin": "^11.11.0",
-    "node-appwrite": "^8.0.0"
+    "node-appwrite": "^17.0.0"
   }
 }

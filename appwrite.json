@@ -31,7 +31,7 @@
             ],
             "events": [],
             "schedule": "*/5 * * * *",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -67,7 +67,7 @@
             ],
             "events": [],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -86,7 +86,7 @@
             ],
             "events": [],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -118,7 +118,7 @@
             ],
             "events": [],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -146,7 +146,7 @@
             ],
             "events": [],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -194,7 +194,7 @@
             ],
             "events": [],
             "schedule": "0 4 * * *",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -226,7 +226,7 @@
             ],
             "events": [],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -245,7 +245,7 @@
             ],
             "events": [],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -277,7 +277,7 @@
             ],
             "events": [],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         },
         {
@@ -315,7 +315,7 @@
                 "databases.64a521785f5be62b796f.collections.64d980211f1395263ebe.documents.*.create"
             ],
             "schedule": "",
-            "timeout": 15,
+            "timeout": 100,
             "commands": "npm install"
         }
     ],
@@ -1331,7 +1331,12 @@
         },
         {
             "$id": "670d812c0002c33c09a8",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
             "databaseId": "64a521785f5be62b796f",
             "name": "messages",
             "enabled": true,
@@ -1377,6 +1382,23 @@
                     "default": null
                 },
                 {
+                    "key": "messageId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "index",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000,
+                    "default": null
+                },
+                {
                     "key": "isEdited",
                     "type": "boolean",
                     "required": false,
@@ -1412,7 +1434,12 @@
         },
         {
             "$id": "672759820027801f121f",
-            "$permissions": [],
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
             "databaseId": "64a521785f5be62b796f",
             "name": "reply_to",
             "enabled": true,

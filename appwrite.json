@@ -35,6 +35,38 @@
             "commands": "npm install"
         },
         {
+            "$id": "65368a58ef47cf6861206",
+            "name": "Upcoming Rooms Message Notification",
+            "runtime": "node-16.0",
+            "path": "functions/upcomingRoom-Message-Notification",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "vars": [
+                {
+                    "key": "UpcomingRoomsDataBaseID",
+                    "value": "6522fcf27a1bbc4238df"
+                },
+                {
+                    "key": "UpcomingRoomsCollectionID",
+                    "value": "6522fd163103bd453183"
+                },
+                {
+                    "key": "SubscriberCollectionID",
+                    "value": "6522fd267db6fdad3392"
+                }
+            ],
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 100,
+            "commands": "npm install"
+        },
+        {
             "$id": "6513e9d40b57c6ec156f",
             "name": "Send OTP",
             "runtime": "node-16.0",

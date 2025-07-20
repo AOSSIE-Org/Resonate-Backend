@@ -13,7 +13,8 @@ function Is-ScoopInstalled {
 # Check if Scoop is installed
 if (Is-ScoopInstalled) {
     Write-Host "Scoop is already installed."
-} else {
+}
+else {
     Write-Host "Scoop is not installed. Installing Scoop..."
     Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 }
@@ -21,7 +22,8 @@ if (Is-ScoopInstalled) {
 # Verify installation
 if (Is-ScoopInstalled) {
     Write-Host "Scoop has been successfully installed."
-} else {
+}
+else {
     Write-Host "Failed to install Scoop."
 }
 
@@ -33,7 +35,7 @@ docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `
     --entrypoint="install" `
-    appwrite/appwrite:1.7.0
+    appwrite/appwrite:1.7.4
 
 $projectId = "resonate"
 
@@ -45,7 +47,8 @@ while ($true) {
     appwrite login --endpoint "http://localhost:80/v1"
     if ($LASTEXITCODE -eq 0) {
         break
-    } else {
+    }
+    else {
         Write-Host "Login failed. Please try again."
     }
 }
@@ -61,11 +64,14 @@ appwrite projects create --project-id resonate --name Resonate --team-id $teamId
 appwrite projects create-platform --project-id $projectId --type flutter-android --key com.resonate.resonate --name Resonate
 appwrite projects create-platform --project-id $projectId --type flutter-ios --key com.resonate.resonate --name Resonate
 
+
 # Creating Server Key and Retrieving it from response
 $create_key_response = appwrite projects create-key --project-id $projectId --name "Appwrite Server Key" --scopes 'sessions.write' 'users.read' 'users.write' 'teams.read' 'teams.write' 'databases.read' 'databases.write' 'collections.read' 'collections.write' 'attributes.read' 'attributes.write' 'indexes.read' 'indexes.write' 'documents.read' 'documents.write' 'files.read' 'files.write' 'buckets.read' 'buckets.write' 'functions.read' 'functions.write' 'execution.read' 'execution.write' 'locale.read' 'avatars.read' 'health.read' 'providers.read' 'providers.write' 'messages.read' 'messages.write' 'topics.read' 'topics.write' 'subscribers.read' 'subscribers.write' 'targets.read' 'targets.write' 'rules.read' 'rules.write' 'migrations.read' 'migrations.write' 'vcs.read' 'vcs.write' 'assistant.read'
-$secret = ($create_key_response -split ' : ')[1].Trim()
+
+# Parse the secret value from the response (assuming JSON output)
+$secret = ($create_key_response | ConvertFrom-Json).secret
 Write-Host $create_key_response
-Write-Host $secret
+Write-Host "Extracted secret: $secret"
 
 # Pushing Server Key as env variable for cloud functions to use
 appwrite project create-variable --key APPWRITE_API_KEY --value $secret
@@ -102,7 +108,8 @@ while ($true) {
         if ($PROCESS_ID) {
             Stop-Process -Id $PROCESS_ID
             Write-Host "Livekit Server Already Running Terminating and Starting Again..."
-        } else {
+        }
+        else {
             Write-Host "Starting Livekit Server"
         }
 
@@ -115,7 +122,8 @@ while ($true) {
         $livekitAPISecret = "secret"
         break
 
-    } elseif ($isLocalDeployment -eq "n" -or $isLocalDeployment -eq "N") {
+    }
+    elseif ($isLocalDeployment -eq "n" -or $isLocalDeployment -eq "N") {
         Write-Host "You chose to use Livekit Cloud."
         Write-Host "Please follow the steps on the Guide to Set Up Livekit Cloud, hence getting your self Livekit host url, socket url, API key, API secret"
         $livekitHostURL = Read-Host "Please Provide Livekit Host Url"
@@ -124,7 +132,8 @@ while ($true) {
         $livekitAPISecret = Read-Host "Please Provide Livekit API secret"
         break
 
-    } else {
+    }
+    else {
         Write-Host "Invalid input. Please enter 'y' for local or 'n' for cloud."
     }
 }

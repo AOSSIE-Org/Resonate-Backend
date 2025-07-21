@@ -723,6 +723,21 @@
                     "array": false,
                     "size": 100,
                     "default": null
+                },
+                {
+                    "key": "isRandom",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "profileImageUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
                 }
             ],
             "indexes": [

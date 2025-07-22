@@ -1,7 +1,7 @@
-functions/upcomingRoom-isTime-checker/src/resonate-service-account.json
 .DS_Store
 livekit.log
 appwrite
 .vscode/
 **/.env
 **/node_modules/
+**/resonate-service-account.json

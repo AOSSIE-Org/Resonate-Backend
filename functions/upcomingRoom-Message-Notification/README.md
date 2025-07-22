@@ -1,8 +1,19 @@
-# Upcoming Room Time Checking function
-A Cron Function to check all the exsistent upcoming room scheduled timings and comparing to current time in order to activate a upcoming room if the current time is less than 5 minutes away from the scheduled time
+
+
+# Upcoming Room Message Notification Function
+
+This function sends push notifications to all subscribers and the creator of an upcoming room when a relevant event (such as a new message or update) occurs.
 
 ## 🧰 Usage
-It is a Cron function repeating itself after every 5 minutes
+This function is triggered (usually via HTTP or Appwrite function execution) when you want to notify users about activity in an upcoming room.
 
-### How does it work 
-Fetches all the list of upcoming rooms, for each upcoming room compares the time difference from current time to scheduled, if the difference is less than or equal to 5 minutes updates the isTime attrubute of that upcoming room document in the upcoming room collection to "True" and sends a push notification to all the subscribers of that upcoming room via FCM
+### How does it work
+1. Receives a payload containing the `roomId` and notification details (title, body, etc.).
+2. Fetches all subscribers of the specified upcoming room and collects their FCM registration tokens.
+3. Fetches the creator's FCM tokens for the room.
+4. Sends a push notification to all collected tokens using Firebase Cloud Messaging (FCM).
+
+**Note:**
+- The function expects the request body to include `roomId` and `payload`.
+- If no tokens are found, no notification is sent.
+- Make sure the environment variables for Appwrite and Firebase are set correctly.

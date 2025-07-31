@@ -28,6 +28,11 @@ export default async ({ req, res, log, error }) => {
         process.env.REQUESTS_COLLECTION_ID,
         newRequestDocId
     );
+    if (!newRequestDoc.isRandom) {
+        return res.json({
+            message: 'Request is not Random',
+        });
+    }
 
     const requestDocsRef = await db.listDocuments(
         process.env.DATABASE_ID,
@@ -36,8 +41,10 @@ export default async ({ req, res, log, error }) => {
             Query.notEqual('$id', [newRequestDocId]),
             Query.equal('languageIso', [newRequestDoc.languageIso]),
             Query.equal('isAnonymous', [newRequestDoc.isAnonymous]),
+            Query.equal('isRandom', [true]),
             Query.orderAsc('$createdAt'),
             Query.limit(25),
+
         ]
     );
     log(requestDocsRef.documents); // We get all the requests
@@ -58,10 +65,10 @@ export default async ({ req, res, log, error }) => {
                     ...(newRequestDoc.isAnonymous
                         ? {}
                         : {
-                              userName1: newRequestDoc.userName,
-                              userName2:
-                                  requestDocsRef.documents[index].userName,
-                          }),
+                            userName1: newRequestDoc.userName,
+                            userName2:
+                                requestDocsRef.documents[index].userName,
+                        }),
                 }
             );
             log(newPairDoc);

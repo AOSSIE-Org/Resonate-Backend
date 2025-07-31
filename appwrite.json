@@ -516,6 +516,20 @@
                     "array": false,
                     "size": 300,
                     "default": null
+                },
+                {
+                    "key": "ratingCount",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "default": 1
+                },
+                {
+                    "key": "ratingTotal",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "default": 5
                 }
             ],
             "indexes": []
@@ -722,6 +736,28 @@
                     "required": false,
                     "array": false,
                     "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "isRandom",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "profileImageUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "userRating",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
                     "default": null
                 }
             ],

@@ -349,6 +349,49 @@
             "schedule": "",
             "timeout": 100,
             "commands": "npm install"
+        },
+        {
+            "$id": "68b241f500012870fca3",
+            "vars": [
+                {
+                    "key": "UserDataDatabaseID",
+                    "value": "64a1319104a149e16f5c"
+                },
+                {
+                    "key": "UsersCollectionID",
+                    "value": "64a52f0a6c41ded09def"
+                }
+            ],
+            "execute": [
+                "any"
+            ],
+            "name": "Send Story Notifications",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "sessions.write",
+                "users.read",
+                "users.write",
+                "teams.read",
+                "teams.write",
+                "databases.read",
+                "databases.write",
+                "collections.read",
+                "collections.write",
+                "attributes.read",
+                "attributes.write",
+                "indexes.read",
+                "indexes.write",
+                "documents.read",
+                "documents.write"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/send-story-notification"
         }
     ],
     "buckets": [
@@ -522,6 +565,8 @@
                     "type": "integer",
                     "required": false,
                     "array": false,
+                    "min": -9223372036854775808,
+                    "max": 9223372036854775807,
                     "default": 1
                 },
                 {
@@ -529,7 +574,112 @@
                     "type": "double",
                     "required": false,
                     "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
                     "default": 5
+                },
+                {
+                    "key": "followers",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "68b16bae0027e57ba2c6",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "followingUserId",
+                    "onDelete": "cascade",
+                    "side": "parent"
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "name_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "attributes": [
+                        "name"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "username_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "attributes": [
+                        "username"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "68b16bae0027e57ba2c6",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "followers",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "followerUserId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "followerUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "followerName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "followerFCMToken",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "followerProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "followingUserId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "followers",
+                    "onDelete": "cascade",
+                    "side": "child"
                 }
             ],
             "indexes": []
@@ -732,6 +882,14 @@
                 },
                 {
                     "key": "userName",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "name",
                     "type": "string",
                     "required": false,
                     "array": false,

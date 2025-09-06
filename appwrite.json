@@ -32,7 +32,10 @@
             "events": [],
             "schedule": "*/5 * * * *",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "65368a58ef47cf6861206",
@@ -64,7 +67,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "6513e9d40b57c6ec156f",
@@ -100,7 +106,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "6513df34a0de595ccfb3",
@@ -119,7 +128,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "651303df122abc151bf3",
@@ -151,7 +163,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "651e2670b1e4a26e3cf1",
@@ -179,7 +194,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "6534b7949d12c9867bd2",
@@ -227,7 +245,10 @@
             "events": [],
             "schedule": "0 4 * * *",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "651e348775f28d84e11e",
@@ -259,7 +280,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "651e3d8fa35c690ed957",
@@ -278,7 +302,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "6513ed3a0ac8808c33e4",
@@ -310,7 +337,10 @@
             "events": [],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "6513f1648a9654b77b7c",
@@ -348,7 +378,10 @@
             ],
             "schedule": "",
             "timeout": 100,
-            "commands": "npm install"
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": []
         },
         {
             "$id": "68b241f500012870fca3",
@@ -392,6 +425,25 @@
             "entrypoint": "src/main.js",
             "commands": "npm install",
             "path": "functions/send-story-notification"
+        },
+        {
+            "$id": "68b76fe00027c243610e",
+            "execute": [
+                "any"
+            ],
+            "name": "Start Friend Call",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "users.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/start-friend-call"
         }
     ],
     "buckets": [
@@ -589,6 +641,18 @@
                     "twoWayKey": "followingUserId",
                     "onDelete": "cascade",
                     "side": "parent"
+                },
+                {
+                    "key": "friends",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "68b43e30002f89343479",
+                    "relationType": "manyToMany",
+                    "twoWay": true,
+                    "twoWayKey": "users",
+                    "onDelete": "cascade",
+                    "side": "parent"
                 }
             ],
             "indexes": [
@@ -630,6 +694,18 @@
             "documentSecurity": false,
             "attributes": [
                 {
+                    "key": "followingUserId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "followers",
+                    "onDelete": "cascade",
+                    "side": "child"
+                },
+                {
                     "key": "followerUserId",
                     "type": "string",
                     "required": true,
@@ -670,16 +746,13 @@
                     "default": null
                 },
                 {
-                    "key": "followingUserId",
-                    "type": "relationship",
-                    "required": false,
+                    "key": "followerRating",
+                    "type": "double",
+                    "required": true,
                     "array": false,
-                    "relatedCollection": "64a52f0a6c41ded09def",
-                    "relationType": "oneToMany",
-                    "twoWay": true,
-                    "twoWayKey": "followers",
-                    "onDelete": "cascade",
-                    "side": "child"
+                    "min": 0,
+                    "max": 5,
+                    "default": null
                 }
             ],
             "indexes": []
@@ -916,6 +989,8 @@
                     "type": "double",
                     "required": false,
                     "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
                     "default": null
                 }
             ],
@@ -1710,6 +1785,254 @@
                     "required": true,
                     "array": false,
                     "size": 50,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68b43e30002f89343479",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "friends",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "users",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "64a52f0a6c41ded09def",
+                    "relationType": "manyToMany",
+                    "twoWay": true,
+                    "twoWayKey": "friends",
+                    "onDelete": "cascade",
+                    "side": "child"
+                },
+                {
+                    "key": "senderId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "recieverId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "senderUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "recieverUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "senderName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "recieverName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "senderFCMToken",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "recieverFCMToken",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "requestStatus",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "sent",
+                        "accepted"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "requestSentByUserId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "senderRating",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
+                    "default": null
+                },
+                {
+                    "key": "recieverRating",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
+                    "default": null
+                },
+                {
+                    "key": "senderProfileImgUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "recieverProfileImgUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68b764ba002794fa2f61",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "friend-calls",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "callerName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "recieverName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "callerUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "recieverUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "callerUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "recieverUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "livekitRoomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "callStatus",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "waiting",
+                        "connected",
+                        "declined",
+                        "ended"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "callerProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "recieverProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
                     "default": null
                 }
             ],

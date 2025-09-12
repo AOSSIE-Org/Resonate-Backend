@@ -90,6 +90,43 @@ appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012
 
 echo "---- Appwrite Set Up complete (only functions left) ----"
 
+echo "Setting Up MeiliSearch now ..."
+while true; do
+    read -p "Do you wish to opt for Meilisearch Cloud or Host Meilisearch locally? For Locally: y, For Cloud: n (y/n)" isLocalDeployment
+    if [[ $isLocalDeployment == "y" || $isLocalDeployment == "Y" ]]; then
+
+        echo "You chose to host MeiliSearch locally."
+        echo "Starting MeiliSearch Server"
+        
+
+        # Command to Start MeiliSearch Server
+        docker run -d --name meilisearch \
+        -p 7700:7700 \
+        -e MEILI_ENV=development \
+        -e MEILI_MASTER_KEY=myMasterKey \
+        -v ${PWD}/meili_data:/meili_data \
+        getmeili/meilisearch:latest
+
+        meilisearchEndpoint="http://host.docker.internal:7700"
+        meilisearchMasterKey="myMasterKey"
+        break
+
+    elif [[ $isLocalDeployment == "n" || $isLocalDeployment == "N" ]]; then
+        echo "You chose to use Meilisearch Cloud."
+        echo "Please follow the steps on the Guide to Set Up Meilisearch Cloud, hence getting your self Meilisearch endpoint, master key"
+        read -p "Please Provide Meilisearch Host Url: " meilisearchEndpoint
+        read -p "Please Provide Meilisearch Master key: " meilisearchMasterKey
+        break
+
+    else
+        echo "Invalid input. Please enter 'y' for local or 'n' for cloud."
+    fi
+done
+
+echo "Pushing Meilisearch credentials as env variables if you need any changes do them in your Appwrite Resonate projects Global Env variables"
+appwrite project create-variable --key MEILISEARCH_ENDPOINT --value "$meilisearchEndpoint"
+appwrite project create-variable --key MEILISEARCH_ADMIN_API_KEY --value "$meilisearchMasterKey"
+
 
 echo "Setting Up Livekit now ..."
 while true; do

@@ -494,6 +494,27 @@
             "entrypoint": "src/main.js",
             "commands": "npm install",
             "path": "functions/sync-users-with-meilisearch"
+        },
+        {
+            "$id": "68c3d37e003118410c75",
+            "execute": [
+                "any"
+            ],
+            "name": "Sync All Documents with Meilisearch",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "databases.read",
+                "collections.read",
+                "documents.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/sync-all-documents-with-meilisearch"
         }
     ],
     "buckets": [

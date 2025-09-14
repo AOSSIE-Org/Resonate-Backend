@@ -1,5 +1,5 @@
-import { Client, Databases, Query } from 'node-appwrite';
-import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
+
+import { throwIfMissing } from './utils.js';
 import { MeiliSearch } from 'meilisearch';
 
 export default async ({ req, res, log }) => {

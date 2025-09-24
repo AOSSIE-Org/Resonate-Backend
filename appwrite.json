@@ -444,6 +444,77 @@
             "entrypoint": "src/main.js",
             "commands": "npm install",
             "path": "functions/start-friend-call"
+        },
+        {
+            "$id": "68c2c4e20013c58af2c9",
+            "execute": [
+                "any"
+            ],
+            "name": "Sync Stories with Meilisearch",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "databases.read",
+                "collections.read",
+                "documents.read"
+            ],
+            "events": [
+                "databases.stories.collections.670259e900321c12a5a2.documents.*.create",
+                "databases.stories.collections.670259e900321c12a5a2.documents.*.delete",
+                "databases.stories.collections.670259e900321c12a5a2.documents.*.update"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/sync-stories-with-meilisearch"
+        },
+        {
+            "$id": "68c2ddc8001dded982ef",
+            "execute": [
+                "any"
+            ],
+            "name": "Sync Users with Meilisearch",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "databases.read",
+                "collections.read",
+                "documents.read"
+            ],
+            "events": [
+                "databases.64a1319104a149e16f5c.collections.64a52f0a6c41ded09def.documents.*.create",
+                "databases.64a1319104a149e16f5c.collections.64a52f0a6c41ded09def.documents.*.delete",
+                "databases.64a1319104a149e16f5c.collections.64a52f0a6c41ded09def.documents.*.update"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/sync-users-with-meilisearch"
+        },
+        {
+            "$id": "68c3d37e003118410c75",
+            "execute": [
+                "any"
+            ],
+            "name": "Sync All Documents with Meilisearch",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "databases.read",
+                "collections.read",
+                "documents.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/sync-all-documents-with-meilisearch"
         }
     ],
     "buckets": [

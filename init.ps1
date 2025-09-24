@@ -95,6 +95,48 @@ appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012
 
 Write-Host "---- Appwrite Set Up complete (only functions left)----"
 
+Write-Host "Setting Up MeiliSearch now ..."
+# Push MeiliSearch credentials as env variables for functions to use
+while ($true) {
+    $isLocalDeployment = Read-Host "Do you wish to opt for MeiliSearch Cloud or Host MeiliSearch locally? For Locally: y, For Cloud: n (y/n)"
+    if ($isLocalDeployment -eq "y" -or $isLocalDeployment -eq "Y") {
+        Write-Host "You chose to host MeiliSearch locally."
+
+
+
+        Write-Host "Starting MeiliSearch Server"
+
+        # Command to Start MeiliSearch Server
+        docker run -d --name meilisearch `
+            -p 7700:7700 `
+            -e MEILI_ENV=development `
+            -e MEILI_MASTER_KEY=myMasterKey `
+            -v ${PWD}/meili_data:/meili_data `
+            getmeili/meilisearch:latest
+
+        $meilisearchEndpoint = "http://host.docker.internal:7700"
+        $meilisearchMasterKey = "myMasterKey"
+        break
+
+    }
+    elseif ($isLocalDeployment -eq "n" -or $isLocalDeployment -eq "N") {
+        Write-Host "You chose to use MeiliSearch Cloud."
+        Write-Host "Please follow the steps on the Guide to Set Up MeiliSearch Cloud, hence getting your self MeiliSearch host url, master key"
+        $meilisearchEndpoint = Read-Host "Please Provide MeiliSearch Host Url"
+        $meilisearchMasterKey = Read-Host "Please Provide MeiliSearch Master key"
+        break
+
+    }
+    else {
+        Write-Host "Invalid input. Please enter 'y' for local or 'n' for cloud."
+    }
+}
+
+# Push MeiliSearch credentials as env variables for functions to use
+Write-Host "Pushing MeiliSearch credentials as env variables if you need any changes do them in your Appwrite Resonate project's Global Env variables"
+appwrite project create-variable --key MEILISEARCH_ENDPOINT --value $meilisearchEndpoint
+appwrite project create-variable --key MEILISEARCH_ADMIN_API_KEY --value $meilisearchMasterKey
+
 
 Write-Host "Setting Up Livekit now ..."
 # Push Livekit credentials as env variables for functions to use

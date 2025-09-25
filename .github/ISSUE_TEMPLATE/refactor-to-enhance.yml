@@ -13,6 +13,7 @@ body:
       required: true
 
   - type: textarea
+    id: motivation
     attributes:
       label: Motivation, pitch
       description: >
@@ -23,14 +24,15 @@ body:
       required: true
 
   - type: checkboxes
+    id: refactor-focus-areas
     attributes:
       label: Refactoring Focus Areas
       options:
-        - "Performance"
-        - "Code readability"
-        - "Maintainability"
-        - "Reducing complexity"
-        - "Other"
+        - label: Performance
+        - label: Code readability
+        - label: Maintainability
+        - label: Reducing complexity
+        - label: Other
     validations:
       required: false
 

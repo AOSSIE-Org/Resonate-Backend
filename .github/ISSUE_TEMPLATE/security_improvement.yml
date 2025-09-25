@@ -13,6 +13,7 @@ body:
       required: true
 
   - type: textarea
+    id: motivation
     attributes:
       label: Motivation, pitch
       description: >
@@ -22,14 +23,15 @@ body:
       required: true
 
   - type: checkboxes
+    id: security-focus-areas
     attributes:
       label: Security Improvement Focus Areas
       options:
-        - "Data protection"
-        - "User authentication"
-        - "Dependency vulnerabilities"
-        - "Access control"
-        - "Other"
+        - label: Data protection
+        - label: User authentication
+        - label: Dependency vulnerabilities
+        - label: Access control
+        - label: Other
     validations:
       required: false
 

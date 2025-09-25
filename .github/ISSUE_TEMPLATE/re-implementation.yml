@@ -13,6 +13,7 @@ body:
       required: true
 
   - type: textarea
+    id: motivation
     attributes:
       label: Motivation, pitch
       description: >
@@ -23,14 +24,15 @@ body:
       required: true
 
   - type: checkboxes
+    id: focus-areas
     attributes:
       label: Areas of Focus
       options:
-        - "Performance"
-        - "Maintainability"
-        - "Code readability"
-        - "Functionality improvement"
-        - "Other"
+        - label: Performance
+        - label: Maintainability
+        - label: Code readability
+        - label: Functionality improvement
+        - label: Other
     validations:
       required: false
 

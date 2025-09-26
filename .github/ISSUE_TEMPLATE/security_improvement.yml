@@ -36,6 +36,7 @@ body:
       required: false
 
   - type: markdown
+    id: closing-note
     attributes:
       value: >
         Thank you for prioritizing security! 🔒 Be as thorough as possible in identifying potential risks and detailing how your proposal will safeguard the project.

@@ -37,6 +37,7 @@ body:
       required: false
 
   - type: markdown
+    id: closing-note
     attributes:
       value: >
         Thank you for suggesting a refactor! 🎉 Be sure to provide as much detail as possible, and help the team understand how the refactor can improve the codebase!

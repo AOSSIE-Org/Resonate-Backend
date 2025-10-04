@@ -724,6 +724,18 @@
                     "twoWayKey": "users",
                     "onDelete": "cascade",
                     "side": "parent"
+                },
+                {
+                    "key": "userReports",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "68dfcba90010d07ee333",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "reportedUser",
+                    "onDelete": "cascade",
+                    "side": "parent"
                 }
             ],
             "indexes": [
@@ -880,6 +892,14 @@
                     "required": true,
                     "array": false,
                     "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "reportedUsers",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
                     "default": null
                 }
             ],
@@ -2105,6 +2125,75 @@
                     "array": false,
                     "format": "url",
                     "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68dfcba90010d07ee333",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "user-reports",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "reporterUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "reportedUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "reportText",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "reportType",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "harassment",
+                        "abuse",
+                        "spam",
+                        "impersonation",
+                        "illegal",
+                        "selfharm",
+                        "misuse"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "reportedUser",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "userReports",
+                    "onDelete": "cascade",
+                    "side": "child"
                 }
             ],
             "indexes": []

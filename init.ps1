@@ -35,7 +35,7 @@ docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `
     --entrypoint="install" `
-    appwrite/appwrite:1.7.4
+    appwrite/appwrite:latest
 
 $projectId = "resonate"
 
@@ -187,3 +187,4 @@ appwrite project create-variable --key LIVEKIT_SOCKET_URL --value $livekitSocket
 appwrite project create-variable --key LIVEKIT_API_KEY --value $livekitAPIKey
 appwrite project create-variable --key LIVEKIT_API_SECRET --value $livekitAPISecret
 appwrite push functions --with-variables
+

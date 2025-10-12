@@ -1,4 +1,3 @@
-import { Client, Databases, Query } from "node-appwrite";
 import { RoomServiceClient } from "livekit-server-sdk";
 import { throwIfMissing } from "./utils.js";
 

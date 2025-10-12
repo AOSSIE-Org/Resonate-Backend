@@ -9,8 +9,7 @@
         "format": "prettier --write ."
     },
     "dependencies": {
-        "livekit-server-sdk": "^1.2.6",
-        "node-appwrite": "^17.0.0"
+        "livekit-server-sdk": "^1.2.6"
     },
     "devDependencies": {
         "prettier": "^3.0.0"

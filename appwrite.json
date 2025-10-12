@@ -515,6 +515,63 @@
             "entrypoint": "src/main.js",
             "commands": "npm install",
             "path": "functions/sync-all-documents-with-meilisearch"
+        },
+        {
+            "$id": "68e8c39600152445ca07",
+            "execute": [
+                "any"
+            ],
+            "name": "Create Live Chapter Room",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "users.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/create-live-chapter-room"
+        },
+        {
+            "$id": "68e95c6e0015532a7d30",
+            "execute": [
+                "any"
+            ],
+            "name": "Join Live Chapter",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "users.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/join-live-chapter"
+        },
+        {
+            "$id": "68ebff09000f814cc979",
+            "execute": [
+                "any"
+            ],
+            "name": "Delete Live Chapter Room",
+            "enabled": true,
+            "logging": true,
+            "runtime": "node-16.0",
+            "scopes": [
+                "users.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "path": "functions/delete-live-chapter-room"
         }
     ],
     "buckets": [
@@ -2194,6 +2251,122 @@
                     "twoWayKey": "userReports",
                     "onDelete": "cascade",
                     "side": "child"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68e6427f0014f8b0e580",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "Live Chapter Attendees",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "liveChapterId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "users",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": false,
+                    "twoWayKey": "68e642bd0006010fc35e",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68e5227e001b2f868c05",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "stories",
+            "name": "Live Chapters",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "livekitRoomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "authorUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "authorProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "authorName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "followersFCMToken",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "chapterTitle",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "storyId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "chapterDescription",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2000,
+                    "default": null
                 }
             ],
             "indexes": []

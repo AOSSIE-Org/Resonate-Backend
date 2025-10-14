@@ -1,0 +1,17 @@
+{
+  "name": "sync-upcoming-rooms-with-meilisearch",
+  "version": "1.0.0",
+  "description": "Sync upcoming rooms with Meilisearch for search functionality",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "dependencies": {
+    "meilisearch": "^0.40.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}

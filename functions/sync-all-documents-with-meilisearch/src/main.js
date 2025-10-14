@@ -50,6 +50,63 @@ export default async ({ req, res, log }) => {
     await storiesIndex.addDocuments(documents, { primaryKey: '$id' });
   } while (storiesCursor !== null);
 
+  const liveRoomsIndex = meilisearch.index('live_rooms');
+  await liveRoomsIndex.updateSearchableAttributes(['name', 'description', 'tags']);
+
+  let liveRoomsCursor = null;
+  do {
+    const queries = [Query.limit(100)];
+    if (liveRoomsCursor) queries.push(Query.cursorAfter(liveRoomsCursor));
+
+    const { documents } = await databases.listDocuments(
+      "64a521785f5be62b796f",
+      "64a5217e695bf2c4ec9c",
+      queries
+    );
+
+    if (documents.length === 0) break;
+
+    liveRoomsCursor = documents[documents.length - 1].$id;
+    await liveRoomsIndex.addDocuments(documents, { primaryKey: '$id' });
+  } while (liveRoomsCursor);
+
+  const upcomingRoomsIndex = meilisearch.index('upcoming_rooms');
+  await upcomingRoomsIndex.updateSearchableAttributes(['name', 'description', 'tags']);
+
+  let upcomingRoomsCursor = null;
+  do {
+    const queries = [Query.limit(100)];
+    if (upcomingRoomsCursor) queries.push(Query.cursorAfter(upcomingRoomsCursor));
+
+    const { documents } = await databases.listDocuments(
+      "6522fcf27a1bbc4238df",
+      "6522fd163103bd453183",
+      queries
+    );
+
+    if (documents.length === 0) break;
+
+    upcomingRoomsCursor = documents[documents.length - 1].$id;
+    await upcomingRoomsIndex.addDocuments(documents, { primaryKey: '$id' });
+  } while (upcomingRoomsCursor);
+
+  let subscribedRoomsCursor = null;
+  do {
+    const queries = [Query.limit(100)];
+    if (subscribedRoomsCursor) queries.push(Query.cursorAfter(subscribedRoomsCursor));
+
+    const { documents } = await databases.listDocuments(
+      "6522fcf27a1bbc4238df",
+      "6522fd267db6fdad3392",
+      queries
+    );
+
+    if (documents.length === 0) break;
+
+    subscribedRoomsCursor = documents[documents.length - 1].$id;
+    await upcomingRoomsIndex.addDocuments(documents, { primaryKey: '$id' });
+  } while (subscribedRoomsCursor);
+
   const usersIndex = meilisearch.index("users");
 
   let usersCursor = null;

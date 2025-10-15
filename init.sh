@@ -31,19 +31,16 @@ else
     fi
 fi
 
-serverVersion="1.7.4"
-cliVersion="7.0.0"
-echo "Using Appwrite Server version: $serverVersion"
-echo "Using Appwrite CLI version: $cliVersion"
+
 
 echo "Installing Appwrite CLI via npm"
-npm install -g appwrite@$cliVersion
+npm install -g appwrite@7.0.0
 
 docker run -it --add-host host.docker.internal:host-gateway --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
     --entrypoint="install" \
-    appwrite/appwrite:$serverVersion
+    appwrite/appwrite:1.7.4
 
 projectId="resonate"
 

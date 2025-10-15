@@ -34,15 +34,21 @@ class AppwriteService {
             process.env.PARTICIPANTS_COLLECTION_ID
         );
 
-        participantDocs.documents.forEach(async (participantDoc) => {
-            if (!(await this.doesRoomExist(participantDoc.roomId))) {
-                await this.databases.deleteDocument(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.PARTICIPANTS_COLLECTION_ID,
-                    participantDoc.$id
-                );
-            }
-        });
+        await Promise.all(
+            participantDocs.documents.map(async(participantDocs)=>{
+                try{
+                    if(!(await this.doesRoomExist(participantDocs.roomId))){
+                        await this.databases.deleteDocument(
+                            process.env.MASTER_DATABASE_ID,
+                            process.env/PARTICIPANTS_COLLECTION_ID,
+                            participantDocs.$id
+                        );
+                    }
+                }catch(error){
+                    console.error(`Failed to clean participant ${participantDoc.$id}:`, error);
+                }
+            })
+        );
     }
 
     async cleanActivePairsCollection() {

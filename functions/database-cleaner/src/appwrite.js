@@ -35,13 +35,13 @@ class AppwriteService {
         );
 
         await Promise.all(
-            participantDocs.documents.map(async(participantDocs)=>{
+            participantDocs.documents.map(async(participantDoc)=>{
                 try{
-                    if(!(await this.doesRoomExist(participantDocs.roomId))){
+                    if(!(await this.doesRoomExist(participantDoc.roomId))){
                         await this.databases.deleteDocument(
                             process.env.MASTER_DATABASE_ID,
-                            process.env/PARTICIPANTS_COLLECTION_ID,
-                            participantDocs.$id
+                            process.env.PARTICIPANTS_COLLECTION_ID,
+                            participantDoc.$id
                         );
                     }
                 }catch(error){

@@ -1,11 +1,11 @@
-name: 🔧 Refactor to Enhance
+name:  Refactor to Enhance
 description: Suggest a refactor to improve the code's efficiency, readability, or maintainability while keeping its functionality intact.
 
 body:
   - type: textarea
     id: refactor-to-enhance
     attributes:
-      label: 🔧 The refactor
+      label:  The refactor
       description: >
         Describe the part of the code that you think needs refactoring. What is the current problem or area that could benefit from enhancement? 
         How do you think refactoring will improve the codebase?
@@ -39,4 +39,4 @@ body:
   - type: markdown
     attributes:
       value: >
-        Thank you for suggesting a refactor! 🎉 Be sure to provide as much detail as possible, and help the team understand how the refactor can improve the codebase!
+        Thank you for suggesting a refactor!  Be sure to provide as much detail as possible, and help the team understand how the refactor can improve the codebase!

@@ -1,11 +1,11 @@
-name: 🔒 Security Improvement
+name:  Security Improvement
 description: Suggest changes to improve the project's security, including identifying vulnerabilities and proposing measures to harden the codebase.
 
 body:
   - type: textarea
     id: security-improvement
     attributes:
-      label: 🔒 The Security Improvement
+      label:  The Security Improvement
       description: >
         Describe the security improvement you propose. Identify any potential risks or vulnerabilities in the current setup
         and detail the changes required to enhance security. Specify whether it impacts data handling, user authentication, or any external dependencies.
@@ -38,4 +38,4 @@ body:
   - type: markdown
     attributes:
       value: >
-        Thank you for prioritizing security! 🔒 Be as thorough as possible in identifying potential risks and detailing how your proposal will safeguard the project.
+        Thank you for prioritizing security!  Be as thorough as possible in identifying potential risks and detailing how your proposal will safeguard the project.

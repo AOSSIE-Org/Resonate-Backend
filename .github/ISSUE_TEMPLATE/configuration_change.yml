@@ -1,11 +1,11 @@
-name: ⚙️ Configuration Change
+name:  Configuration Change
 description: Suggest modifications to the project’s configuration, such as build tools, CI/CD pipeline adjustments, or environment settings to improve project management or deployment.
 
 body:
   - type: textarea
     id: configuration-change
     attributes:
-      label: ⚙️ The Configuration Change
+      label:  The Configuration Change
       description: >
         Describe the specific configuration change you propose. What configuration settings or tools need adjustment?
         Mention which part of the project this affects, like build tools, CI/CD settings, or deployment configurations.
@@ -36,4 +36,4 @@ body:
   - type: markdown
     attributes:
       value: >
-        Thank you for your contribution! 🔧 Please provide as much information as possible about the configuration change and how it will benefit the project.
+        Thank you for your contribution!  Please provide as much information as possible about the configuration change and how it will benefit the project.

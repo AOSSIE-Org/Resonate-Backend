@@ -1,11 +1,11 @@
-name: 🔄 Re-Implementation
+name: Re-Implementation
 description: Suggest rewriting or replacing a part of the codebase for better performance, maintainability, or functionality.
 
 body:
   - type: textarea
     id: re-implementation
     attributes:
-      label: 🔄 The re-implementation
+      label:  The re-implementation
       description: >
         A clear and concise description of the part of the system that you think needs re-implementation. 
         What specific functionality or code block would you like to rewrite or replace? Please explain the issue in detail.

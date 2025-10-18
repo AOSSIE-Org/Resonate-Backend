@@ -10,20 +10,31 @@ esac
 
 echo "Operating System: $OS_TYPE"
 
-echo "Installing Dependencies...."
 if [ "$OS_TYPE" = "Mac" ]; then
-    # Check if Homebrew is installed
-    if ! command -v brew &> /dev/null; then
-        echo "Homebrew not found. Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if ! command -v node &> /dev/null; then
+        echo "Node.js not found. Installing via Homebrew..."
+        if ! command -v brew &> /dev/null; then
+            echo "Homebrew not found. Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+        brew install node
     else
-        echo "Homebrew is already installed."
+        echo "Node.js already installed."
     fi
-    brew install appwrite
 else
-    curl -sL https://appwrite.io/cli/install.sh | bash
+    if ! command -v node &> /dev/null; then
+        echo "Node.js not found. Installing via apt..."
+        sudo apt update -y
+        sudo apt install -y nodejs npm
+    else
+        echo "Node.js already installed."
+    fi
 fi
 
+
+
+echo "Installing Appwrite CLI via npm"
+npm install -g appwrite@7.0.0
 
 docker run -it --add-host host.docker.internal:host-gateway --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \

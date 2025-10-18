@@ -27,9 +27,18 @@ else {
     Write-Host "Failed to install Scoop."
 }
 
+# Check if Node.js is installed
+if (Get-Command node -ErrorAction SilentlyContinue) {
+    Write-Host "Node.js is already installed."
+} else {
+    Write-Host "Node.js not found. Please install Node.js first."
+    scoop install nodejs
+}
 
-Write-Host "Install Appwrite-cli using Scoop"
-scoop install https://raw.githubusercontent.com/appwrite/sdk-for-cli/master/scoop/appwrite.config.json
+# Install Appwrite CLI via npm 
+Write-Host "Installing Appwrite CLI via npm ..."
+npm install -g appwrite@7.0.0
+
 
 docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
@@ -179,7 +188,6 @@ while ($true) {
         Write-Host "Invalid input. Please enter 'y' for local or 'n' for cloud."
     }
 }
-
 # Push Livekit credentials as env variables for functions to use
 Write-Host "Pushing Livekit credentials as env variables if you need any changes do them in your Appwrite Resonate project's Global Env variables"
 appwrite project create-variable --key LIVEKIT_HOST --value $livekitHostURL

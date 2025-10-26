@@ -1800,6 +1800,13 @@
                     "array": false,
                     "format": "",
                     "default": null
+                },
+                {
+                    "key": "isdeleted",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
                 }
             ],
             "indexes": []

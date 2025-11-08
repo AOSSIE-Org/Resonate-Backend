@@ -1802,7 +1802,7 @@
                     "default": null
                 },
                 {
-                    "key": "isdeleted",
+                    "key": "isDeleted",
                     "type": "boolean",
                     "required": false,
                     "array": false,

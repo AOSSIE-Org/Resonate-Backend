@@ -8,8 +8,8 @@ export default async (context) => {
     throwIfMissing(process.env, [
         'APPWRITE_API_KEY',
         'MASTER_DATABASE_ID',
-        'ROOMS_COLLECTION_ID',
-        'PARTICIPANTS_COLLECTION_ID',
+        'ROOMS_TABLE_ID',
+        'PARTICIPANTS_TABLE_ID',
         'LIVEKIT_API_KEY',
         'LIVEKIT_API_SECRET',
     ]);

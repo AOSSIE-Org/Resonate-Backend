@@ -1,4 +1,4 @@
-import { Client, Databases, Query } from "node-appwrite";
+import { Client, TablesDB, Query } from "node-appwrite";
 import { getExpiryDate } from "./utils.js";
 
 class AppwriteService {
@@ -11,17 +11,17 @@ class AppwriteService {
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
             .setKey(process.env.APPWRITE_API_KEY);
 
-        this.databases = new Databases(client);
+        this.tables = new TablesDB(client);
     }
 
     async doesRoomExist(roomId) {
         try {
-            await this.databases.getDocument(
-                process.env.MASTER_DATABASE_ID,
-                process.env.ROOMS_COLLECTION_ID,
-                roomId
-            );
-            return true;
+            const result = await this.tables.getRows({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId: process.env.ROOMS_TABLE_ID,
+                queries: [Query.equal("$id", [roomId])]
+            });
+            return result.rows.length > 0;
         } catch (err) {
             if (err.code !== 404) throw err;
             return false;
@@ -29,23 +29,23 @@ class AppwriteService {
     }
 
     async cleanParticipantsCollection() {
-        const participantDocs = await this.databases.listDocuments(
-            process.env.MASTER_DATABASE_ID,
-            process.env.PARTICIPANTS_COLLECTION_ID
-        );
+        const participantsList = await this.tables.listRows({
+            databaseId: process.env.MASTER_DATABASE_ID,
+            tableId: process.env.PARTICIPANTS_TABLE_ID
+        });
 
         await Promise.all(
-            participantDocs.documents.map(async(participantDoc)=>{
+            participantsList.rows.map(async(participantRow)=>{
                 try{
-                    if(!(await this.doesRoomExist(participantDoc.roomId))){
-                        await this.databases.deleteDocument(
-                            process.env.MASTER_DATABASE_ID,
-                            process.env.PARTICIPANTS_COLLECTION_ID,
-                            participantDoc.$id
-                        );
+                    if(!(await this.doesRoomExist(participantRow.roomId))){
+                        await this.tables.deleteRows({
+                            databaseId: process.env.MASTER_DATABASE_ID,
+                            tableId: process.env.PARTICIPANTS_TABLE_ID,
+                            queries: [Query.equal("$id", [participantRow.$id])]
+                        });
                     }
                 }catch(error){
-                    console.error(`Failed to clean participant ${participantDoc.$id}:`, error);
+                    console.error(`Failed to clean participant ${participantRow.$id}:`, error);
                 }
             })
         );
@@ -58,21 +58,21 @@ class AppwriteService {
             Query.limit(25),
         ];
         do {
-            const activePairDocs = await this.databases.listDocuments(
-                process.env.MASTER_DATABASE_ID,
-                process.env.ACTIVE_PAIRS_COLLECTION_ID,
+            const activePairsList = await this.tables.listRows({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId: process.env.ACTIVE_PAIRS_TABLE_ID,
                 queries
-            );
-            await Promise.all(
-                activePairDocs.documents.map((activePairDoc) =>
-                    this.databases.deleteDocument(
-                        process.env.MASTER_DATABASE_ID,
-                        process.env.ACTIVE_PAIRS_COLLECTION_ID,
-                        activePairDoc.$id
-                    )
-                )
-            );
-            done = activePairDocs.total === 0;
+            });
+            
+            if (activePairsList.rows.length > 0) {
+                await this.tables.deleteRows({
+                    databaseId: process.env.MASTER_DATABASE_ID,
+                    tableId: process.env.ACTIVE_PAIRS_TABLE_ID,
+                    queries: [Query.equal("$id", activePairsList.rows.map(r => r.$id))]
+                });
+            }
+            
+            done = activePairsList.total === 0;
         } while (!done);
     }
 
@@ -92,21 +92,19 @@ class AppwriteService {
 
         //
         do {
-            const oneDayOldOTPs = await this.databases.listDocuments(
-                process.env.VERIFICATION_DATABASE_ID,
-                process.env.OTP_COLLECTION_ID,
+            const oneDayOldOTPs = await this.tables.listRows({
+                databaseId: process.env.VERIFICATION_DATABASE_ID,
+                tableId: process.env.OTP_TABLE_ID,
                 queries
-            );
+            });
     
-            await Promise.all(
-                oneDayOldOTPs.documents.map(async (otp) => {
-                    await this.databases.deleteDocument(
-                        process.env.VERIFICATION_DATABASE_ID,
-                        process.env.OTP_COLLECTION_ID,
-                        otp.$id
-                    );
-                })
-            )
+            if (oneDayOldOTPs.rows.length > 0) {
+                await this.tables.deleteRows({
+                    databaseId: process.env.VERIFICATION_DATABASE_ID,
+                    tableId: process.env.OTP_TABLE_ID,
+                    queries: [Query.equal("$id", oneDayOldOTPs.rows.map(r => r.$id))]
+                });
+            }
 
             done = oneDayOldOTPs.total === 0;
 

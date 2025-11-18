@@ -7,7 +7,7 @@ export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
         "APPWRITE_API_KEY",
         "VERIFICATION_DATABASE_ID",
-        "OTP_COLLECTION_ID",
+        "OTP_TABLE_ID",
         "SENDER_MAIL",
         "SENDER_PASSWORD",
     ]);

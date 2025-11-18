@@ -1,4 +1,4 @@
-import { Client, Databases, Query } from 'node-appwrite';
+import { Client, TablesDB, Query } from 'node-appwrite';
 import { throwIfMissing } from './utils.js';
 import { MeiliSearch } from 'meilisearch';
 
@@ -14,7 +14,7 @@ export default async ({ req, res, log }) => {
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(process.env.APPWRITE_API_KEY);
 
-  const databases = new Databases(client);
+  const databases = new TablesDB(client);
 
   const meilisearch = new MeiliSearch({
     host: process.env.MEILISEARCH_ENDPOINT,
@@ -32,11 +32,13 @@ export default async ({ req, res, log }) => {
       queries.push(Query.cursorAfter(storiesCursor));
     }
 
-    const { documents } = await databases.listDocuments(
-      "stories",
-      "670259e900321c12a5a2",
+    const result = await databases.listRows({
+      databaseId: "stories",
+      tableId: "670259e900321c12a5a2",
       queries
-    );
+    });
+
+    const documents = result.rows;
 
     if (documents.length > 0) {
       storiesCursor = documents[documents.length - 1].$id;
@@ -61,11 +63,13 @@ export default async ({ req, res, log }) => {
       queries.push(Query.cursorAfter(usersCursor));
     }
 
-    const { documents } = await databases.listDocuments(
-      "64a1319104a149e16f5c",
-      "64a52f0a6c41ded09def",
+    const result = await databases.listRows({
+      databaseId: "64a1319104a149e16f5c",
+      tableId: "64a52f0a6c41ded09def",
       queries
-    );
+    });
+
+    const documents = result.rows;
 
     if (documents.length > 0) {
       usersCursor = documents[documents.length - 1].$id;

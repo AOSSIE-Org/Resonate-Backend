@@ -10,7 +10,7 @@ const app = admin.initializeApp({
 module.exports = async function ({ req, res, log, error }) {
   var subscribersTokens = [];
   const client = new sdk.Client();
-  const database = new sdk.Databases(client);
+  const database = new sdk.TablesDB(client);
   const query = sdk.Query;
   const { creatorId, payload } = JSON.parse(req.body);
 
@@ -24,7 +24,18 @@ module.exports = async function ({ req, res, log, error }) {
   log("Send Notification");
   log(creatorId);
   log(payload);
-  let creatorDoc = await database.getDocument(process.env.UserDataDatabaseID, process.env.UsersCollectionID, creatorId);
+  let creatorResult = await database.getRows({
+    databaseId: process.env.UserDataDatabaseID,
+    tableId: process.env.UsersCollectionID,
+    queries: [query.equal('$id', [creatorId])]
+  });
+  
+  if (creatorResult.rows.length === 0) {
+    log('Creator not found');
+    return res.json({ message: 'Creator not found' });
+  }
+  
+  let creatorDoc = creatorResult.rows[0];
   log("Creator document retrieved");
 
   // Extract FCM tokens from followers

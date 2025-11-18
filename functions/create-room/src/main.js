@@ -6,7 +6,7 @@ export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
         "APPWRITE_API_KEY",
         "MASTER_DATABASE_ID",
-        "ROOMS_COLLECTION_ID",
+        "ROOMS_TABLE_ID",
         "LIVEKIT_HOST",
         "LIVEKIT_API_KEY",
         "LIVEKIT_API_SECRET",

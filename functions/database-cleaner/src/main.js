@@ -4,12 +4,12 @@ import { throwIfMissing } from "./utils.js";
 export default async (context) => {
     throwIfMissing(process.env, [
         "APPWRITE_API_KEY",
-        "ROOMS_COLLECTION_ID",
-        "PARTICIPANTS_COLLECTION_ID",
-        "ACTIVE_PAIRS_COLLECTION_ID",
+        "ROOMS_TABLE_ID",
+        "PARTICIPANTS_TABLE_ID",
+        "ACTIVE_PAIRS_TABLE_ID",
         "RETENTION_PERIOD_DAYS",
         "VERIFICATION_DATABASE_ID",
-        "OTP_COLLECTION_ID",
+        "OTP_TABLE_ID",
     ]);
 
     const appwrite = new AppwriteService();

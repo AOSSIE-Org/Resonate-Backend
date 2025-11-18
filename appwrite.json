@@ -1877,6 +1877,13 @@
                     "array": false,
                     "format": "",
                     "default": null
+                },
+                {
+                    "key": "isDeleted",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
                 }
             ],
             "indexes": []

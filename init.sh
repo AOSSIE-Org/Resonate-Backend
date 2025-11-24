@@ -34,7 +34,7 @@ fi
 
 
 echo "Installing Appwrite CLI via npm"
-npm install -g appwrite@7.0.0
+npm install -g appwrite@12.0.0
 
 docker run -it --add-host host.docker.internal:host-gateway --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \

@@ -30,14 +30,15 @@ else {
 # Check if Node.js is installed
 if (Get-Command node -ErrorAction SilentlyContinue) {
     Write-Host "Node.js is already installed."
-} else {
+}
+else {
     Write-Host "Node.js not found. Please install Node.js first."
     scoop install nodejs
 }
 
 # Install Appwrite CLI via npm 
 Write-Host "Installing Appwrite CLI via npm ..."
-npm install -g appwrite@7.0.0
+npm install -g appwrite@12.0.0
 
 
 docker run -it --add-host host.docker.internal:host-gateway --rm `

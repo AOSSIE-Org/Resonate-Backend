@@ -1,5 +1,5 @@
 {
-    "projectId": "resonate",
+    "projectId": "685a4b6900253ca3ef64",
     "projectName": "Resonate",
     "functions": [
         {
@@ -35,7 +35,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-1vcpu-512mb"
         },
         {
             "$id": "65368a58ef47cf6861206",
@@ -70,7 +71,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "6513e9d40b57c6ec156f",
@@ -109,7 +111,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "6513df34a0de595ccfb3",
@@ -131,7 +134,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "651303df122abc151bf3",
@@ -166,7 +170,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "651e2670b1e4a26e3cf1",
@@ -184,7 +189,7 @@
                     "value": "64a521785f5be62b796f"
                 },
                 {
-                    "key": "ROOMS_TABLE_ID",
+                    "key": "ROOMS_COLLECTION_ID",
                     "value": "64a5217e695bf2c4ec9c"
                 }
             ],
@@ -197,7 +202,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "6534b7949d12c9867bd2",
@@ -248,7 +254,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "651e348775f28d84e11e",
@@ -283,7 +290,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "651e3d8fa35c690ed957",
@@ -305,7 +313,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "6513ed3a0ac8808c33e4",
@@ -340,7 +349,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "6513f1648a9654b77b7c",
@@ -381,7 +391,8 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": []
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68b241f500012870fca3",
@@ -424,7 +435,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/send-story-notification"
+            "path": "functions/send-story-notification",
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68b76fe00027c243610e",
@@ -443,7 +455,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/start-friend-call"
+            "path": "functions/start-friend-call",
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68c2c4e20013c58af2c9",
@@ -456,7 +469,9 @@
             "runtime": "node-16.0",
             "scopes": [
                 "databases.read",
+                "tables.read",
                 "collections.read",
+                "rows.read",
                 "documents.read"
             ],
             "events": [
@@ -468,7 +483,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/sync-stories-with-meilisearch"
+            "path": "functions/sync-stories-with-meilisearch",
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68c2ddc8001dded982ef",
@@ -481,7 +497,9 @@
             "runtime": "node-16.0",
             "scopes": [
                 "databases.read",
+                "tables.read",
                 "collections.read",
+                "rows.read",
                 "documents.read"
             ],
             "events": [
@@ -493,7 +511,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/sync-users-with-meilisearch"
+            "path": "functions/sync-users-with-meilisearch",
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68c3d37e003118410c75",
@@ -506,7 +525,9 @@
             "runtime": "node-16.0",
             "scopes": [
                 "databases.read",
+                "tables.read",
                 "collections.read",
+                "rows.read",
                 "documents.read"
             ],
             "events": [],
@@ -514,7 +535,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/sync-all-documents-with-meilisearch"
+            "path": "functions/sync-all-documents-with-meilisearch",
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68e8c39600152445ca07",
@@ -533,7 +555,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/create-live-chapter-room"
+            "path": "functions/create-live-chapter-room",
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68e95c6e0015532a7d30",
@@ -552,7 +575,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/join-live-chapter"
+            "path": "functions/join-live-chapter",
+            "specification": "s-0.5vcpu-512mb"
         },
         {
             "$id": "68ebff09000f814cc979",
@@ -571,7 +595,8 @@
             "timeout": 15,
             "entrypoint": "src/main.js",
             "commands": "npm install",
-            "path": "functions/delete-live-chapter-room"
+            "path": "functions/delete-live-chapter-room",
+            "specification": "s-0.5vcpu-512mb"
         }
     ],
     "buckets": [
@@ -741,15 +766,6 @@
                     "default": null
                 },
                 {
-                    "key": "ratingCount",
-                    "type": "integer",
-                    "required": false,
-                    "array": false,
-                    "min": -9223372036854775808,
-                    "max": 9223372036854775807,
-                    "default": 1
-                },
-                {
                     "key": "ratingTotal",
                     "type": "double",
                     "required": false,
@@ -793,6 +809,15 @@
                     "twoWayKey": "reportedUser",
                     "onDelete": "cascade",
                     "side": "parent"
+                },
+                {
+                    "key": "ratingCount",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": -9223372036854775808,
+                    "max": 9223372036854775807,
+                    "default": 1
                 }
             ],
             "indexes": [
@@ -1042,7 +1067,7 @@
                 {
                     "key": "uid",
                     "type": "key",
-                    "status": "available",
+                    "status": "processing",
                     "attributes": [
                         "uid"
                     ],
@@ -1831,23 +1856,6 @@
                     "default": null
                 },
                 {
-                    "key": "messageId",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 1000,
-                    "default": null
-                },
-                {
-                    "key": "index",
-                    "type": "integer",
-                    "required": true,
-                    "array": false,
-                    "min": 0,
-                    "max": 1000,
-                    "default": null
-                },
-                {
                     "key": "isEdited",
                     "type": "boolean",
                     "required": false,
@@ -1879,11 +1887,21 @@
                     "default": null
                 },
                 {
-                    "key": "isDeleted",
-                    "type": "boolean",
-                    "required": false,
+                    "key": "messageId",
+                    "type": "string",
+                    "required": true,
                     "array": false,
-                    "default": false
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "index",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000,
+                    "default": null
                 }
             ],
             "indexes": []
@@ -2207,6 +2225,18 @@
             "documentSecurity": false,
             "attributes": [
                 {
+                    "key": "reportedUser",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "userReports",
+                    "onDelete": "cascade",
+                    "side": "child"
+                },
+                {
                     "key": "reporterUid",
                     "type": "string",
                     "required": true,
@@ -2246,18 +2276,6 @@
                     ],
                     "format": "enum",
                     "default": null
-                },
-                {
-                    "key": "reportedUser",
-                    "type": "relationship",
-                    "required": false,
-                    "array": false,
-                    "relatedCollection": "64a52f0a6c41ded09def",
-                    "relationType": "oneToMany",
-                    "twoWay": true,
-                    "twoWayKey": "userReports",
-                    "onDelete": "cascade",
-                    "side": "child"
                 }
             ],
             "indexes": []
@@ -2374,6 +2392,1874 @@
                     "array": false,
                     "size": 2000,
                     "default": null
+                }
+            ],
+            "indexes": []
+        }
+    ],
+    "settings": {
+        "services": {
+            "account": true,
+            "avatars": true,
+            "databases": true,
+            "locale": true,
+            "health": true,
+            "storage": true,
+            "teams": true,
+            "users": true,
+            "sites": true,
+            "functions": true,
+            "graphql": true,
+            "messaging": true
+        },
+        "auth": {
+            "methods": {
+                "jwt": true,
+                "phone": true,
+                "invites": true,
+                "anonymous": true,
+                "email-otp": true,
+                "magic-url": true,
+                "email-password": true
+            },
+            "security": {
+                "duration": 31536000,
+                "limit": 0,
+                "sessionsLimit": 10,
+                "passwordHistory": 0,
+                "passwordDictionary": false,
+                "personalDataCheck": false,
+                "sessionAlerts": false,
+                "mockNumbers": []
+            }
+        }
+    },
+    "tablesDB": [
+        {
+            "$id": "6522fcf27a1bbc4238df",
+            "name": "upcoming-rooms",
+            "enabled": true
+        },
+        {
+            "$id": "64a7bfd6b09121548bfe",
+            "name": "verification",
+            "enabled": true
+        },
+        {
+            "$id": "64a1319104a149e16f5c",
+            "name": "user-data",
+            "enabled": true
+        },
+        {
+            "$id": "64a521785f5be62b796f",
+            "name": "master",
+            "enabled": true
+        },
+        {
+            "$id": "stories",
+            "name": "stories",
+            "enabled": true
+        }
+    ],
+    "tables": [
+        {
+            "$id": "6522fd267db6fdad3392",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6522fcf27a1bbc4238df",
+            "name": "Subscribed Users",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "userID",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 10000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "userProfileUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "upcomingRoomId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "registrationTokens",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "6522fd163103bd453183",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6522fcf27a1bbc4238df",
+            "name": "Upcoming Rooms",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "isTime",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "scheduledDateTime",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 10000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creatorUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creator_fcm_tokens",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a7bfe3a3a7ee5bf7f8",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a7bfd6b09121548bfe",
+            "name": "OTP's",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "otp",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "date",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 50,
+                    "default": "None",
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a7c0100eabfe8d3844",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a7bfd6b09121548bfe",
+            "name": "Verifications",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "status",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 1000000,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a131980b5388c2a0af",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "usernames",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a52f0a6c41ded09def",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "users",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "dob",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 15,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "username",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "profileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 500,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                },
+                {
+                    "key": "profileImageID",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 300,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "ratingTotal",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
+                    "default": 5
+                },
+                {
+                    "key": "followers",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "68b16bae0027e57ba2c6",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "followingUserId",
+                    "onDelete": "cascade",
+                    "side": "parent"
+                },
+                {
+                    "key": "friends",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "68b43e30002f89343479",
+                    "relationType": "manyToMany",
+                    "twoWay": true,
+                    "twoWayKey": "users",
+                    "onDelete": "cascade",
+                    "side": "parent"
+                },
+                {
+                    "key": "userReports",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "68dfcba90010d07ee333",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "reportedUser",
+                    "onDelete": "cascade",
+                    "side": "parent"
+                },
+                {
+                    "key": "ratingCount",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": -9223372036854775808,
+                    "max": 9223372036854775807,
+                    "default": 1
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "name_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "name"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "username_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "username"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "68b16bae0027e57ba2c6",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "followers",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "followingUserId",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "followers",
+                    "onDelete": "cascade",
+                    "side": "child"
+                },
+                {
+                    "key": "followerUserId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "followerUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "followerName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "followerFCMToken",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "followerProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "followerRating",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 5,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68dfcba90010d07ee333",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "user-reports",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "reportedUser",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": true,
+                    "twoWayKey": "userReports",
+                    "onDelete": "cascade",
+                    "side": "child"
+                },
+                {
+                    "key": "reporterUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "reportedUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "reportText",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "reportType",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "harassment",
+                        "abuse",
+                        "spam",
+                        "impersonation",
+                        "illegal",
+                        "selfharm",
+                        "misuse"
+                    ],
+                    "format": "enum",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68b43e30002f89343479",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "friends",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "users",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "64a52f0a6c41ded09def",
+                    "relationType": "manyToMany",
+                    "twoWay": true,
+                    "twoWayKey": "friends",
+                    "onDelete": "cascade",
+                    "side": "child"
+                },
+                {
+                    "key": "senderId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "recieverId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "senderUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "recieverUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "senderName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "recieverName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "senderFCMToken",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "recieverFCMToken",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "requestStatus",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "sent",
+                        "accepted"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "requestSentByUserId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "senderRating",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
+                    "default": null
+                },
+                {
+                    "key": "recieverRating",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
+                    "default": null
+                },
+                {
+                    "key": "senderProfileImgUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "recieverProfileImgUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "68e6427f0014f8b0e580",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "Live Chapter Attendees",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "liveChapterId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "users",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "64a52f0a6c41ded09def",
+                    "relationType": "oneToMany",
+                    "twoWay": false,
+                    "twoWayKey": "68e642bd0006010fc35e",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64d980211f1395263ebe",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "pair-requests",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "languageIso",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "isAnonymous",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "uid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "userName",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "isRandom",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": true
+                },
+                {
+                    "key": "profileImageUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "userRating",
+                    "type": "double",
+                    "required": false,
+                    "array": false,
+                    "min": -1.7976931348623157e+308,
+                    "max": 1.7976931348623157e+308,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "languageIso",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "languageIso"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "docId",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "$id"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "createdAt",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "$createdAt"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "requestIndex",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "$id",
+                        "languageIso",
+                        "$createdAt"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC",
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "requestIndex1",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "$id",
+                        "languageIso"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "64a5217e695bf2c4ec9c",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "rooms",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 200,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 1024,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "totalParticipants",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000000,
+                    "default": 0
+                },
+                {
+                    "key": "adminUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "reportedUsers",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "670d812c0002c33c09a8",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "messages",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "roomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creatorId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creatorUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "hasValidTag",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "creatorName",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "isEdited",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creatorImgUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "creationDateTime",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "messageId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "index",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64d980cd65ff2e08ab97",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "active-pairs",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "userDocId1",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "userDocId2",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "userName1",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 50,
+                    "default": "Anonymous ",
+                    "encrypt": false
+                },
+                {
+                    "key": "userName2",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 50,
+                    "default": "Anonymous",
+                    "encrypt": false
+                },
+                {
+                    "key": "uid1",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "uid2",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "userDocId1",
+                    "type": "unique",
+                    "status": "available",
+                    "columns": [
+                        "userDocId1"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "userDocId2",
+                    "type": "unique",
+                    "status": "available",
+                    "columns": [
+                        "userDocId2"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "672759820027801f121f",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "reply_to",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "creatorUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 30,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creatorImgUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "index",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000,
+                    "default": null
+                },
+                {
+                    "key": "content",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "messageId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "64a63e508145d1084abf",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "participants",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "uid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "isAdmin",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "isModerator",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "isSpeaker",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "isMicOn",
+                    "type": "boolean",
+                    "required": true,
+                    "array": false,
+                    "default": null
+                },
+                {
+                    "key": "roomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "hasRequestedToBeSpeaker",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "roomId",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "roomId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "uid",
+                    "type": "key",
+                    "status": "processing",
+                    "columns": [
+                        "uid"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "roomUser",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "uid",
+                        "roomId"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "68b764ba002794fa2f61",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "64a521785f5be62b796f",
+            "name": "friend-calls",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "callerName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "recieverName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "callerUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "recieverUsername",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "callerUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "recieverUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "livekitRoomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "callStatus",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "waiting",
+                        "connected",
+                        "declined",
+                        "ended"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "callerProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "recieverProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "670277ad002530531daf",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "stories",
+            "name": "Chapters",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "coverImgUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "lyrics",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 50000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "storyId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "audioFileUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "tintColor",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "playDuration",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 3600000,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "storyId_index",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "storyId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "670259e900321c12a5a2",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "stories",
+            "name": "Stories",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "category",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "horror",
+                        "comedy",
+                        "thriller",
+                        "romance",
+                        "spiritual",
+                        "drama"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "coverImgUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "creatorId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creatorName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "creatorImgUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "likes",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000000,
+                    "default": null
+                },
+                {
+                    "key": "tintColor",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "playDuration",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 3600000,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "title_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "title"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "creatorname_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "creatorName"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "description_index",
+                    "type": "fulltext",
+                    "status": "available",
+                    "columns": [
+                        "description"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "creatorId",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "creatorId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "categoryIndex",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "category"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "670259e20000ddda49a0",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "stories",
+            "name": "Likes",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "uId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "storyId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "uId_index",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "uId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                },
+                {
+                    "key": "storyId_index",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "storyId"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "68e5227e001b2f868c05",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "stories",
+            "name": "Live Chapters",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "livekitRoomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "authorUid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "authorProfileImageUrl",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "authorName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "followersFCMToken",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "chapterTitle",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "storyId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "chapterDescription",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2000,
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []

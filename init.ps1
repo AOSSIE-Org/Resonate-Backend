@@ -75,9 +75,17 @@ Write-Host "Extracted secret: $secret"
 
 # Pushing Server Key as env variable for cloud functions to use
 appwrite project create-variable --key APPWRITE_API_KEY --value $secret
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set APPWRITE_API_KEY"
+    exit 1
+}
 
 # Push endpoint as environment variable for functions to use (host.docker.internal used to access localhost from inside of script)
 appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.docker.internal:80/v1"
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set APPWRITE_ENDPOINT"
+    exit 1
+}
 
 # Pushing the project's core defined in appwrite.json
 appwrite push collections
@@ -135,7 +143,16 @@ while ($true) {
 # Push MeiliSearch credentials as env variables for functions to use
 Write-Host "Pushing MeiliSearch credentials as env variables if you need any changes do them in your Appwrite Resonate project's Global Env variables"
 appwrite project create-variable --key MEILISEARCH_ENDPOINT --value $meilisearchEndpoint
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set MEILISEARCH_ENDPOINT"
+    exit 1
+}
+
 appwrite project create-variable --key MEILISEARCH_ADMIN_API_KEY --value $meilisearchMasterKey
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set MEILISEARCH_ADMIN_API_KEY"
+    exit 1
+}
 
 
 Write-Host "Setting Up Livekit now ..."
@@ -183,7 +200,80 @@ while ($true) {
 # Push Livekit credentials as env variables for functions to use
 Write-Host "Pushing Livekit credentials as env variables if you need any changes do them in your Appwrite Resonate project's Global Env variables"
 appwrite project create-variable --key LIVEKIT_HOST --value $livekitHostURL
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set LIVEKIT_HOST"
+    exit 1
+}
+
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value $livekitSocketURL
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set LIVEKIT_SOCKET_URL"
+    exit 1
+}
+
 appwrite project create-variable --key LIVEKIT_API_KEY --value $livekitAPIKey
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set LIVEKIT_API_KEY"
+    exit 1
+}
+
 appwrite project create-variable --key LIVEKIT_API_SECRET --value $livekitAPISecret
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set LIVEKIT_API_SECRET"
+    exit 1
+}
+
+Write-Host "Setting up Email (OTP) now ..."
+Write-Host "This email will be used to send OTP verification codes to users."
+
+# Input validation loop for sender email
+do {
+    $senderMail = Read-Host "Please provide sender email address (e.g., your-email@gmail.com)"
+} while ([string]::IsNullOrWhiteSpace($senderMail))
+
+# Input validation loop for sender password
+do {
+    $senderPassword = Read-Host "Please provide sender email app password" -AsSecureString
+    # Check if password is empty by converting temporarily
+    $bstrTemp = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($senderPassword)
+    try {
+        $tempPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstrTemp)
+        $isEmpty = [string]::IsNullOrWhiteSpace($tempPlain)
+    } finally {
+        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstrTemp)
+    }
+    
+    if ($isEmpty) {
+        Write-Host "Password cannot be empty. Please try again."
+    }
+} while ($isEmpty)
+
+# Convert SecureString to plain text with proper cleanup
+$bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($senderPassword)
+try {
+    $senderPasswordPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+    
+    # Push email credentials as environment variables
+    Write-Host "Pushing Email credentials as env variables..."
+    
+    appwrite project create-variable --key SENDER_MAIL --value $senderMail
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Failed to set SENDER_MAIL"
+        exit 1
+    }
+    
+    appwrite project create-variable --key SENDER_PASSWORD --value $senderPasswordPlain
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Failed to set SENDER_PASSWORD"
+        exit 1
+    }
+    
+    Write-Host "Email credentials configured successfully!"
+} finally {
+    # Clean up sensitive memory
+    [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+}
+
 appwrite push functions --with-variables
+
+Write-Host "Many Congratulations! Resonate Backend set up is complete!!! Please further read the onboarding guide for connecting frontend to backend"

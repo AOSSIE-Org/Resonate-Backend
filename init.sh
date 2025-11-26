@@ -174,6 +174,26 @@ appwrite project create-variable --key LIVEKIT_HOST --value "$livekitHostURL"
 appwrite project create-variable --key LIVEKIT_SOCKET_URL --value "$livekitSocketURL"
 appwrite project create-variable --key LIVEKIT_API_KEY --value "$livekitAPIKey"
 appwrite project create-variable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
+
+while true; do
+    read -p "Please provide sender email address (e.g., your-email@gmail.com): " senderMail
+    if [[ ! -z "$senderMail" ]]; then
+        break
+    fi
+done
+
+while true; do
+    read -sp "Please provide sender email app password: " senderPassword
+    echo
+    if [[ ! -z "$senderPassword" ]]; then
+        break
+    fi
+done
+
+appwrite project create-variable --key SENDER_MAIL --value "$senderMail" || { echo "Failed to set SENDER_MAIL"; exit 1; }
+appwrite project create-variable --key SENDER_PASSWORD --value "$senderPassword" || { echo "Failed to set SENDER_PASSWORD"; exit 1; }
+echo "Email credentials configured successfully!"
+
 appwrite push functions --with-variables
 
 echo "Many Congratulations Resonate Backend set up is complete !!! please further read the onboarding guide for connecting frontend to backend"

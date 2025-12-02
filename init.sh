@@ -34,13 +34,13 @@ fi
 
 
 echo "Installing Appwrite CLI via npm"
-npm install -g appwrite@7.0.0
+npm install -g appwrite@12.0.0
 
 docker run -it --add-host host.docker.internal:host-gateway --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
     --entrypoint="install" \
-    appwrite/appwrite:1.7.4
+    appwrite/appwrite:1.8.0
 
 projectId="resonate"
 

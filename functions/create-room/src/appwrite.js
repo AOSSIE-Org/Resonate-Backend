@@ -1,4 +1,4 @@
-import { Client, Databases, ID } from "node-appwrite";
+import { Client, TablesDB, ID } from "node-appwrite";
 
 class AppwriteService {
     constructor() {
@@ -9,18 +9,18 @@ class AppwriteService {
             )
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
             .setKey(process.env.APPWRITE_API_KEY);
-        this.databases = new Databases(client);
+        this.tables = new TablesDB(client);
     }
 
     async createRoom(newRoomData) {
-        const newRoomDocRef = await this.databases.createDocument(
-            process.env.MASTER_DATABASE_ID,
-            process.env.ROOMS_COLLECTION_ID,
-            ID.unique(),
-            newRoomData
-        );
+        const rowId = ID.unique();
+        const newRoomRows = await this.tables.createRows({
+            databaseId: process.env.MASTER_DATABASE_ID,
+            tableId: process.env.ROOMS_TABLE_ID,
+            rows: [{ $id: rowId, ...newRoomData }]
+        });
 
-        return newRoomDocRef.$id;
+        return newRoomRows.rows[0].$id;
     }
 }
 

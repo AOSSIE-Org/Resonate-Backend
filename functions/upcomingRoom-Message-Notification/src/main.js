@@ -10,7 +10,7 @@ const app = admin.initializeApp({
 module.exports = async function ({ req, res, log, error }) {
   var subscribersTokens = [];
   const client = new sdk.Client();
-  const database = new sdk.Databases(client);
+  const database = new sdk.TablesDB(client);
   const query = sdk.Query;
   const { roomId, payload } = JSON.parse(req.body);
 
@@ -24,14 +24,29 @@ module.exports = async function ({ req, res, log, error }) {
   log("Send Notification");
   log(roomId);
   log(payload);
-  let subscriberList = await database.listDocuments(process.env.UpcomingRoomsDataBaseID, process.env.SubscriberCollectionID, [query.equal('upcomingRoomId', [roomId])]);
+  let subscriberList = await database.listRows({
+    databaseId: process.env.UpcomingRoomsDataBaseID,
+    tableId: process.env.SubscriberCollectionID,
+    queries: [query.equal('upcomingRoomId', [roomId])]
+  });
   log("here as well")
-  subscriberList.documents.forEach(subscriber => {
+  subscriberList.rows.forEach(subscriber => {
     for (const token of subscriber["registrationTokens"]) {
       subscribersTokens.push(token);
     }
   });
-  let document = await database.getDocument(process.env.UpcomingRoomsDataBaseID, process.env.UpcomingRoomsCollectionID, roomId);
+  let documentResult = await database.getRows({
+    databaseId: process.env.UpcomingRoomsDataBaseID,
+    tableId: process.env.UpcomingRoomsCollectionID,
+    queries: [query.equal('$id', [roomId])]
+  });
+  
+  if (documentResult.rows.length === 0) {
+    log('Room not found');
+    return res.json({ message: 'Room not found' });
+  }
+  
+  let document = documentResult.rows[0];
   for (const creator_token of document["creator_fcm_tokens"]) {
     subscribersTokens.push(creator_token);
   }

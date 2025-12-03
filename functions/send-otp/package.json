@@ -1,18 +1,20 @@
 {
-    "name": "send-otp",
-    "version": "1.0.0",
-    "description": "",
-    "main": "src/main.js",
-    "type": "module",
-    "scripts": {
-        "start": "node src/main.js",
-        "format": "prettier --write ."
-    },
-    "dependencies": {
-        "node-appwrite": "^17.0.0",
-        "nodemailer": "^6.9.5"
-    },
-    "devDependencies": {
-        "prettier": "^3.0.0"
-    }
+  "name": "send-otp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node src/main.js",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "node-appwrite": "^17.0.0",
+    "nodemailer": "^6.9.5"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "@jest/globals": "^30.2.0",
+    "jest": "^30.2.0"
+  }
 }

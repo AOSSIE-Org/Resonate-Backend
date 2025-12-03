@@ -1,13 +1,12 @@
-import { Client, Databases, Query } from 'node-appwrite';
-import { throwIfMissing } from './utils.js';
-import { MeiliSearch } from 'meilisearch';
+const { Client, Databases, Query } = require('node-appwrite');
+const { throwIfMissing } = require('./utils.js');
+const { MeiliSearch } = require('meilisearch');
 
-export default async ({ req, res, log }) => {
+module.exports = async ({ req, res, log }) => {
   throwIfMissing(process.env, [
     'MEILISEARCH_ENDPOINT',
     'MEILISEARCH_ADMIN_API_KEY',
   ]);
-
 
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_ENDPOINT)
@@ -33,8 +32,8 @@ export default async ({ req, res, log }) => {
     }
 
     const { documents } = await databases.listDocuments(
-      "stories",
-      "670259e900321c12a5a2",
+      'stories',
+      '670259e900321c12a5a2',
       queries
     );
 
@@ -50,7 +49,7 @@ export default async ({ req, res, log }) => {
     await storiesIndex.addDocuments(documents, { primaryKey: '$id' });
   } while (storiesCursor !== null);
 
-  const usersIndex = meilisearch.index("users");
+  const usersIndex = meilisearch.index('users');
 
   let usersCursor = null;
 
@@ -62,8 +61,8 @@ export default async ({ req, res, log }) => {
     }
 
     const { documents } = await databases.listDocuments(
-      "64a1319104a149e16f5c",
-      "64a52f0a6c41ded09def",
+      '64a1319104a149e16f5c',
+      '64a52f0a6c41ded09def',
       queries
     );
 

@@ -5,7 +5,8 @@ OS="$(uname -s)"
 case "$OS" in
     Linux*)     OS_TYPE=Linux;;
     Darwin*)    OS_TYPE=Mac;;
-    *)          OS_TYPE="UNKNOWN:$OS"
+    *)          OS_TYPE="UNKNOWN:$OS" 
+    
 esac
 
 echo "Operating System: $OS_TYPE"

@@ -5,7 +5,7 @@
  * @param {string[]} keys
  * @throws {Error}
  */
-export function throwIfMissing(obj, keys) {
+const throwIfMissing = (obj, keys) => {
   const missing = [];
   for (let key of keys) {
     if (!(key in obj) || !obj[key]) {
@@ -15,5 +15,6 @@ export function throwIfMissing(obj, keys) {
   if (missing.length > 0) {
     throw new Error(`Missing required fields: ${missing.join(', ')}`);
   }
-}
+};
 
+module.exports = { throwIfMissing };

@@ -39,7 +39,18 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 (i) [discussion-isTime-checker](functions/discussion-isTime-checker/) : A Cron Function to check all the existent Discussion scheduled timings and comparing to current time in order to activate a discussion if the current time is less than 5 minutes away from the scheduled time
 
-(j) [database-cleaner](functions/database-cleaner/) : Function to cleanup active pairs and participants collections in the database.
+(j) [Send Story Notification function](functions/send-story-notification) : Function to send push notifications to all followers of a story creator when a new story is published or when there's an update related to their stories.
+
+(k) [Start Friend Call function](functions/start-friend-call) : Function to send a high-priority FCM data message to initiate a friend call with ring/accept flow.
+
+(l) [Sync All Documents with Meilisearch function](functions/sync-all-documents-with-meilisearch) : Function to sync documents in an Appwrite database collection to a Meilisearch index.
+
+(m) [Sync Stories with Meilisearch function](functions/sync-stories-with-meilisearch) : Function to sync stories in an Appwrite database collection to a Meilisearch index.
+
+(n) [Sync Users with Meilisearch function](functions/sync-users-with-meilisearch) : Function to sync users in an Appwrite database collection to a Meilisearch index.
+
+(o) [Upcoming Room Message Notification function](functions/upcomingRoom-Message-Notification) : Function to send push notifications to all subscribers and the creator of an upcoming room when a relevant event occurs.
+
 
 ## Communication Channels
 
@@ -49,3 +60,4 @@ If you have any questions, need clarifications, or want to discuss ideas, feel f
 -   [Email](mailto:aossie.oss@gmail.com)
 
 We appreciate your contributions and look forward to working with you to make this project even better!
+cleanup

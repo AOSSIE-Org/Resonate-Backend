@@ -60,4 +60,3 @@ If you have any questions, need clarifications, or want to discuss ideas, feel f
 -   [Email](mailto:aossie.oss@gmail.com)
 
 We appreciate your contributions and look forward to working with you to make this project even better!
-cleanup

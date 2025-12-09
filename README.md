@@ -41,6 +41,20 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 (j) [database-cleaner](functions/database-cleaner/) : Function to cleanup active pairs and participants collections in the database.
 
+(k) [send-story-notification](functions/send-story-notification/) : Function to send notifications when stories are posted or updated (notifies followers or relevant users).
+
+(l) [start-friend-call](functions/start-friend-call/) : Function to initiate a direct friend-to-friend voice call, creating/joining LiveKit sessions and updating call records.
+
+(m) [sync-all-documents-with-meilisearch](functions/sync-all-documents-with-meilisearch/) : Function to synchronize all relevant database collections and documents with Meilisearch indices for global search availability.
+
+(n) [sync-stories-with-meilisearch](functions/sync-stories-with-meilisearch/) : Function to keep story documents in sync with the Meilisearch index so stories are searchable.
+
+(o) [sync-users-with-meilisearch](functions/sync-users-with-meilisearch/) : Function to index and synchronize user documents with Meilisearch for user search and discovery.
+
+(p) [upcomingRoom-isTime-checker](functions/upcomingRoom-isTime-checker/) : Cron function to check scheduled upcoming rooms and activate or mark them ready when their start time is near.
+
+(q) [upcomingRoom-Message-Notification](functions/upcomingRoom-Message-Notification/) : Function to send reminders/notifications to users about upcoming rooms (e.g., reminders before start time).
+
 ## Communication Channels
 
 If you have any questions, need clarifications, or want to discuss ideas, feel free to reach out through the following channels:

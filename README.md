@@ -41,6 +41,20 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 (j) [database-cleaner](functions/database-cleaner/) : Function to cleanup active pairs and participants collections in the database.
 
+(k) [send-story-notification](functions/send-story-notification) : Function to send push notifications to followers when a story is published.
+
+(l) [start-friend-call](functions/start-friend-call) : Function to initiate a friend call by sending FCM notifications to the recipient.
+
+(m) [sync-all-documents-with-meilisearch](functions/sync-all-documents-with-meilisearch) : Function to sync all documents from Appwrite database collection to Meilisearch index.
+
+(n) [sync-stories-with-meilisearch](functions/sync-stories-with-meilisearch) : Function to sync stories from Appwrite database collection to Meilisearch index.
+
+(o) [sync-users-with-meilisearch](functions/sync-users-with-meilisearch) : Function to sync users from Appwrite database collection to Meilisearch index.
+
+(p) [upcomingRoom-Message-Notification](functions/upcomingRoom-Message-Notification) : Function to send push notifications to subscribers and creator of an upcoming room when a message or update occurs.
+
+(q) [upcomingRoom-isTime-checker](functions/upcomingRoom-isTime-checker) : A Cron Function to check all existent upcoming room scheduled timings and activate a room if current time is less than 5 minutes away from scheduled time.
+
 ## Communication Channels
 
 If you have any questions, need clarifications, or want to discuss ideas, feel free to reach out through the following channels:

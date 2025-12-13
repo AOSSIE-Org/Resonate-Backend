@@ -19,6 +19,41 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 3. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
 
+## Project Structure :
+
+```
+Resonate-Backend/
+├── appwrite.json              # Appwrite configuration file
+├── Caddyfile                  # Caddy server configuration
+├── README.md                  # Project documentation
+├── init-auth.ps1              # PowerShell authentication initialization script
+├── init-auth.sh               # Bash authentication initialization script
+├── init.ps1                   # PowerShell initialization script
+├── init.sh                    # Bash initialization script
+└── functions/                 # Serverless functions directory
+    ├── create-room/           # Room creation function
+    ├── database-cleaner/      # Database cleanup function
+    ├── delete-room/           # Room deletion function
+    ├── join-room/             # Room joining function
+    ├── livekit-webhook/       # Livekit webhook handler
+    ├── match-maker/           # User matching function
+    ├── send-otp/              # OTP sending function
+    ├── send-story-notification/  # Story notification function
+    ├── start-friend-call/     # Friend call initiation function
+    ├── sync-all-documents-with-meilisearch/  # Full sync with Meilisearch
+    ├── sync-stories-with-meilisearch/        # Stories sync with Meilisearch
+    ├── sync-users-with-meilisearch/          # Users sync with Meilisearch
+    ├── upcomingRoom-isTime-checker/          # Scheduled room time checker
+    ├── upcomingRoom-Message-Notification/    # Upcoming room notifications
+    ├── verify-email/          # Email verification function
+    └── verify-otp/            # OTP verification function
+```
+
+Each function directory contains:
+- `package.json` - Dependencies and configuration
+- `README.md` - Function-specific documentation
+- `src/` - Source code directory with implementation files
+
 ## Functions :
 
 (a) [Room Creation function](functions/create-room) : Function to create rooms in Appwrite and Livekit.
@@ -37,9 +72,21 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 (h) [Verify Email function](functions/verify-email) : Function to verify email ID of users.
 
-(i) [discussion-isTime-checker](functions/discussion-isTime-checker/) : A Cron Function to check all the existent Discussion scheduled timings and comparing to current time in order to activate a discussion if the current time is less than 5 minutes away from the scheduled time
+(i) [Database Cleaner function](functions/database-cleaner) : Function to cleanup active pairs and participants collections in the database.
 
-(j) [database-cleaner](functions/database-cleaner/) : Function to cleanup active pairs and participants collections in the database.
+(j) [Send Story Notification function](functions/send-story-notification) : Function to send notifications when new stories are posted.
+
+(k) [Start Friend Call function](functions/start-friend-call) : Function to initiate voice calls between friends.
+
+(l) [Sync All Documents with Meilisearch function](functions/sync-all-documents-with-meilisearch) : Function to synchronize all documents with Meilisearch for search functionality.
+
+(m) [Sync Stories with Meilisearch function](functions/sync-stories-with-meilisearch) : Function to synchronize stories with Meilisearch for search indexing.
+
+(n) [Sync Users with Meilisearch function](functions/sync-users-with-meilisearch) : Function to synchronize user data with Meilisearch for user search.
+
+(o) [Upcoming Room isTime Checker function](functions/upcomingRoom-isTime-checker) : A Cron function to check scheduled room timings and activate rooms when current time is within 5 minutes of scheduled time.
+
+(p) [Upcoming Room Message Notification function](functions/upcomingRoom-Message-Notification) : Function to send message notifications for upcoming scheduled rooms.
 
 ## Communication Channels
 

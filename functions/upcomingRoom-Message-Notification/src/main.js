@@ -21,7 +21,15 @@ module.exports = async function ({ req, res, log, error }) {
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    const { roomId, payload } = body;
+    if (!roomId || typeof roomId !== 'string') {
+      log('Invalid roomId: must be a non-empty string');
+      return res.json({ message: 'Invalid roomId' }, 400);
+    }
+
+    if (!payload || typeof payload !== 'object' || !payload.title || !payload.body) {
+      log('Invalid payload: must be an object with title and body');
+      return res.json({ message: 'Invalid payload' }, 400);
+    }
 
     if (!roomId || !payload) {
       return res.json({
@@ -54,8 +62,8 @@ module.exports = async function ({ req, res, log, error }) {
       subscribersTokens.push(...roomDocument["creator_fcm_tokens"]);
     }
 
-    // Deduplicate tokens
-    const uniqueTokens = [...new Set(subscribersTokens)];
+    // Deduplicate and validate tokens (must be non-empty strings)
+    const uniqueTokens = [...new Set(subscribersTokens)].filter(token => typeof token === 'string' && token.trim().length > 0);
 
     if (uniqueTokens.length > 0) {
       const message = {
@@ -74,11 +82,16 @@ module.exports = async function ({ req, res, log, error }) {
       const response = await getMessaging(app).sendEachForMulticast(message);
       if (response.failureCount > 0) {
         log(`Failed to send ${response.failureCount} notifications`);
+        response.responses.forEach((resp, idx) => {
+          if (!resp.success) {
+            log(`Failure for token ${uniqueTokens[idx]}: ${resp.error}`);
+          }
+        });
       } else {
         log('Notifications were sent successfully');
       }
     } else {
-      log('No tokens found to send notifications.');
+      log('No valid tokens found to send notifications.');
     }
 
     return res.json({

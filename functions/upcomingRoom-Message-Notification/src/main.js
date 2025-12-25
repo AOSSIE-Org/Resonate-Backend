@@ -23,6 +23,13 @@ module.exports = async function ({ req, res, log, error }) {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const { roomId, payload } = body;
 
+    if (!roomId || !payload) {
+      return res.json({
+        message: 'Missing required fields',
+        error: 'roomId and payload are required'
+      }, 400);
+    }
+
     log(`Sending notification for room: ${roomId}`);
 
     const subscriberList = await database.listDocuments(

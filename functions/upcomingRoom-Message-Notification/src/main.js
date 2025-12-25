@@ -20,7 +20,8 @@ module.exports = async function ({ req, res, log, error }) {
     .setKey(process.env.APPWRITE_API_KEY);
 
   try {
-    const { roomId, payload } = JSON.parse(req.body);
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const { roomId, payload } = body;
 
     log(`Sending notification for room: ${roomId}`);
 
@@ -53,9 +54,13 @@ module.exports = async function ({ req, res, log, error }) {
       const message = {
         notification: payload,
         tokens: uniqueTokens,
-        priority: "high",
         android: {
           priority: "high"
+        },
+        apns: {
+          headers: {
+            "apns-priority": "10"
+          }
         }
       };
 

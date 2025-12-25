@@ -1,5 +1,5 @@
 const sdk = require("node-appwrite");
-const admin = require('firebase-admin');
+// const admin = require('firebase-admin');
 
 // const { getMessaging } = require('firebase-admin/messaging');
 // const serviceAccount = require("./resonate-service-account.json");
@@ -25,9 +25,20 @@ module.exports = async function ({ req, res, log, error }) {
 
     for (const document of upcomingRoomsList.documents) {
       const scheduledDateTime = document["scheduledDateTime"];
-      
+
+      if (!scheduledDateTime) {
+        log(`Skipping document ${document.$id}: missing scheduledDateTime`);
+        continue;
+      }
+
       // Use standard Date parsing (handles ISO 8601 correctly)
       const upcomingRoomDate = new Date(scheduledDateTime).getTime();
+
+      if (isNaN(upcomingRoomDate)) {
+        log(`Skipping document ${document.$id}: invalid date format "${scheduledDateTime}"`);
+        continue;
+      }
+
       const nowTime = new Date().getTime();
 
       const timeLeft = upcomingRoomDate - nowTime;
@@ -36,14 +47,14 @@ module.exports = async function ({ req, res, log, error }) {
       // Check if time is within +/- 5 minutes and not yet marked
       if (timeLeftInMinutes <= 5 && timeLeftInMinutes >= -5 && document["isTime"] === false) {
         await database.updateDocument(
-          process.env.UpcomingRoomsDataBaseID, 
-          process.env.UpcomingRoomsCollectionID, 
-          document.$id, 
+          process.env.UpcomingRoomsDataBaseID,
+          process.env.UpcomingRoomsCollectionID,
+          document.$id,
           {
             "isTime": true
           }
         );
-        
+
         // Log explicitly when an action is taken
         log(`Activated room: ${document.$id}`);
 

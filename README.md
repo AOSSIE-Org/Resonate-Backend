@@ -19,6 +19,34 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 3. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
 
+---
+
+##  Windows Setup & Troubleshooting Guide
+
+This section is for contributors running **Resonate on Windows**.
+
+###  Prerequisites
+- Windows 10/11
+- Docker Desktop (WSL2 enabled)
+- Flutter (stable channel)
+- Android Studio + Android Emulator
+- Appwrite CLI (`npm install -g appwrite-cli`)
+
+---
+
+###  Emulator Networking (VERY IMPORTANT)
+
+| Platform | Base Domain |
+|--------|-------------|
+| Android Emulator | `10.0.2.2` |
+| iOS Simulator | `localhost` |
+| Physical Device | Laptop’s local IP |
+
+Example:
+```bash
+flutter run --dart-define=APPWRITE_BASE_DOMAIN=10.0.2.2 --dart-define=APPWRITE_PROJECT_ID=resonate
+
+
 ## Functions :
 
 (a) [Room Creation function](functions/create-room) : Function to create rooms in Appwrite and Livekit.

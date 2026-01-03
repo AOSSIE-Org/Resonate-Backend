@@ -28,8 +28,19 @@ else {
 }
 
 
-Write-Host "Install Appwrite-cli using Scoop"
-scoop install https://raw.githubusercontent.com/appwrite/sdk-for-cli/master/scoop/appwrite.config.json
+Write-Host "Checking Appwrite CLI..."
+
+if (-not (Get-Command appwrite -ErrorAction SilentlyContinue)) {
+    Write-Host " Appwrite CLI not found in PATH."
+    Write-Host "Please install it manually before continuing:"
+    Write-Host "  Windows (recommended): npm install -g appwrite-cli"
+    Write-Host "  macOS: brew install appwrite"
+    Write-Host "  Linux: see https://appwrite.io/docs/tooling/command-line"
+    exit 1
+}
+
+Write-Host "Appwrite CLI found."
+
 
 docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `

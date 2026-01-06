@@ -194,7 +194,7 @@ i) This entry is documented for awareness and may represent a planned or depreca
 **Trigger:** Cron (Scheduled Function)
 
 **Schedule:**  
-i) Runs daily at 01:00 (configured via cron)
+i) Runs daily at 04:00 UTC (as configured in appwrite.json)
 
 **Description:**  
 Performs periodic database maintenance by removing stale participant records, inactive active-pair entries, and expired OTP documents based on the configured retention policy.

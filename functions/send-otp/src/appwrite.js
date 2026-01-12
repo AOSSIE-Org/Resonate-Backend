@@ -12,14 +12,15 @@ class AppwriteService {
         this.databases = new Databases(client);
     }
 
-    async createOtpDocument(otpId, otp, date) {
+    async createOtpDocument(otpId, otp, date, expiresAt) {
         await this.databases.createDocument(
             process.env.VERIFICATION_DATABASE_ID,
             process.env.OTP_COLLECTION_ID,
             otpId,
             {
                 otp,
-                date
+                date,
+                expiresAt
             }
         );
     }

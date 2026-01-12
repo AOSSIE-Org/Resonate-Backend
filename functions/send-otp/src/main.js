@@ -26,7 +26,11 @@ export default async ({ req, res, log, error }) => {
         const currentDate = new Date().toDateString();
         log(`Current Date: ${currentDate}`);
 
-        await appwrite.createOtpDocument(otpID, otp, currentDate);
+        // Set OTP expiry to 5 minutes from now
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+        log(`OTP expires at: ${expiresAt}`);
+
+        await appwrite.createOtpDocument(otpID, otp, currentDate, expiresAt);
     } catch (e) {
         error(String(e));
         return res.json({ message: String(e) });

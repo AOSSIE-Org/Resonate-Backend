@@ -44,7 +44,50 @@ export default async ({ req, res, log, error }) => {
 
     // Step 2: Check if OTP has expired
     const now = new Date();
+    
+    // Validate expiresAt field exists and is valid
+    if (!otpDocument.expiresAt) {
+        log("OTP missing expiresAt field - treating as expired");
+        // Delete OTP with missing expiry
+        try {
+            await db.deleteDocument(
+                process.env.VERIFICATION_DATABASE_ID,
+                process.env.OTP_COLLECTION_ID,
+                otpID
+            );
+        } catch (deleteError) {
+            log("Failed to delete expired OTP");
+            error(String(deleteError));
+        }
+        
+        return res.json({ 
+            success: false,
+            message: 'OTP has expired' 
+        }, 401);
+    }
+    
     const expiryTime = new Date(otpDocument.expiresAt);
+    
+    // Check if expiresAt is a valid date
+    if (isNaN(expiryTime.getTime())) {
+        log("OTP has invalid expiresAt field - treating as expired");
+        // Delete OTP with invalid expiry
+        try {
+            await db.deleteDocument(
+                process.env.VERIFICATION_DATABASE_ID,
+                process.env.OTP_COLLECTION_ID,
+                otpID
+            );
+        } catch (deleteError) {
+            log("Failed to delete expired OTP");
+            error(String(deleteError));
+        }
+        
+        return res.json({ 
+            success: false,
+            message: 'OTP has expired' 
+        }, 401);
+    }
     
     if (now > expiryTime) {
         log("OTP has expired");

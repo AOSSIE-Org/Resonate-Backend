@@ -14,8 +14,8 @@ class AppwriteService {
 
     async createOtpDocument(otpId, otp, date) {
         await this.databases.createDocument(
-            process.env.UserDataDatabaseID,
-            process.env.UsersCollectionID,
+            process.env.VERIFICATION_DATABASE_ID,
+            process.env.OTP_COLLECTION_ID,
             otpId,
             {
                 otp,

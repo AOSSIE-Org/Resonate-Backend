@@ -98,6 +98,14 @@
                 {
                     "key": "OTP_COLLECTION_ID",
                     "value": "64a7bfe3a3a7ee5bf7f8"
+                },
+                {
+                    "key": "UserDataDatabaseID",
+                    "value": "64a1319104a149e16f5c"
+                },
+                {
+                    "key": "UsersCollectionID",
+                    "value": "64a52f0a6c41ded09def"
                 }
             ],
             "execute": [

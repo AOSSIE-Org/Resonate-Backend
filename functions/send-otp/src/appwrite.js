@@ -34,6 +34,7 @@ class AppwriteService {
             return response.documents.length > 0 ? response.documents[0] : null;
         } catch (e) {
             // Return null if user not found or any error occurs
+            console.error("Error getting user by email:", e);
             return null;
         }
     }
@@ -50,7 +51,7 @@ class AppwriteService {
             );
         } catch (e) {
             // If update fails, log but don't throw (non-critical)
-            throw e;
+            console.error("Error updating last_otp_sent:", e);
         }
     }
 }

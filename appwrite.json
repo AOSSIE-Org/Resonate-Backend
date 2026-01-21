@@ -4,7 +4,7 @@
         {
             "$id": "6968b4f000222d5d8d93",
             "name": "send-otp",
-            "runtime": "node-16.0",
+            "runtime": "node-18.0",
             "specification": "s-0.5vcpu-512mb",
             "execute": [
                 "any"

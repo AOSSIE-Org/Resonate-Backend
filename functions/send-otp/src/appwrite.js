@@ -14,8 +14,8 @@ class AppwriteService {
 
     async createOtpDocument(otpId, otp, date) {
         await this.databases.createDocument(
-            process.env.UserDataDatabaseID,
-            process.env.UsersCollectionID,
+            process.env.VERIFICATION_DATABASE_ID,
+            process.env.OTP_COLLECTION_ID,
             otpId,
             {
                 otp,
@@ -27,8 +27,8 @@ class AppwriteService {
     async getUserByEmail(email) {
         try {
             const response = await this.databases.listDocuments(
-                process.env.UserDataDatabaseID,
-                process.env.UsersCollectionID,
+                process.env.VERIFICATION_DATABASE_ID,
+                process.env.OTP_COLLECTION_ID,
                 [Query.equal('email', email), Query.limit(1)]
             );
             return response.documents.length > 0 ? response.documents[0] : null;
@@ -41,8 +41,8 @@ class AppwriteService {
     async updateUserLastOtpSent(userId, timestamp) {
         try {
             await this.databases.updateDocument(
-                process.env.UserDataDatabaseID,
-                process.env.UsersCollectionID,
+                process.env.VERIFICATION_DATABASE_ID,
+                process.env.OTP_COLLECTION_ID,
                 userId,
                 {
                     last_otp_sent: timestamp

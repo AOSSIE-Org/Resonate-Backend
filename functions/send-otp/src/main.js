@@ -8,8 +8,8 @@ export default async ({ req, res, log, error }) => {
         "APPWRITE_FUNCTION_PROJECT_ID",
         "SENDER_MAIL",
         "SENDER_PASSWORD",
-        "UserDataDatabaseID",
-        "UsersCollectionID"
+        "VERIFICATION_DATABASE_ID", 
+        "OTP_COLLECTION_ID",
     ]);
 
     const appwrite = new AppwriteService();

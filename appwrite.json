@@ -11,7 +11,11 @@
             ],
             "events": [],
             "scopes": [
-                "users.read"
+                "users.read",
+                "databases.read",
+                "databases.write",
+                "documents.read",
+                "documents.write"
             ],
             "schedule": "",
             "timeout": 15,

@@ -7,17 +7,64 @@
 
 Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more about the project.
 
-## Environment Setup :
+## Environment Setup
 
-1. Pre-requisites :
+1. Pre-requisites
 
     (a) Fork the Repo
 
-    (b) Clone the Repo : `git clone https://github.com/AOSSIE-Org/Resonate-Backend`
+    (b) Clone the Repo: `git clone https://github.com/AOSSIE-Org/Resonate-Backend`
 
-2. Follow [this guide](https://docs.livekit.io/cloud/project-management/keys-and-tokens/) to obtain your `HOST`, `API-KEY`, `API-SECRET` from [livekit-cloud](https://livekit.io/cloud).
+2. Follow this guide to obtain your Livekit credentials
 
-3. Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
+- Guide: https://docs.livekit.io/cloud/project-management/keys-and-tokens/
+- You will need `LIVEKIT_HOST`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`.
+
+3. Set up environment variables
+
+```bash
+cp .env.example .env
+```
+
+Windows:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+or (CMD):
+
+```cmd
+copy .env.example .env
+```
+
+Then fill in the values in `.env`:
+- Leave the database/collection IDs as they are (they match the project structure)
+- Add your Livekit credentials (see step 2)
+- Add your email credentials (see step 5)
+
+4. Set up Appwrite
+
+- Create a new project on [Appwrite Cloud](https://appwrite.io/) or self host it locally by pulling their [docker image](https://appwrite.io/docs/self-hosting). Know more about Appwrite [here](https://appwrite.io/docs).
+- Create an API key with necessary scopes.
+- Import the database structure: `appwrite deploy collection`.
+- Copy the generated database and collection IDs into your `.env` file.
+- Important: Appwrite functions do not read from your local `.env`. You must set function variables in Appwrite:
+  - Console: Go to Project → Functions → Select a function → Settings → Variables → add keys/values.
+  - CLI example:
+    - `appwrite client --endpoint https://cloud.appwrite.io/v1 --projectId <PROJECT_ID> --key <API_KEY>`
+    - `appwrite functions update --functionId <FUNCTION_ID> --vars APPWRITE_API_KEY=<...>,VERIFICATION_DATABASE_ID=<...>,OTP_COLLECTION_ID=<...>,SENDER_MAIL=<...>,SENDER_PASSWORD=<...>`
+
+5. Email configuration (for OTP functionality)
+
+- Set `SENDER_MAIL` to your email address.
+- Set `SENDER_PASSWORD` to your app password (Gmail guide: https://support.google.com/accounts/answer/185833?hl=en).
+
+6. Security note
+
+- Do not hardcode secrets in `appwrite.json`. Use environment variables. The template `.env.example` lists all variables required across functions.
+- Note: `appwrite.json` does not read from `.env`. Set function variables in the Appwrite Console (or via Appwrite CLI) for cloud execution; `.env` is for local configuration/reference.
+- Tip: Keep `.env` as a convenient record of values; replicate them into Appwrite Function Variables for actual use.
 
 ## Functions :
 

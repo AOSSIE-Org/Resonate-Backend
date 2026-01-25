@@ -18,6 +18,7 @@ class AppwriteService {
             process.env.OTP_COLLECTION_ID,
             otpId,
             {
+                email,
                 otp,
                 date
             }

@@ -46,7 +46,7 @@ export default async ({ req, res, log, error }) => {
         const currentDate = new Date().toDateString();
         log(`Current Date: ${currentDate}`);
 
-        await appwrite.createOtpDocument(otpID, otp, currentDate);
+        await appwrite.createOtpDocument(otpID, otp, recipientEmail, currentDate);
 
         // Update last_otp_sent timestamp in user document
         if (userDoc) {
@@ -57,10 +57,11 @@ export default async ({ req, res, log, error }) => {
                 log(`Warning: Failed to update last_otp_sent timestamp: ${updateError}`);
             }
         }
+        return res.json({ message: "mail sent" });
     } catch (e) {
         error(String(e));
-        return res.json({ message: String(e) });
+        return res.json({ message: String(e) },500);
     }
 
-    return res.json({ message: "mail sent" });
+   
 };

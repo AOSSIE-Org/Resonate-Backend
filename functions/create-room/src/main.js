@@ -1,8 +1,10 @@
 import AppwriteService from "./appwrite.js";
 import LivekitService from "./livekit.js";
+import RoomCreationService from "./room-creation-service.js";
 import { throwIfMissing } from "./utils.js";
 
 export default async ({ req, res, log, error }) => {
+    // Validate environment variables
     throwIfMissing(process.env, [
         "APPWRITE_API_KEY",
         "MASTER_DATABASE_ID",
@@ -13,51 +15,46 @@ export default async ({ req, res, log, error }) => {
         "LIVEKIT_SOCKET_URL",
     ]);
 
-    const appwrite = new AppwriteService();
-    const livekit = new LivekitService();
+    // Initialize services
+    const appwriteService = new AppwriteService();
+    const livekitService = new LivekitService();
+    const roomCreationService = new RoomCreationService(
+        appwriteService,
+        livekitService,
+        process.env.LIVEKIT_SOCKET_URL
+    );
 
+    // Parse and validate request body
+    let requestBody;
     try {
-        throwIfMissing(JSON.parse(req.body), ["name", "adminUid", "tags"]);
+        requestBody = JSON.parse(req.body);
+        throwIfMissing(requestBody, ["name", "adminUid", "tags"]);
     } catch (err) {
         error(err.message);
         return res.json({ msg: err.message }, 400);
     }
 
+    // Handle room creation
     try {
         log(req);
-        const { name, description, adminUid, tags } = JSON.parse(req.body);
+        const { name, description, adminUid, tags } = requestBody;
 
-        // create a new room on appwrite
-        const newRoomdata = {
+        // Delegate business logic to the service
+        const result = await roomCreationService.createRoom({
             name,
             description,
             adminUid,
             tags,
-            totalParticipants: 1,
-        };
-        const appwriteRoomId = await appwrite.createRoom(newRoomdata);
-        log(appwriteRoomId);
+        });
 
-        // create a new livekit room
-        const livekitRoomOptions = {
-            name: appwriteRoomId, // using appwrite room doc id as livekit room name
-            emptyTimeout: 300, // timeout in seconds
-        };
-        const livekitRoom = await livekit.createRoom(livekitRoomOptions);
-        log(livekitRoom);
+        log(`Room created: ${result.appwriteRoomId}`);
 
-        // Creating a token for the admin
-        const accessToken = livekit.generateToken(
-            appwriteRoomId,
-            adminUid,
-            true
-        );
-
+        // Format and return response
         return res.json({
             msg: "Room created Successfully",
-            livekit_room: livekitRoom,
-            livekit_socket_url: `${process.env.LIVEKIT_SOCKET_URL}`,
-            access_token: accessToken,
+            livekit_room: result.livekitRoom,
+            livekit_socket_url: result.livekitSocketUrl,
+            access_token: result.accessToken,
         });
     } catch (e) {
         error(String(e));

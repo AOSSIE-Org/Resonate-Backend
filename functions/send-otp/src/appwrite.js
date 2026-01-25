@@ -1,4 +1,4 @@
-import { Client, Databases } from 'node-appwrite';
+import { Client, Databases, Query } from 'node-appwrite';
 
 class AppwriteService {
     constructor() {
@@ -18,10 +18,42 @@ class AppwriteService {
             process.env.OTP_COLLECTION_ID,
             otpId,
             {
+                email,
                 otp,
                 date
             }
         );
+    }
+
+    async getUserByEmail(email) {
+        try {
+            const response = await this.databases.listDocuments(
+                process.env.VERIFICATION_DATABASE_ID,
+                process.env.OTP_COLLECTION_ID,
+                [Query.equal('email', email), Query.limit(1)]
+            );
+            return response.documents.length > 0 ? response.documents[0] : null;
+        } catch (e) {
+            // Return null if user not found or any error occurs
+            console.error("Error getting user by email:", e);
+            return null;
+        }
+    }
+
+    async updateUserLastOtpSent(userId, timestamp) {
+        try {
+            await this.databases.updateDocument(
+                process.env.VERIFICATION_DATABASE_ID,
+                process.env.OTP_COLLECTION_ID,
+                userId,
+                {
+                    last_otp_sent: timestamp
+                }
+            );
+        } catch (e) {
+            // If update fails, log but don't throw (non-critical)
+            console.error("Error updating last_otp_sent:", e);
+        }
     }
 }
 

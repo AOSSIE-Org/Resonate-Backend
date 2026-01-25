@@ -1,86 +1,24 @@
-# Send OTP function
+# Send OTP Function
 
-Function to send OTPs.
+This function handles the generation and delivery of a 6-digit OTP via email. It includes a **60-second backend rate-limiting** mechanism to prevent abuse.
 
-## 🧰 Usage
-
-### POST /
-
-**Parameters**
-
-| Name           | Description               | Location | Type   | Sample Value       |
-| -------------- | ------------------------- | -------- | ------ | ------------------ |
-| otpId          | Document ID of the otp    | Body     | String | `jcbd...kdsn`      |
-| recipientEmail | Email ID of the recipient | Body     | String | `jcbd...@mail.com` |
-
-**Response**
-
-Sample `200` Response:
-
-```json
-{
-    "msg": "mail sent"
-}
-```
+## 🚀 Features
+- **Secure OTP Generation**: Creates a random 6-digit code for authentication.
+- **Rate Limiting**: Checks the `last_otp_sent` timestamp in the database; returns a **429 Too Many Requests** if a request is made within 60 seconds of the last one.
+- **Email Integration**: Delivers the OTP using SMTP with secure credentials.
 
 ## ⚙️ Configuration
+- **Runtime**: Node.js 18.0 (Updated to address security patches)
+- **Entrypoint**: `src/main.js`
 
-| Setting           | Value                          |
-| ----------------- | ------------------------------ |
-| Runtime           | Node (18.0)                    |
-| Entrypoint        | `src/main.js`                  |
-| Build Commands    | `npm install && npm run start` |
-| Permissions       | `any`                          |
-| Timeout (Seconds) | 15                             |
+## 🔐 Environment Variables
+The following variables must be configured in your Appwrite Function settings:
 
-## 🔒 Environment Variables
-
-### APPWRITE_API_KEY
-
-API Key to use Appwrite Sever SDK.
-
-| Question      | Answer                                                                   |
-| ------------- | ------------------------------------------------------------------------ |
-| Required      | Yes                                                                      |
-| Sample Value  | `62...97`                                                                |
-| Documentation | [Appwrite API Keys](https://appwrite.io/docs/advanced/platform/api-keys) |
-
-### VERIFICATION_DATABASE_ID
-
-Database ID of verification database in appwrite.
-
-| Question      | Answer                                                                                  |
-| ------------- | --------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                     |
-| Sample Value  | `Zjc...5PH`                                                                             |
-| Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
-
-### OTP_COLLECTION_ID
-
-Collection ID of otp collection.
-
-| Question      | Answer                                                                                  |
-| ------------- | --------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                     |
-| Sample Value  | `NXOi3...IBHDa`                                                                         |
-| Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
-
-### SENDER_MAIL
-
-Email of the sender.
-
-| Question      | Answer                                           |
-| ------------- | ------------------------------------------------ |
-| Required      | Yes                                              |
-| Sample Value  | `jsch...@mail.com`                               |
-| Documentation | [Discord](https://discord.com/invite/6mFZ2S846n) |
-
-### SENDER_PASSWORD
-
-Password of the sender's account.
-
-| Question      | Answer                                           |
-| ------------- | ------------------------------------------------ |
-| Required      | Yes                                              |
-| Sample Value  | `HC1Itf...........dAAKF5o`                       |
-| Documentation | [Discord](https://discord.com/invite/6mFZ2S846n) |
+| Variable | Description |
+|----------|-------------|
+| `APPWRITE_API_KEY` | API key with database and document scopes. |
+| `APPWRITE_FUNCTION_PROJECT_ID` | Your active project ID. |
+| `VERIFICATION_DATABASE_ID` | ID for the database storing OTP metadata. |
+| `OTP_COLLECTION_ID` | Collection ID for storing user-specific OTP records. |
+| `SENDER_MAIL` | The SMTP email address used to send the OTP. |
+| `SENDER_PASSWORD` | The SMTP password or App Password for the sender. |

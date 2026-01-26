@@ -31,18 +31,25 @@ class AppwriteService {
     async cleanParticipantsCollection() {
         const participantDocs = await this.databases.listDocuments(
             process.env.MASTER_DATABASE_ID,
-            process.env.PARTICIPANTS_COLLECTION_ID
+            process.env.PARTICIPANTS_COLLECTION_ID,
+            [Query.limit(100)]
         );
 
-        participantDocs.documents.forEach(async (participantDoc) => {
-            if (!(await this.doesRoomExist(participantDoc.roomId))) {
-                await this.databases.deleteDocument(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.PARTICIPANTS_COLLECTION_ID,
-                    participantDoc.$id
-                );
-            }
-        });
+        await Promise.all(
+            participantDocs.documents.map(async (participantDoc) => {
+                if (!(await this.doesRoomExist(participantDoc.roomId))) {
+                    try {
+                        await this.databases.deleteDocument(
+                            process.env.MASTER_DATABASE_ID,
+                            process.env.PARTICIPANTS_COLLECTION_ID,
+                            participantDoc.$id
+                        );
+                    } catch (err) {
+                        if (err.code !== 404) throw err;
+                    }
+                }
+            })
+        );
     }
 
     async cleanActivePairsCollection() {

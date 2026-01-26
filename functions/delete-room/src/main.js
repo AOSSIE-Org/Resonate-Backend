@@ -50,30 +50,46 @@ export default async ({ req, res, log, error }) => {
             return res.json({ msg: "User is not room admin" }, 403);
         }
 
-        //Delete Appwrite room doc
+        // 1. Removing participants from collection
+        const participantColRef = await databases.listDocuments(
+            process.env.MASTER_DATABASE_ID,
+            process.env.PARTICIPANTS_COLLECTION_ID,
+            [Query.equal("roomId", [appwriteRoomDocId])]
+        );
+        
+        log(`Found ${participantColRef.documents.length} participants to remove.`);
+        
+        if (participantColRef.documents.length > 0) {
+            await Promise.all(
+                participantColRef.documents.map((participant) =>
+                    databases.deleteDocument(
+                        process.env.MASTER_DATABASE_ID,
+                        process.env.PARTICIPANTS_COLLECTION_ID,
+                        participant.$id
+                    )
+                )
+            );
+        }
+
+        // 2. Delete livekit room
+        try {
+            await roomServiceClient.deleteRoom(appwriteRoomDocId);
+        } catch (lkErr) {
+            // If room not found in LiveKit, it might already be gone, which is fine
+            if (lkErr.message?.includes("not found")) {
+                log("LiveKit room already deleted or not found.");
+            } else {
+                throw lkErr;
+            }
+        }
+
+        // 3. Delete Appwrite room doc (Final step to ensure atomicity in reconciliation)
         await databases.deleteDocument(
             process.env.MASTER_DATABASE_ID,
             process.env.ROOMS_COLLECTION_ID,
             appwriteRoomDocId
         );
 
-        // Removing participants from collection
-        const participantColRef = await databases.listDocuments(
-            process.env.MASTER_DATABASE_ID,
-            process.env.PARTICIPANTS_COLLECTION_ID,
-            [Query.equal("roomId", [appwriteRoomDocId])]
-        );
-        log(participantColRef);
-        participantColRef.documents.forEach(async (participant) => {
-            await databases.deleteDocument(
-                process.env.MASTER_DATABASE_ID,
-                process.env.PARTICIPANTS_COLLECTION_ID,
-                participant.$id
-            );
-        });
-
-        // Delete livekit room
-        await roomServiceClient.deleteRoom(appwriteRoomDocId);
         return res.json({ msg: "Room deleted successfully" });
     } catch (e) {
         error(String(e));

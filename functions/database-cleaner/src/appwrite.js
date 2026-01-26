@@ -29,27 +29,41 @@ class AppwriteService {
     }
 
     async cleanParticipantsCollection() {
-        const participantDocs = await this.databases.listDocuments(
-            process.env.MASTER_DATABASE_ID,
-            process.env.PARTICIPANTS_COLLECTION_ID,
-            [Query.limit(100)]
-        );
+        let done = false;
+        let lastId = null;
+        while (!done) {
+            const queries = [Query.limit(50)];
+            if (lastId) {
+                queries.push(Query.cursorAfter(lastId));
+            }
 
-        await Promise.all(
-            participantDocs.documents.map(async (participantDoc) => {
-                if (!(await this.doesRoomExist(participantDoc.roomId))) {
-                    try {
-                        await this.databases.deleteDocument(
-                            process.env.MASTER_DATABASE_ID,
-                            process.env.PARTICIPANTS_COLLECTION_ID,
-                            participantDoc.$id
-                        );
-                    } catch (err) {
-                        if (err.code !== 404) throw err;
-                    }
-                }
-            })
-        );
+            const participantDocs = await this.databases.listDocuments(
+                process.env.MASTER_DATABASE_ID,
+                process.env.PARTICIPANTS_COLLECTION_ID,
+                queries
+            );
+
+            if (participantDocs.documents.length > 0) {
+                await Promise.all(
+                    participantDocs.documents.map(async (participantDoc) => {
+                        if (!(await this.doesRoomExist(participantDoc.roomId))) {
+                            try {
+                                await this.databases.deleteDocument(
+                                    process.env.MASTER_DATABASE_ID,
+                                    process.env.PARTICIPANTS_COLLECTION_ID,
+                                    participantDoc.$id
+                                );
+                            } catch (err) {
+                                if (err.code !== 404) throw err;
+                            }
+                        }
+                    })
+                );
+                lastId = participantDocs.documents[participantDocs.documents.length - 1].$id;
+            } else {
+                done = true;
+            }
+        }
     }
 
     async cleanActivePairsCollection() {

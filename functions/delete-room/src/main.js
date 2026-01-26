@@ -50,25 +50,36 @@ export default async ({ req, res, log, error }) => {
             return res.json({ msg: "User is not room admin" }, 403);
         }
 
-        // 1. Removing participants from collection
-        const participantColRef = await databases.listDocuments(
-            process.env.MASTER_DATABASE_ID,
-            process.env.PARTICIPANTS_COLLECTION_ID,
-            [Query.equal("roomId", [appwriteRoomDocId])]
-        );
-        
-        log(`Found ${participantColRef.documents.length} participants to remove.`);
-        
-        if (participantColRef.documents.length > 0) {
-            await Promise.all(
-                participantColRef.documents.map((participant) =>
-                    databases.deleteDocument(
-                        process.env.MASTER_DATABASE_ID,
-                        process.env.PARTICIPANTS_COLLECTION_ID,
-                        participant.$id
-                    )
-                )
+        // 1. Removing participants from collection (with pagination)
+        let participantsDone = false;
+        while (!participantsDone) {
+            const participantColRef = await databases.listDocuments(
+                process.env.MASTER_DATABASE_ID,
+                process.env.PARTICIPANTS_COLLECTION_ID,
+                [
+                    Query.equal("roomId", [appwriteRoomDocId]),
+                    Query.limit(50)
+                ]
             );
+
+            if (participantColRef.documents.length > 0) {
+                log(`Removing ${participantColRef.documents.length} participants...`);
+                await Promise.all(
+                    participantColRef.documents.map(async (participant) => {
+                        try {
+                            await databases.deleteDocument(
+                                process.env.MASTER_DATABASE_ID,
+                                process.env.PARTICIPANTS_COLLECTION_ID,
+                                participant.$id
+                            );
+                        } catch (err) {
+                            if (err.code !== 404) throw err;
+                        }
+                    })
+                );
+            } else {
+                participantsDone = true;
+            }
         }
 
         // 2. Delete livekit room

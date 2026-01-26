@@ -1,5 +1,5 @@
 import { Client, Databases, Query } from "node-appwrite";
-import { RoomServiceClient } from "livekit-server-sdk";
+import { RoomServiceClient, TwirpError } from "livekit-server-sdk";
 import { throwIfMissing } from "./utils.js";
 
 export default async ({ req, res, log, error }) => {
@@ -87,7 +87,7 @@ export default async ({ req, res, log, error }) => {
             await roomServiceClient.deleteRoom(appwriteRoomDocId);
         } catch (lkErr) {
             // If room not found in LiveKit, it might already be gone, which is fine
-            if (lkErr.message?.includes("not found")) {
+            if (lkErr instanceof TwirpError && lkErr.code === "not_found") {
                 log("LiveKit room already deleted or not found.");
             } else {
                 throw lkErr;

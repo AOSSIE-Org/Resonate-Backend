@@ -22,9 +22,7 @@ class AppwriteService {
             );
             return true;
         } catch (err) {
-            if (err.code !== 404) {
-                console.error(`Error checking room existence: ${err.message}`);
-            }
+            if (err.code !== 404) throw err;
             return false;
         }
     }

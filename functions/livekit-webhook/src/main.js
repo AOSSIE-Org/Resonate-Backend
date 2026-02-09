@@ -26,13 +26,13 @@ export default async (context) => {
         log(event);
 
         if (event.event === 'room_finished') {
-            // Appwrite room id is same as Livekit room name
             const appwriteRoomDocId = event.room.name;
 
-            // Delete the room in appwrite if it still exists
-            log(appwrite.doesRoomExist(appwriteRoomDocId));
-            if (appwrite.doesRoomExist(appwriteRoomDocId)) {
-                appwrite.deleteRoom(appwriteRoomDocId);
+            const roomExists = await appwrite.doesRoomExist(appwriteRoomDocId);
+            log(`Room ${appwriteRoomDocId} exists: ${roomExists}`);
+
+            if (roomExists) {
+                await appwrite.deleteRoom(appwriteRoomDocId);
             }
         }
     } catch (e) {

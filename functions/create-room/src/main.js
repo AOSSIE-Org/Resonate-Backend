@@ -1,6 +1,6 @@
 import AppwriteService from "./appwrite.js";
 import LivekitService from "./livekit.js";
-import { throwIfMissing } from "./utils.js";
+import { throwIfMissing, validateCreateRoomInput } from "./utils.js";
 
 export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
@@ -15,17 +15,22 @@ export default async ({ req, res, log, error }) => {
 
     const appwrite = new AppwriteService();
     const livekit = new LivekitService();
+    let body;
+    let validatedData;
 
     try {
-        throwIfMissing(JSON.parse(req.body), ["name", "adminUid", "tags"]);
+      body = JSON.parse(req.body);
+      throwIfMissing(body, ["name", "adminUid", "tags"]);
+      validatedData = validateCreateRoomInput(body);
     } catch (err) {
-        error(err.message);
-        return res.json({ msg: err.message }, 400);
+      error(err.message);
+      return res.json({ msg: err.message }, 400);
     }
+
+    const { name, description, adminUid, tags } = validatedData;
 
     try {
         log(req);
-        const { name, description, adminUid, tags } = JSON.parse(req.body);
 
         // create a new room on appwrite
         const newRoomdata = {

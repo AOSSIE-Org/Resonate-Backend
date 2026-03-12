@@ -515,6 +515,31 @@
             "entrypoint": "src/main.js",
             "commands": "npm install",
             "path": "functions/sync-all-documents-with-meilisearch"
+        },
+        {
+            "$id": "delete-account",
+            "name": "Delete Account",
+            "runtime": "node-16.0",
+            "path": "functions/delete-account",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "vars": [],
+            "execute": [
+                "users"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": [
+                "users.read",
+                "users.write"
+            ]
         }
     ],
     "buckets": [

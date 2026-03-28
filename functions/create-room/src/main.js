@@ -72,6 +72,18 @@ export default async ({ req, res, log, error }) => {
             true
         );
 
+        // Add track-activity
+        await fetch("http://localhost/track-activity", {
+            method: "POST",
+            body: JSON.stringify({
+               eventType: "ROOM_CREATED",
+               userId: adminUid,
+               metadata: {
+                  roomId: appwriteRoomId,
+               },
+            }),
+        });
+
         return res.json({
             success: true,
             message: "Room created successfully",
@@ -90,4 +102,5 @@ export default async ({ req, res, log, error }) => {
             message: "Room creation failed",
         }, 500);
     }
+
 };

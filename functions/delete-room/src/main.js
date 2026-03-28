@@ -101,6 +101,18 @@ export default async ({ req, res, log, error }) => {
         // Delete LiveKit room
         await roomServiceClient.deleteRoom(appwriteRoomDocId);
 
+        // Add track-activity
+        await fetch("http://localhost/track-activity", {
+            method: "POST",
+            body: JSON.stringify({
+              eventType: "ROOM_DELETED",
+              userId: roomAdminUid,
+              metadata: {
+                roomId: appwriteRoomDocId,
+             },
+            }),
+        });
+
         return res.json({
             success: true,
             message: "Room deleted successfully",

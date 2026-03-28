@@ -8,6 +8,18 @@ export default async ({ req, res, log, error }) => {
         "LIVEKIT_SOCKET_URL",
     ]);
 
+    // Add track-activity
+    await fetch("http://localhost/track-activity", {
+        method: "POST",
+        body: JSON.stringify({
+           eventType: "USER_JOINED",
+           userId,
+            metadata: {
+              roomName,
+            },
+        }),
+    });
+
     try {
         throwIfMissing(JSON.parse(req.body), ["roomName", "uid"]);
     } catch (err) {

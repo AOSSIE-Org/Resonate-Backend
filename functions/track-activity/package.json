@@ -1,0 +1,15 @@
+{
+    "name": "track-activity",
+    "version": "1.0.0",
+    "description": "Function to track backend activity events",
+    "main": "src/main.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/main.js",
+        "format": "prettier --write ."
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "prettier": "^3.0.0"
+    }
+}

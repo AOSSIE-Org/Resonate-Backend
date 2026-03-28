@@ -1,17 +1,26 @@
 import { Client, Databases, Query } from "node-appwrite";
 import { RoomServiceClient } from "livekit-server-sdk";
-import { throwIfMissing } from "./utils.js";
+import { throwIfMissing, parseBody } from "./utils.js";
 
 export default async ({ req, res, log, error }) => {
-    throwIfMissing(process.env, [
-        "APPWRITE_API_KEY",
-        "MASTER_DATABASE_ID",
-        "ROOMS_COLLECTION_ID",
-        "PARTICIPANTS_COLLECTION_ID",
-        "LIVEKIT_HOST",
-        "LIVEKIT_API_KEY",
-        "LIVEKIT_API_SECRET",
-    ]);
+    // Environment validation (safe)
+    try {
+        throwIfMissing(process.env, [
+            "APPWRITE_API_KEY",
+            "MASTER_DATABASE_ID",
+            "ROOMS_COLLECTION_ID",
+            "PARTICIPANTS_COLLECTION_ID",
+            "LIVEKIT_HOST",
+            "LIVEKIT_API_KEY",
+            "LIVEKIT_API_SECRET",
+        ]);
+    } catch (err) {
+        error("[ENV_ERROR] " + err.message);
+        return res.json({
+            success: false,
+            message: err.message,
+        }, 500);
+    }
 
     const databases = new Databases(
         new Client()
@@ -23,20 +32,29 @@ export default async ({ req, res, log, error }) => {
     );
 
     const roomServiceClient = new RoomServiceClient(
-        `${process.env.LIVEKIT_HOST}`,
-        `${process.env.LIVEKIT_API_KEY}`,
-        `${process.env.LIVEKIT_API_SECRET}`
+        process.env.LIVEKIT_HOST,
+        process.env.LIVEKIT_API_KEY,
+        process.env.LIVEKIT_API_SECRET
     );
 
+    let data;
+
+    // Safe parsing + validation
     try {
-        throwIfMissing(JSON.parse(req.body), ["appwriteRoomDocId"]);
+        data = parseBody(req.body);
+        throwIfMissing(data, ["appwriteRoomDocId"]);
     } catch (err) {
-        return res.json({ msg: err.message }, 400);
+        error("[VALIDATION_ERROR] " + err.message);
+        return res.json({
+            success: false,
+            message: err.message,
+        }, 400);
     }
 
+    const { appwriteRoomDocId } = data;
+
     try {
-        log(req);
-        const { appwriteRoomDocId, livekitToken } = JSON.parse(req.body);
+        log("[DELETE_ROOM_REQUEST]", { appwriteRoomDocId });
 
         const appwriteRoom = await databases.getDocument(
             process.env.MASTER_DATABASE_ID,
@@ -45,38 +63,66 @@ export default async ({ req, res, log, error }) => {
         );
 
         const roomAdminUid = req.headers["x-appwrite-user-id"];
+
         if (appwriteRoom.adminUid !== roomAdminUid) {
-            log("User not room admin");
-            return res.json({ msg: "User is not room admin" }, 403);
+            log("[AUTH_ERROR] User is not room admin");
+            return res.json({
+                success: false,
+                message: "User is not room admin",
+            }, 403);
         }
 
-        //Delete Appwrite room doc
+        // Delete Appwrite room document
         await databases.deleteDocument(
             process.env.MASTER_DATABASE_ID,
             process.env.ROOMS_COLLECTION_ID,
             appwriteRoomDocId
         );
 
-        // Removing participants from collection
+        // Remove participants (FIXED async issue)
         const participantColRef = await databases.listDocuments(
             process.env.MASTER_DATABASE_ID,
             process.env.PARTICIPANTS_COLLECTION_ID,
             [Query.equal("roomId", [appwriteRoomDocId])]
         );
-        log(participantColRef);
-        participantColRef.documents.forEach(async (participant) => {
-            await databases.deleteDocument(
-                process.env.MASTER_DATABASE_ID,
-                process.env.PARTICIPANTS_COLLECTION_ID,
-                participant.$id
-            );
+
+        log("[PARTICIPANTS_FOUND]", participantColRef.documents.length);
+
+        await Promise.all(
+            participantColRef.documents.map((participant) =>
+                databases.deleteDocument(
+                    process.env.MASTER_DATABASE_ID,
+                    process.env.PARTICIPANTS_COLLECTION_ID,
+                    participant.$id
+                )
+            )
+        );
+
+        // Delete LiveKit room
+        await roomServiceClient.deleteRoom(appwriteRoomDocId);
+
+        // Add track-activity
+        await fetch("http://localhost/track-activity", {
+            method: "POST",
+            body: JSON.stringify({
+              eventType: "ROOM_DELETED",
+              userId: roomAdminUid,
+              metadata: {
+                roomId: appwriteRoomDocId,
+             },
+            }),
         });
 
-        // Delete livekit room
-        await roomServiceClient.deleteRoom(appwriteRoomDocId);
-        return res.json({ msg: "Room deleted successfully" });
+        return res.json({
+            success: true,
+            message: "Room deleted successfully",
+        });
     } catch (e) {
-        error(String(e));
-        return res.json({ msg: "Room deletion failed" }, 500);
+        error("[DELETE_ROOM_ERROR] " + String(e));
+
+        return res.json({
+            success: false,
+            message: "Room deletion failed",
+        }, 500);
     }
 };

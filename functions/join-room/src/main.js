@@ -1,4 +1,4 @@
-import { Client, Databases } from "node-appwrite";
+import { Client, Databases, Query } from "node-appwrite";
 import { generateToken } from "./livekit.js";
 import { throwIfMissing } from "./utils.js";
 
@@ -31,14 +31,12 @@ export default async ({ req, res, log, error }) => {
                 .setKey(process.env.APPWRITE_API_KEY)
         );
 
-        const roomExists = await databases.getDocument(
+        const rooms = await databases.listDocuments(
             process.env.MASTER_DATABASE_ID,
             process.env.ROOMS_COLLECTION_ID,
-            roomName
-        ).then(() => true).catch((err) => {
-            if (err.code === 404) return false;
-            throw err;
-        });
+            [Query.equal("name", roomName)]
+        );
+        const roomExists = rooms.documents.length > 0;
 
         if (!roomExists) {
             return res.json({ msg: "Room not found" }, 404);

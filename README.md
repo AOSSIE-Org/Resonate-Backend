@@ -41,6 +41,8 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 (j) [database-cleaner](functions/database-cleaner/) : Function to cleanup active pairs and participants collections in the database.
 
+(k) [Chat function](functions/chat/) : Function to handle in-room text chat (send, history, delete, mute).
+
 ## Communication Channels
 
 If you have any questions, need clarifications, or want to discuss ideas, feel free to reach out through the following channels:

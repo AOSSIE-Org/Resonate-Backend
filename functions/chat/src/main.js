@@ -79,7 +79,7 @@ export default async ({ req, res, log, error }) => {
                     return res.json({ msg: "User is muted in this room" }, 403);
                 }
 
-                const messageId = ID.unique();
+                const messageId = params.messageId || ID.unique();
                 const now = new Date();
                 const message = await db.createDocument(
                     process.env.MASTER_DATABASE_ID,

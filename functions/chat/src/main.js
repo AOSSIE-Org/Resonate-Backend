@@ -164,6 +164,26 @@ export default async ({ req, res, log, error }) => {
                 return res.json({ msg: "Message deleted" });
             }
 
+            case "checkMute": {
+                throwIfMissing(params, ["roomId", "uid"]);
+                const { roomId, uid } = params;
+
+                const muteCheck = await db.listDocuments(
+                    process.env.MASTER_DATABASE_ID,
+                    process.env.MUTES_COLLECTION_ID,
+                    [
+                        Query.equal("roomId", [roomId]),
+                        Query.equal("uid", [uid]),
+                        Query.limit(1),
+                    ]
+                );
+
+                return res.json({
+                    msg: "Success",
+                    isMuted: muteCheck.documents.length > 0,
+                });
+            }
+
             case "mute": {
                 throwIfMissing(params, [
                     "roomId",

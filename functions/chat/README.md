@@ -11,7 +11,7 @@ Receives an action and associated parameters to manage in-room text chat.
 
 | Name | Description | Location | Type | Sample Value |
 | ---- | ----------- | -------- | ---- | ------------ |
-| action | Action to perform (`send`, `history`, `delete`, `mute`) | Body | String | `send` |
+| action | Action to perform (`send`, `history`, `delete`, `mute`, `checkMute`) | Body | String | `send` |
 | roomId | ID of the room | Body | String | `Zjc...5PH` |
 | creatorId | User ID of the message sender (for `send`) | Body | String | `652000000002` |
 | creatorUsername | Username of the sender (for `send`) | Body | String | `johndoe` |
@@ -84,6 +84,15 @@ Sample `200` Response (unmute):
 ```json
 {
     "msg": "User unmuted"
+}
+```
+
+Sample `200` Response (checkMute):
+
+```json
+{
+    "msg": "Success",
+    "isMuted": true
 }
 ```
 

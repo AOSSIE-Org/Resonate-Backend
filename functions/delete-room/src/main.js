@@ -40,7 +40,7 @@ export default async ({ req, res, log, error }) => {
         log(req);
         const { appwriteRoomDocId, livekitToken } = JSON.parse(req.body);
 
-        const roomResult = await tables.getRows({
+        const roomResult = await tables.listRows({
             databaseId: process.env.MASTER_DATABASE_ID,
             tableId: process.env.ROOMS_TABLE_ID,
             queries: [Query.equal("$id", [appwriteRoomDocId])]

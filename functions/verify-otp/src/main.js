@@ -27,7 +27,7 @@ export default async ({ req, res, log, error }) => {
     let otpDocument;
 
     try {
-        const otpResult = await db.getRows({
+        const otpResult = await db.listRows({
             databaseId: process.env.VERIFICATION_DATABASE_ID,
             tableId: process.env.OTP_TABLE_ID,
             queries: [Query.equal('$id', [otpID])]

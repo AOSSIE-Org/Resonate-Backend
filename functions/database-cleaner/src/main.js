@@ -6,6 +6,8 @@ export default async (context) => {
         "APPWRITE_API_KEY",
         "ROOMS_TABLE_ID",
         "PARTICIPANTS_TABLE_ID",
+        "POLLS_TABLE_ID",
+        "POLL_VOTES_TABLE_ID",
         "ACTIVE_PAIRS_TABLE_ID",
         "RETENTION_PERIOD_DAYS",
         "VERIFICATION_DATABASE_ID",
@@ -16,6 +18,18 @@ export default async (context) => {
 
     try {
         await appwrite.cleanParticipantsCollection();
+    } catch (e) {
+        context.error(String(e));
+    }
+
+    try {
+        await appwrite.cleanRoomPollsCollection();
+    } catch (e) {
+        context.error(String(e));
+    }
+
+    try {
+        await appwrite.cleanRoomPollVotesCollection();
     } catch (e) {
         context.error(String(e));
     }

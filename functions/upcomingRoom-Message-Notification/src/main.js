@@ -35,7 +35,7 @@ module.exports = async function ({ req, res, log, error }) {
       subscribersTokens.push(token);
     }
   });
-  let documentResult = await database.getRows({
+  let documentResult = await database.listRows({
     databaseId: process.env.UpcomingRoomsDataBaseID,
     tableId: process.env.UpcomingRoomsCollectionID,
     queries: [query.equal('$id', [roomId])]

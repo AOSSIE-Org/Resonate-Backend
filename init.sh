@@ -187,4 +187,8 @@ appwrite project create-variable --key LIVEKIT_API_KEY --value "$livekitAPIKey"
 appwrite project create-variable --key LIVEKIT_API_SECRET --value "$livekitAPISecret"
 appwrite push functions --with-variables
 
+# Seed the achievement thresholds.
+echo "Seeding achievement thresholds ..."
+appwrite functions create-execution --function-id reconcile-achievements
+
 echo "Many Congratulations Resonate Backend set up is complete !!! please further read the onboarding guide for connecting frontend to backend"

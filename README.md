@@ -55,6 +55,10 @@ Go to [this repository](https://github.com/AOSSIE-Org/Resonate) to know more abo
 
 (q) [upcomingRoom-Message-Notification](functions/upcomingRoom-Message-Notification/) : Function to send reminders/notifications to users about upcoming rooms (e.g., reminders before start time).
 
+(r) [record-activity](functions/record-activity/) : Function to record user activity counters (rooms hosted, rooms moderated, interactions, active days) and award achievement badges. The only writer of the `user_stats` table.
+
+(s) [reconcile-achievements](functions/reconcile-achievements/) : Nightly cron function that seeds the badge threshold catalogue and repairs any badge award the event-driven path missed.
+
 ## Communication Channels
 
 If you have any questions, need clarifications, or want to discuss ideas, feel free to reach out through the following channels:

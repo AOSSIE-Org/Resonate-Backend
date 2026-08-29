@@ -1,0 +1,17 @@
+{
+    "name": "record-activity",
+    "version": "1.0.0",
+    "description": "Records user activity counters and awards achievement badges",
+    "main": "src/main.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/main.js",
+        "format": "prettier --write ."
+    },
+    "dependencies": {
+        "node-appwrite": "^20.3.0"
+    },
+    "devDependencies": {
+        "prettier": "^3.0.0"
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "name": "reconcile-achievements",
+    "version": "1.0.0",
+    "description": "Nightly fallback that seeds badge thresholds and repairs missed badge awards",
+    "main": "src/main.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/main.js",
+        "format": "prettier --write ."
+    },
+    "dependencies": {
+        "node-appwrite": "^20.3.0"
+    },
+    "devDependencies": {
+        "prettier": "^3.0.0"
+    }
+}

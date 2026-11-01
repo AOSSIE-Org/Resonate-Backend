@@ -23,7 +23,7 @@ export default async ({ req, res, log, error }) => {
     const newRequestDocId = triggerEvent.split('.')[5];
     log(newRequestDocId);
 
-    const newRequestResult = await db.getRows({
+    const newRequestResult = await db.listRows({
         databaseId: process.env.DATABASE_ID,
         tableId: process.env.REQUESTS_TABLE_ID,
         queries: [Query.equal('$id', [newRequestDocId])]

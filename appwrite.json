@@ -98,7 +98,7 @@
                     "value": "xizkyvzhduejxjel"
                 },
                 {
-                    "key": "OTP_COLLECTION_ID",
+                    "key": "OTP_TABLE_ID",
                     "value": "64a7bfe3a3a7ee5bf7f8"
                 }
             ],
@@ -149,11 +149,11 @@
             ],
             "vars": [
                 {
-                    "key": "VERIFY_COLLECTION_ID",
+                    "key": "VERIFY_TABLE_ID",
                     "value": "64a7c0100eabfe8d3844"
                 },
                 {
-                    "key": "OTP_COLLECTION_ID",
+                    "key": "OTP_TABLE_ID",
                     "value": "64a7bfe3a3a7ee5bf7f8"
                 },
                 {
@@ -189,7 +189,7 @@
                     "value": "64a521785f5be62b796f"
                 },
                 {
-                    "key": "ROOMS_COLLECTION_ID",
+                    "key": "ROOMS_TABLE_ID",
                     "value": "64a5217e695bf2c4ec9c"
                 }
             ],
@@ -344,11 +344,11 @@
             ],
             "vars": [
                 {
-                    "key": "ROOMS_COLLECTION_ID",
+                    "key": "ROOMS_TABLE_ID",
                     "value": "64a5217e695bf2c4ec9c"
                 },
                 {
-                    "key": "PARTICIPANTS_COLLECTION_ID",
+                    "key": "PARTICIPANTS_TABLE_ID",
                     "value": "64a63e508145d1084abf"
                 },
                 {
@@ -380,7 +380,7 @@
             ],
             "vars": [
                 {
-                    "key": "ACTIVE_PAIRS_COLLECTION_ID",
+                    "key": "ACTIVE_PAIRS_TABLE_ID",
                     "value": "64d980cd65ff2e08ab97"
                 },
                 {
@@ -388,7 +388,7 @@
                     "value": "64a521785f5be62b796f"
                 },
                 {
-                    "key": "REQUESTS_COLLECTION_ID",
+                    "key": "REQUESTS_TABLE_ID",
                     "value": "64d980211f1395263ebe"
                 },
                 {
@@ -464,7 +464,22 @@
             "logging": true,
             "runtime": "node-16.0",
             "scopes": [
-                "users.read"
+                "users.read",
+                "databases.read",
+                "collections.read",
+                "documents.read",
+                "tables.read",
+                "rows.read"
+            ],
+            "vars": [
+                {
+                    "key": "UserDataDatabaseID",
+                    "value": "64a1319104a149e16f5c"
+                },
+                {
+                    "key": "UsersCollectionID",
+                    "value": "64a52f0a6c41ded09def"
+                }
             ],
             "events": [],
             "schedule": "",
@@ -739,7 +754,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "dob",
@@ -747,7 +763,8 @@
                     "required": false,
                     "array": false,
                     "size": 15,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "username",
@@ -755,7 +772,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "profileImageUrl",
@@ -763,7 +781,8 @@
                     "required": true,
                     "array": false,
                     "size": 500,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "email",
@@ -779,7 +798,8 @@
                     "required": false,
                     "array": false,
                     "size": 300,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "ratingTotal",
@@ -834,6 +854,21 @@
                     "min": -9223372036854775808,
                     "max": 9223372036854775807,
                     "default": 1
+                },
+                {
+                    "key": "status",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "online",
+                        "dnd",
+                        "inroom",
+                        "invisible",
+                        "offline"
+                    ],
+                    "format": "enum",
+                    "default": "online"
                 }
             ],
             "indexes": [
@@ -892,7 +927,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerUsername",
@@ -900,7 +936,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerName",
@@ -908,7 +945,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerFCMToken",
@@ -916,7 +954,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerProfileImageUrl",
@@ -957,7 +996,8 @@
                     "required": true,
                     "array": false,
                     "size": 200,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "tags",
@@ -965,7 +1005,8 @@
                     "required": false,
                     "array": true,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -973,7 +1014,8 @@
                     "required": false,
                     "array": false,
                     "size": 1024,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "totalParticipants",
@@ -990,7 +1032,8 @@
                     "required": true,
                     "array": false,
                     "size": 255,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportedUsers",
@@ -998,7 +1041,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -1022,7 +1066,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isAdmin",
@@ -1058,7 +1103,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "hasRequestedToBeSpeaker",
@@ -1125,7 +1171,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "question",
@@ -1133,7 +1180,8 @@
                     "required": true,
                     "array": false,
                     "size": 500,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "options",
@@ -1141,7 +1189,8 @@
                     "required": false,
                     "array": true,
                     "size": 200,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "createdBy",
@@ -1149,7 +1198,8 @@
                     "required": true,
                     "array": false,
                     "size": 255,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isClosed",
@@ -1192,7 +1242,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "roomId",
@@ -1200,7 +1251,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "uid",
@@ -1208,7 +1260,8 @@
                     "required": true,
                     "array": false,
                     "size": 255,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "optionIndex",
@@ -1266,7 +1319,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isAnonymous",
@@ -1281,7 +1335,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userName",
@@ -1289,7 +1344,8 @@
                     "required": false,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "name",
@@ -1297,7 +1353,8 @@
                     "required": false,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isRandom",
@@ -1407,7 +1464,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userDocId2",
@@ -1415,7 +1473,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userName1",
@@ -1423,7 +1482,8 @@
                     "required": false,
                     "array": false,
                     "size": 50,
-                    "default": "Anonymous "
+                    "default": "Anonymous ",
+                    "encrypt": false
                 },
                 {
                     "key": "userName2",
@@ -1431,7 +1491,8 @@
                     "required": false,
                     "array": false,
                     "size": 50,
-                    "default": "Anonymous"
+                    "default": "Anonymous",
+                    "encrypt": false
                 },
                 {
                     "key": "uid1",
@@ -1439,7 +1500,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "uid2",
@@ -1447,7 +1509,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
@@ -1494,7 +1557,8 @@
                     "required": false,
                     "array": false,
                     "size": 100000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "date",
@@ -1502,7 +1566,8 @@
                     "required": false,
                     "array": false,
                     "size": 50,
-                    "default": "None"
+                    "default": "None",
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -1526,7 +1591,8 @@
                     "required": false,
                     "array": false,
                     "size": 1000000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -1557,7 +1623,8 @@
                     "required": false,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "scheduledDateTime",
@@ -1573,7 +1640,8 @@
                     "required": false,
                     "array": true,
                     "size": 10000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -1581,7 +1649,8 @@
                     "required": false,
                     "array": false,
                     "size": 100000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorUid",
@@ -1589,7 +1658,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creator_fcm_tokens",
@@ -1597,7 +1667,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -1621,7 +1692,8 @@
                     "required": false,
                     "array": false,
                     "size": 10000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userProfileUrl",
@@ -1629,7 +1701,8 @@
                     "required": false,
                     "array": false,
                     "size": 100000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "upcomingRoomId",
@@ -1637,7 +1710,8 @@
                     "required": false,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "registrationTokens",
@@ -1645,7 +1719,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -1669,7 +1744,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "storyId",
@@ -1677,7 +1753,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
@@ -1724,7 +1801,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -1732,7 +1810,8 @@
                     "required": false,
                     "array": false,
                     "size": 2000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "coverImgUrl",
@@ -1748,7 +1827,8 @@
                     "required": false,
                     "array": false,
                     "size": 50000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "storyId",
@@ -1756,7 +1836,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "audioFileUrl",
@@ -1772,7 +1853,8 @@
                     "required": false,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "playDuration",
@@ -1817,7 +1899,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -1825,7 +1908,8 @@
                     "required": false,
                     "array": false,
                     "size": 2000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "category",
@@ -1857,7 +1941,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorName",
@@ -1865,7 +1950,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorImgUrl",
@@ -1890,7 +1976,8 @@
                     "required": false,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "playDuration",
@@ -1979,7 +2066,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorId",
@@ -1987,7 +2075,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorUsername",
@@ -1995,7 +2084,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "hasValidTag",
@@ -2010,7 +2100,8 @@
                     "required": false,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isEdited",
@@ -2025,7 +2116,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorImgUrl",
@@ -2049,7 +2141,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "index",
@@ -2066,7 +2159,15 @@
                     "required": false,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "isDeleted",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
                 }
             ],
             "indexes": []
@@ -2090,7 +2191,8 @@
                     "required": true,
                     "array": false,
                     "size": 30,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorImgUrl",
@@ -2115,7 +2217,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "messageId",
@@ -2123,7 +2226,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -2159,7 +2263,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverId",
@@ -2167,7 +2272,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderUsername",
@@ -2175,7 +2281,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverUsername",
@@ -2183,7 +2290,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderName",
@@ -2191,7 +2299,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverName",
@@ -2199,7 +2308,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderFCMToken",
@@ -2207,7 +2317,8 @@
                     "required": false,
                     "array": false,
                     "size": 5000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverFCMToken",
@@ -2215,7 +2326,8 @@
                     "required": false,
                     "array": false,
                     "size": 5000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "requestStatus",
@@ -2235,7 +2347,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderRating",
@@ -2293,7 +2406,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverName",
@@ -2301,7 +2415,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "callerUsername",
@@ -2309,7 +2424,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverUsername",
@@ -2317,7 +2433,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "callerUid",
@@ -2325,7 +2442,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverUid",
@@ -2333,7 +2451,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "livekitRoomId",
@@ -2341,7 +2460,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "callStatus",
@@ -2407,7 +2527,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportedUid",
@@ -2415,7 +2536,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportText",
@@ -2423,7 +2545,8 @@
                     "required": false,
                     "array": false,
                     "size": 5000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportType",
@@ -2464,7 +2587,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "users",
@@ -2500,7 +2624,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "authorUid",
@@ -2508,7 +2633,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "authorProfileImageUrl",
@@ -2524,7 +2650,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followersFCMToken",
@@ -2532,7 +2659,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "chapterTitle",
@@ -2540,7 +2668,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "storyId",
@@ -2548,7 +2677,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "chapterDescription",
@@ -2556,7 +2686,8 @@
                     "required": true,
                     "array": false,
                     "size": 2000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -2646,7 +2777,8 @@
                     "required": false,
                     "array": false,
                     "size": 10000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userProfileUrl",
@@ -2654,7 +2786,8 @@
                     "required": false,
                     "array": false,
                     "size": 100000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "upcomingRoomId",
@@ -2662,7 +2795,8 @@
                     "required": false,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "registrationTokens",
@@ -2670,7 +2804,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -2701,7 +2836,8 @@
                     "required": false,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "scheduledDateTime",
@@ -2717,7 +2853,8 @@
                     "required": false,
                     "array": true,
                     "size": 10000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -2725,7 +2862,8 @@
                     "required": false,
                     "array": false,
                     "size": 100000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorUid",
@@ -2733,7 +2871,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creator_fcm_tokens",
@@ -2741,7 +2880,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -2765,7 +2905,8 @@
                     "required": false,
                     "array": false,
                     "size": 100000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "date",
@@ -2773,7 +2914,8 @@
                     "required": false,
                     "array": false,
                     "size": 50,
-                    "default": "None"
+                    "default": "None",
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -2797,7 +2939,8 @@
                     "required": false,
                     "array": false,
                     "size": 1000000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -2845,7 +2988,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "dob",
@@ -2853,7 +2997,8 @@
                     "required": false,
                     "array": false,
                     "size": 15,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "username",
@@ -2861,7 +3006,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "profileImageUrl",
@@ -2869,7 +3015,8 @@
                     "required": true,
                     "array": false,
                     "size": 500,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "email",
@@ -2885,7 +3032,8 @@
                     "required": false,
                     "array": false,
                     "size": 300,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "ratingTotal",
@@ -2940,6 +3088,21 @@
                     "min": -9223372036854775808,
                     "max": 9223372036854775807,
                     "default": 1
+                },
+                {
+                    "key": "status",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "online",
+                        "dnd",
+                        "inroom",
+                        "invisible",
+                        "offline"
+                    ],
+                    "format": "enum",
+                    "default": "online"
                 }
             ],
             "indexes": [
@@ -2998,7 +3161,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerUsername",
@@ -3006,7 +3170,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerName",
@@ -3014,7 +3179,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerFCMToken",
@@ -3022,7 +3188,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followerProfileImageUrl",
@@ -3075,7 +3242,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportedUid",
@@ -3083,7 +3251,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportText",
@@ -3091,7 +3260,8 @@
                     "required": false,
                     "array": false,
                     "size": 5000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportType",
@@ -3144,7 +3314,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverId",
@@ -3152,7 +3323,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderUsername",
@@ -3160,7 +3332,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverUsername",
@@ -3168,7 +3341,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderName",
@@ -3176,7 +3350,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverName",
@@ -3184,7 +3359,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderFCMToken",
@@ -3192,7 +3368,8 @@
                     "required": false,
                     "array": false,
                     "size": 5000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverFCMToken",
@@ -3200,7 +3377,8 @@
                     "required": false,
                     "array": false,
                     "size": 5000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "requestStatus",
@@ -3220,7 +3398,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "senderRating",
@@ -3278,7 +3457,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "users",
@@ -3314,7 +3494,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isAnonymous",
@@ -3329,7 +3510,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userName",
@@ -3337,7 +3519,8 @@
                     "required": false,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "name",
@@ -3345,7 +3528,8 @@
                     "required": false,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isRandom",
@@ -3455,7 +3639,8 @@
                     "required": true,
                     "array": false,
                     "size": 200,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "tags",
@@ -3463,7 +3648,8 @@
                     "required": false,
                     "array": true,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -3471,7 +3657,8 @@
                     "required": false,
                     "array": false,
                     "size": 1024,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "totalParticipants",
@@ -3488,7 +3675,8 @@
                     "required": true,
                     "array": false,
                     "size": 255,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "reportedUsers",
@@ -3496,7 +3684,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -3520,7 +3709,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorId",
@@ -3528,7 +3718,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorUsername",
@@ -3536,7 +3727,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "hasValidTag",
@@ -3551,7 +3743,8 @@
                     "required": false,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isEdited",
@@ -3566,7 +3759,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorImgUrl",
@@ -3590,7 +3784,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "index",
@@ -3607,7 +3802,15 @@
                     "required": false,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "isDeleted",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
                 }
             ],
             "indexes": []
@@ -3631,7 +3834,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userDocId2",
@@ -3639,7 +3843,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "userName1",
@@ -3647,7 +3852,8 @@
                     "required": false,
                     "array": false,
                     "size": 50,
-                    "default": "Anonymous "
+                    "default": "Anonymous ",
+                    "encrypt": false
                 },
                 {
                     "key": "userName2",
@@ -3655,7 +3861,8 @@
                     "required": false,
                     "array": false,
                     "size": 50,
-                    "default": "Anonymous"
+                    "default": "Anonymous",
+                    "encrypt": false
                 },
                 {
                     "key": "uid1",
@@ -3663,7 +3870,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "uid2",
@@ -3671,7 +3879,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
@@ -3718,7 +3927,8 @@
                     "required": true,
                     "array": false,
                     "size": 30,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorImgUrl",
@@ -3743,7 +3953,8 @@
                     "required": true,
                     "array": false,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "messageId",
@@ -3751,7 +3962,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -3775,7 +3987,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isAdmin",
@@ -3811,7 +4024,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "hasRequestedToBeSpeaker",
@@ -3878,7 +4092,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "question",
@@ -3886,7 +4101,8 @@
                     "required": true,
                     "array": false,
                     "size": 500,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "options",
@@ -3894,7 +4110,8 @@
                     "required": false,
                     "array": true,
                     "size": 200,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "createdBy",
@@ -3902,7 +4119,8 @@
                     "required": true,
                     "array": false,
                     "size": 255,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "isClosed",
@@ -3945,7 +4163,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "roomId",
@@ -3953,7 +4172,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "uid",
@@ -3961,7 +4181,8 @@
                     "required": true,
                     "array": false,
                     "size": 255,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "optionIndex",
@@ -4019,7 +4240,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverName",
@@ -4027,7 +4249,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "callerUsername",
@@ -4035,7 +4258,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverUsername",
@@ -4043,7 +4267,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "callerUid",
@@ -4051,7 +4276,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "recieverUid",
@@ -4059,7 +4285,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "livekitRoomId",
@@ -4067,7 +4294,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "callStatus",
@@ -4121,7 +4349,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -4129,7 +4358,8 @@
                     "required": false,
                     "array": false,
                     "size": 2000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "coverImgUrl",
@@ -4145,7 +4375,8 @@
                     "required": false,
                     "array": false,
                     "size": 50000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "storyId",
@@ -4153,7 +4384,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "audioFileUrl",
@@ -4169,7 +4401,8 @@
                     "required": false,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "playDuration",
@@ -4214,7 +4447,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "description",
@@ -4222,7 +4456,8 @@
                     "required": false,
                     "array": false,
                     "size": 2000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "category",
@@ -4254,7 +4489,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorName",
@@ -4262,7 +4498,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "creatorImgUrl",
@@ -4287,7 +4524,8 @@
                     "required": false,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "playDuration",
@@ -4376,7 +4614,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "storyId",
@@ -4384,7 +4623,8 @@
                     "required": true,
                     "array": false,
                     "size": 50,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
@@ -4431,7 +4671,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "authorUid",
@@ -4439,7 +4680,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "authorProfileImageUrl",
@@ -4455,7 +4697,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "followersFCMToken",
@@ -4463,7 +4706,8 @@
                     "required": false,
                     "array": true,
                     "size": 1000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "chapterTitle",
@@ -4471,7 +4715,8 @@
                     "required": true,
                     "array": false,
                     "size": 20,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "storyId",
@@ -4479,7 +4724,8 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 },
                 {
                     "key": "chapterDescription",
@@ -4487,7 +4733,8 @@
                     "required": true,
                     "array": false,
                     "size": 2000,
-                    "default": null
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []

@@ -15,7 +15,7 @@ class AppwriteService {
 
     async doesRoomExist(roomId) {
         try {
-            const result = await this.tables.getRows({
+            const result = await this.tables.listRows({
                 databaseId: process.env.MASTER_DATABASE_ID,
                 tableId: process.env.ROOMS_TABLE_ID,
                 queries: [Query.equal('$id', [roomId])]

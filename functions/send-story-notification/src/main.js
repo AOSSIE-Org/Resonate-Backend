@@ -24,7 +24,7 @@ module.exports = async function ({ req, res, log, error }) {
   log("Send Notification");
   log(creatorId);
   log(payload);
-  let creatorResult = await database.getRows({
+  let creatorResult = await database.listRows({ 
     databaseId: process.env.UserDataDatabaseID,
     tableId: process.env.UsersCollectionID,
     queries: [query.equal('$id', [creatorId])]

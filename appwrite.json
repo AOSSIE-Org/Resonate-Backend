@@ -628,6 +628,100 @@
             "commands": "npm install",
             "path": "functions/delete-live-chapter-room",
             "specification": "s-0.5vcpu-512mb"
+        },
+        {
+            "$id": "record-activity",
+            "name": "Record Activity",
+            "runtime": "node-16.0",
+            "path": "functions/record-activity",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "vars": [
+                {
+                    "key": "USER_DATA_DATABASE_ID",
+                    "value": "64a1319104a149e16f5c"
+                },
+                {
+                    "key": "USER_STATS_TABLE_ID",
+                    "value": "user_stats"
+                },
+                {
+                    "key": "THRESHOLDS_TABLE_ID",
+                    "value": "achievement_thresholds"
+                },
+                {
+                    "key": "ROOM_CREDITS_TABLE_ID",
+                    "value": "room_credits"
+                },
+                {
+                    "key": "MASTER_DATABASE_ID",
+                    "value": "64a521785f5be62b796f"
+                },
+                {
+                    "key": "ROOMS_TABLE_ID",
+                    "value": "64a5217e695bf2c4ec9c"
+                },
+                {
+                    "key": "PARTICIPANTS_TABLE_ID",
+                    "value": "64a63e508145d1084abf"
+                },
+                {
+                    "key": "MIN_ROOM_PARTICIPANTS",
+                    "value": "6"
+                },
+                {
+                    "key": "DAILY_INTERACTION_CAP",
+                    "value": "100"
+                }
+            ],
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
+        },
+        {
+            "$id": "reconcile-achievements",
+            "name": "Reconcile Achievements",
+            "runtime": "node-16.0",
+            "path": "functions/reconcile-achievements",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "vars": [
+                {
+                    "key": "USER_DATA_DATABASE_ID",
+                    "value": "64a1319104a149e16f5c"
+                },
+                {
+                    "key": "USER_STATS_TABLE_ID",
+                    "value": "user_stats"
+                },
+                {
+                    "key": "THRESHOLDS_TABLE_ID",
+                    "value": "achievement_thresholds"
+                }
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "0 3 * * *",
+            "timeout": 300,
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": [],
+            "specification": "s-0.5vcpu-512mb"
         }
     ],
     "buckets": [
@@ -2691,6 +2785,244 @@
                 }
             ],
             "indexes": []
+        },
+        {
+            "$id": "user_stats",
+            "$permissions": [
+                "read(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "user_stats",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "roomsHosted",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000000,
+                    "default": 0
+                },
+                {
+                    "key": "roomsModerated",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000000,
+                    "default": 0
+                },
+                {
+                    "key": "interactions",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000,
+                    "default": 0
+                },
+                {
+                    "key": "activeDays",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000,
+                    "default": 0
+                },
+                {
+                    "key": "currentStreak",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000,
+                    "default": 0
+                },
+                {
+                    "key": "longestStreak",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000,
+                    "default": 0
+                },
+                {
+                    "key": "dailyInteractions",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000,
+                    "default": 0
+                },
+                {
+                    "key": "lastActiveDate",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 10,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "badges",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "displayedBadges",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "avatarBadge",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "achievement_thresholds",
+            "$permissions": [
+                "read(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "achievement_thresholds",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "badgeId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "category",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "hosting",
+                        "moderation",
+                        "echo",
+                        "rhythm",
+                        "core"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "metric",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "roomsHosted",
+                        "roomsModerated",
+                        "interactions",
+                        "currentStreak",
+                        "longestStreak",
+                        "activeDays"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "threshold",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000,
+                    "default": null
+                },
+                {
+                    "key": "tier",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 1,
+                    "max": 10,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "room_credits",
+            "$permissions": [],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "room_credits",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "roomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "uid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "role",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "host",
+                        "moderator"
+                    ],
+                    "format": "enum",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "uid_role",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "uid",
+                        "role"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC"
+                    ]
+                }
+            ]
         }
     ],
     "settings": {
@@ -4738,6 +5070,244 @@
                 }
             ],
             "indexes": []
+        },
+        {
+            "$id": "user_stats",
+            "$permissions": [
+                "read(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "user_stats",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "roomsHosted",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000000,
+                    "default": 0
+                },
+                {
+                    "key": "roomsModerated",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 10000000,
+                    "default": 0
+                },
+                {
+                    "key": "interactions",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000,
+                    "default": 0
+                },
+                {
+                    "key": "activeDays",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000,
+                    "default": 0
+                },
+                {
+                    "key": "currentStreak",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000,
+                    "default": 0
+                },
+                {
+                    "key": "longestStreak",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000,
+                    "default": 0
+                },
+                {
+                    "key": "dailyInteractions",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000,
+                    "default": 0
+                },
+                {
+                    "key": "lastActiveDate",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 10,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "badges",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "displayedBadges",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "avatarBadge",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "achievement_thresholds",
+            "$permissions": [
+                "read(\"any\")"
+            ],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "achievement_thresholds",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "badgeId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "category",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "hosting",
+                        "moderation",
+                        "echo",
+                        "rhythm",
+                        "core"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "metric",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "roomsHosted",
+                        "roomsModerated",
+                        "interactions",
+                        "currentStreak",
+                        "longestStreak",
+                        "activeDays"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "threshold",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 100000000,
+                    "default": null
+                },
+                {
+                    "key": "tier",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 1,
+                    "max": 10,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "room_credits",
+            "$permissions": [],
+            "databaseId": "64a1319104a149e16f5c",
+            "name": "room_credits",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "roomId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "uid",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "role",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "host",
+                        "moderator"
+                    ],
+                    "format": "enum",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "uid_role",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "uid",
+                        "role"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "ASC"
+                    ]
+                }
+            ]
         }
     ]
 }

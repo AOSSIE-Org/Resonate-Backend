@@ -196,3 +196,7 @@ appwrite project create-variable --key LIVEKIT_SOCKET_URL --value $livekitSocket
 appwrite project create-variable --key LIVEKIT_API_KEY --value $livekitAPIKey
 appwrite project create-variable --key LIVEKIT_API_SECRET --value $livekitAPISecret
 appwrite push functions --with-variables
+
+# Seed the achievement thresholds.
+Write-Host "Seeding achievement thresholds ..."
+appwrite functions create-execution --function-id reconcile-achievements

@@ -963,9 +963,29 @@
                     ],
                     "format": "enum",
                     "default": "online"
+                },
+                {
+                    "key": "interests",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
+                {
+                    "key": "interests_index",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "interests"
+                    ],
+                    "orders": [
+                        null
+                    ]
+                },
                 {
                     "key": "name_index",
                     "type": "fulltext",
@@ -2081,9 +2101,29 @@
                     "min": 0,
                     "max": 3600000,
                     "default": null
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
+                {
+                    "key": "tags_index",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "tags"
+                    ],
+                    "orders": [
+                        null
+                    ]
+                },
                 {
                     "key": "title_index",
                     "type": "fulltext",
@@ -3435,9 +3475,29 @@
                     ],
                     "format": "enum",
                     "default": "online"
+                },
+                {
+                    "key": "interests",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
+                {
+                    "key": "interests_index",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "interests"
+                    ],
+                    "orders": [
+                        null
+                    ]
+                },
                 {
                     "key": "name_index",
                     "type": "fulltext",
@@ -4867,9 +4927,29 @@
                     "min": 0,
                     "max": 3600000,
                     "default": null
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 40,
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": [
+                {
+                    "key": "tags_index",
+                    "type": "key",
+                    "status": "available",
+                    "columns": [
+                        "tags"
+                    ],
+                    "orders": [
+                        null
+                    ]
+                },
                 {
                     "key": "title_index",
                     "type": "fulltext",

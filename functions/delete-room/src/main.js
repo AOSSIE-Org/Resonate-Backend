@@ -8,6 +8,8 @@ export default async ({ req, res, log, error }) => {
         "MASTER_DATABASE_ID",
         "ROOMS_TABLE_ID",
         "PARTICIPANTS_TABLE_ID",
+        "POLLS_TABLE_ID",
+        "POLL_VOTES_TABLE_ID",
         "LIVEKIT_HOST",
         "LIVEKIT_API_KEY",
         "LIVEKIT_API_SECRET",
@@ -80,6 +82,46 @@ export default async ({ req, res, log, error }) => {
                 queries: [Query.equal("$id", participantIds)]
             });
         }
+
+        // Removing polls from collection
+        let pollColRef;
+        do {
+            pollColRef = await tables.listRows({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId: process.env.POLLS_TABLE_ID,
+                queries: [Query.equal("roomId", [appwriteRoomDocId]), Query.limit(100)]
+            });
+            log(pollColRef);
+
+            if (pollColRef.rows.length > 0) {
+                const pollIds = pollColRef.rows.map(p => p.$id);
+                await tables.deleteRows({
+                    databaseId: process.env.MASTER_DATABASE_ID,
+                    tableId: process.env.POLLS_TABLE_ID,
+                    queries: [Query.equal("$id", pollIds)]
+                });
+            }
+        } while (pollColRef.rows.length > 0);
+
+        // Removing poll votes from collection
+        let pollVoteColRef;
+        do {
+            pollVoteColRef = await tables.listRows({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId: process.env.POLL_VOTES_TABLE_ID,
+                queries: [Query.equal("roomId", [appwriteRoomDocId]), Query.limit(100)]
+            });
+            log(pollVoteColRef);
+
+            if (pollVoteColRef.rows.length > 0) {
+                const pollVoteIds = pollVoteColRef.rows.map(p => p.$id);
+                await tables.deleteRows({
+                    databaseId: process.env.MASTER_DATABASE_ID,
+                    tableId: process.env.POLL_VOTES_TABLE_ID,
+                    queries: [Query.equal("$id", pollVoteIds)]
+                });
+            }
+        } while (pollVoteColRef.rows.length > 0);
 
         // Delete livekit room
         await roomServiceClient.deleteRoom(appwriteRoomDocId);

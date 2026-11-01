@@ -5,7 +5,7 @@ Function to remove rooms from Appwrite and Livekit.
 
 ### POST /
 
-Receives ID of the room to be deleted, and removes the room from Appwrite.
+Receives ID of the room to be deleted, and removes the room from Appwrite, along with its participants, polls, and poll votes.
 
 **Parameters**
 
@@ -90,6 +90,26 @@ Collection ID of participants collection.
 | ------------- | -------------------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                            |
 | Sample Value  | `NXOi3...IBHDa`                                                                                                |
+| Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
+
+### POLLS_TABLE_ID
+
+Table ID of room polls table.
+
+| Question      | Answer                                                                                                         |
+| ------------- | -------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                            |
+| Sample Value  | `room_polls`                                                                                                |
+| Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
+
+### POLL_VOTES_TABLE_ID
+
+Table ID of room poll votes table.
+
+| Question      | Answer                                                                                                         |
+| ------------- | -------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                            |
+| Sample Value  | `room_poll_votes`                                                                                                |
 | Documentation | [Resonate](https://github.com/AOSSIE-Org/Resonate/blob/master/lib/utils/constants.dart) |
   
 ### LIVEKIT_HOST

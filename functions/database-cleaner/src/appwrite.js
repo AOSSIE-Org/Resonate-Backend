@@ -28,6 +28,42 @@ class AppwriteService {
         }
     }
 
+    async doesPollExist(pollId) {
+        try {
+            const result = await this.tables.getRows({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId: process.env.POLLS_TABLE_ID,
+                queries: [Query.equal("$id", [pollId])]
+            });
+            return result.rows.length > 0;
+        } catch (err) {
+            if (err.code !== 404) throw err;
+            return false;
+        }
+    }
+
+    // Collects every row of a table up front (cursor pagination), so callers
+    // can delete rows afterwards without invalidating an in-flight cursor.
+    async listAllRows(tableId) {
+        const rows = [];
+        let lastId = null;
+        while (true) {
+            const queries = [Query.limit(100)];
+            if (lastId !== null) {
+                queries.push(Query.cursorAfter(lastId));
+            }
+            const page = await this.tables.listRows({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId,
+                queries
+            });
+            rows.push(...page.rows);
+            if (page.rows.length === 0) break;
+            lastId = page.rows[page.rows.length - 1].$id;
+        }
+        return rows;
+    }
+
     async cleanParticipantsCollection() {
         const participantsList = await this.tables.listRows({
             databaseId: process.env.MASTER_DATABASE_ID,
@@ -46,6 +82,46 @@ class AppwriteService {
                     }
                 }catch(error){
                     console.error(`Failed to clean participant ${participantRow.$id}:`, error);
+                }
+            })
+        );
+    }
+
+    async cleanRoomPollsCollection() {
+        const pollRows = await this.listAllRows(process.env.POLLS_TABLE_ID);
+
+        await Promise.all(
+            pollRows.map(async(pollRow)=>{
+                try{
+                    if(!(await this.doesRoomExist(pollRow.roomId))){
+                        await this.tables.deleteRows({
+                            databaseId: process.env.MASTER_DATABASE_ID,
+                            tableId: process.env.POLLS_TABLE_ID,
+                            queries: [Query.equal("$id", [pollRow.$id])]
+                        });
+                    }
+                }catch(error){
+                    console.error(`Failed to clean poll ${pollRow.$id}:`, error);
+                }
+            })
+        );
+    }
+
+    async cleanRoomPollVotesCollection() {
+        const pollVoteRows = await this.listAllRows(process.env.POLL_VOTES_TABLE_ID);
+
+        await Promise.all(
+            pollVoteRows.map(async(pollVoteRow)=>{
+                try{
+                    if(!(await this.doesRoomExist(pollVoteRow.roomId)) || !(await this.doesPollExist(pollVoteRow.pollId))){
+                        await this.tables.deleteRows({
+                            databaseId: process.env.MASTER_DATABASE_ID,
+                            tableId: process.env.POLL_VOTES_TABLE_ID,
+                            queries: [Query.equal("$id", [pollVoteRow.$id])]
+                        });
+                    }
+                }catch(error){
+                    console.error(`Failed to clean poll vote ${pollVoteRow.$id}:`, error);
                 }
             })
         );

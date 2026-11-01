@@ -38,19 +38,29 @@ else {
 
 # Install Appwrite CLI via npm 
 Write-Host "Installing Appwrite CLI via npm ..."
-npm install -g appwrite@12.0.0
+npm install -g appwrite-cli@28.1.0
 
 
 docker run -it --add-host host.docker.internal:host-gateway --rm `
+    --publish 20080:20080 `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `
     --entrypoint="install" `
-    appwrite/appwrite:1.8.0
+    appwrite/appwrite:2.3.0
 
 $projectId = "resonate"
 
 # Remove previous Appwrite Cli data
 Remove-Item -Recurse -Force $HOME\.appwrite
+
+# A fresh instance has no accounts, and the CLI cannot register one - the first
+# account has to be created through the console in a browser.
+Write-Host ""
+Write-Host "--------------------------------------------------------------------"
+Write-Host " Open http://localhost in a browser and SIGN UP to create the console"
+Write-Host " account for this instance, then come back and log in with it here."
+Write-Host "--------------------------------------------------------------------"
+Read-Host "Press enter once you have created the account"
 
 # Ask contributor account credentials   
 while ($true) {
@@ -64,34 +74,32 @@ while ($true) {
 }
 
 Write-Host "Starting resonate project set up...."
-# Get team id for project creation
-$teamId = Read-Host "Please provide the team Id as instructed in the Resonate Set Up Guide"
+
+# Sets a project environment variable.
+function Set-ProjectVariable($Name, $Value) {
+    appwrite project create-variable --project-id $projectId --variable-id $Name --key $Name --value $Value | Out-Null
+    if (-not $?) { Write-Host "  (variable $Name already exists, leaving it alone)" }
+}
+
+$organizationId = (appwrite list-organizations --json | ConvertFrom-Json).organizations[0].'$id'
+if (-not $organizationId) {
+    $organizationId = Read-Host "Could not detect an organization. Please paste your organization Id"
+}
+Write-Host "Using organization $organizationId"
 
 # Creating the project
-appwrite projects create --project-id resonate --name Resonate --team-id $teamId
+appwrite organization create-project --organization-id $organizationId --project-id $projectId --name Resonate
 
 # Creating IOS and Android platforms
-appwrite projects create-platform --project-id $projectId --type flutter-android --key com.resonate.resonate --name Resonate
-appwrite projects create-platform --project-id $projectId --type flutter-ios --key com.resonate.resonate --name Resonate
+appwrite project create-android-platform --project-id $projectId --platform-id android-resonate --application-id com.resonate.resonate --name Resonate
+appwrite project create-apple-platform --project-id $projectId --platform-id apple-resonate --bundle-identifier com.resonate.resonate --name Resonate
 
 
-# Creating Server Key and Retrieving it from response
-$create_key_response = appwrite projects create-key --project-id $projectId --name "Appwrite Server Key" --scopes 'sessions.write' 'users.read' 'users.write' 'teams.read' 'teams.write' 'databases.read' 'databases.write' 'collections.read' 'collections.write' 'attributes.read' 'attributes.write' 'indexes.read' 'indexes.write' 'documents.read' 'documents.write' 'files.read' 'files.write' 'buckets.read' 'buckets.write' 'functions.read' 'functions.write' 'execution.read' 'execution.write' 'locale.read' 'avatars.read' 'health.read' 'providers.read' 'providers.write' 'messages.read' 'messages.write' 'topics.read' 'topics.write' 'subscribers.read' 'subscribers.write' 'targets.read' 'targets.write' 'rules.read' 'rules.write' 'migrations.read' 'migrations.write' 'vcs.read' 'vcs.write' 'assistant.read' --json
-
-# Parse the secret value from the response (assuming JSON output)
-$secret = ($create_key_response | ConvertFrom-Json).secret
-Write-Host $create_key_response
-Write-Host "Extracted secret: $secret"
-
-# Pushing Server Key as env variable for cloud functions to use
-appwrite project create-variable --key APPWRITE_API_KEY --value $secret
-
-# Push endpoint as environment variable for functions to use (host.docker.internal used to access localhost from inside of script)
-appwrite project create-variable --key APPWRITE_ENDPOINT --value "http://host.docker.internal:80/v1"
+Set-ProjectVariable APPWRITE_ENDPOINT "http://host.docker.internal:80/v1"
 
 # Pushing the project's core defined in appwrite.json
-appwrite push collections
-appwrite push buckets
+appwrite push tables --all --force
+appwrite push bucket --all --force
 
 # Uploading all the files on the server
 appwrite storage create-file --bucket-id "64a13095a4c87fd78bc6" --file-id "67012e19003d00f39e10" --file "amber_profile_image.jpeg"
@@ -117,6 +125,7 @@ while ($true) {
         Write-Host "Starting MeiliSearch Server"
 
         # Command to Start MeiliSearch Server
+        docker rm -f meilisearch 2>$null | Out-Null
         docker run -d --name meilisearch `
             -p 7700:7700 `
             -e MEILI_ENV=development `
@@ -144,8 +153,8 @@ while ($true) {
 
 # Push MeiliSearch credentials as env variables for functions to use
 Write-Host "Pushing MeiliSearch credentials as env variables if you need any changes do them in your Appwrite Resonate project's Global Env variables"
-appwrite project create-variable --key MEILISEARCH_ENDPOINT --value $meilisearchEndpoint
-appwrite project create-variable --key MEILISEARCH_ADMIN_API_KEY --value $meilisearchMasterKey
+Set-ProjectVariable MEILISEARCH_ENDPOINT $meilisearchEndpoint
+Set-ProjectVariable MEILISEARCH_ADMIN_API_KEY $meilisearchMasterKey
 
 
 Write-Host "Setting Up Livekit now ..."
@@ -156,9 +165,7 @@ while ($true) {
         Write-Host "You chose to host Livekit locally."
 
         # check if Livekit server already running
-        $PROCESS_ID = Get-Process | Where-Object { $_.Path -match "livekit-server" } | Select-Object -ExpandProperty Id
-        if ($PROCESS_ID) {
-            Stop-Process -Id $PROCESS_ID
+        if (docker ps -aq --filter "name=^/livekit$") {
             Write-Host "Livekit Server Already Running Terminating and Starting Again..."
         }
         else {
@@ -166,6 +173,7 @@ while ($true) {
         }
 
         # Command to Start Livekit Server
+        docker rm -f livekit 2>$null | Out-Null
         docker run -d --name livekit -p 7880:7880 livekit/livekit-server --dev --bind 0.0.0.0
 
         $livekitHostURL = "http://host.docker.internal:7880"
@@ -191,11 +199,11 @@ while ($true) {
 }
 # Push Livekit credentials as env variables for functions to use
 Write-Host "Pushing Livekit credentials as env variables if you need any changes do them in your Appwrite Resonate project's Global Env variables"
-appwrite project create-variable --key LIVEKIT_HOST --value $livekitHostURL
-appwrite project create-variable --key LIVEKIT_SOCKET_URL --value $livekitSocketURL
-appwrite project create-variable --key LIVEKIT_API_KEY --value $livekitAPIKey
-appwrite project create-variable --key LIVEKIT_API_SECRET --value $livekitAPISecret
-appwrite push functions --with-variables
+Set-ProjectVariable LIVEKIT_HOST $livekitHostURL
+Set-ProjectVariable LIVEKIT_SOCKET_URL $livekitSocketURL
+Set-ProjectVariable LIVEKIT_API_KEY $livekitAPIKey
+Set-ProjectVariable LIVEKIT_API_SECRET $livekitAPISecret
+appwrite push functions --force --with-variables
 
 # Seed the achievement thresholds.
 Write-Host "Seeding achievement thresholds ..."

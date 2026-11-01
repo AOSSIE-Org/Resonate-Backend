@@ -13,9 +13,8 @@ const PAGE_SIZE = 100;
 
 // Nightly fallback for the event-driven awards, and the thresholds seeder.
 // Reconciles badge assignment only; counters have no history to recompute from.
-export default async ({ res, log, error }) => {
+export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
-        "APPWRITE_API_KEY",
         "USER_DATA_DATABASE_ID",
         "USER_STATS_TABLE_ID",
         "THRESHOLDS_TABLE_ID",
@@ -25,7 +24,7 @@ export default async ({ res, log, error }) => {
         new Client()
             .setEndpoint(process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1")
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-            .setKey(process.env.APPWRITE_API_KEY)
+            .setKey(req.headers["x-appwrite-key"])
     );
 
     try {

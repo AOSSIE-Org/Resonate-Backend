@@ -18,7 +18,7 @@ module.exports = async function ({ req, res, log, error }) {
     process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
   )
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
+    .setKey(req.headers["x-appwrite-key"]);
   log(process.env.APPWRITE_FUNCTION_PROJECT_ID);
 
   log("Send Notification");

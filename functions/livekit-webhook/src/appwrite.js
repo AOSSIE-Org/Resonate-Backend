@@ -1,14 +1,14 @@
 import { Client, TablesDB, Query } from 'node-appwrite';
 
 class AppwriteService {
-    constructor() {
+    constructor(apiKey) {
         const client = new Client();
         client
             .setEndpoint(
                 process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
             )
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-            .setKey(process.env.APPWRITE_API_KEY);
+            .setKey(apiKey);
 
         this.tables = new TablesDB(client);
     }
@@ -28,11 +28,10 @@ class AppwriteService {
     }
 
     async deleteRoom(roomId) {
-        // Deleting room doc inside rooms table in master database
-        await this.tables.deleteRows({
+        await this.tables.deleteRow({
             databaseId: process.env.MASTER_DATABASE_ID,
             tableId: process.env.ROOMS_TABLE_ID,
-            queries: [Query.equal('$id', [roomId])]
+            rowId: roomId
         });
 
         // Removing participants from table
@@ -44,11 +43,11 @@ class AppwriteService {
         
         if (participantColRef.rows.length > 0) {
             const participantIds = participantColRef.rows.map(p => p.$id);
-            await this.tables.deleteRows({
+            await Promise.all(participantIds.map(rowId => this.tables.deleteRow({
                 databaseId: process.env.MASTER_DATABASE_ID,
                 tableId: process.env.PARTICIPANTS_TABLE_ID,
-                queries: [Query.equal('$id', participantIds)]
-            });
+                rowId
+            })));
         }
     }
 }

@@ -18,14 +18,14 @@ function resolveRecieverUid(body) {
   }
 }
 
-async function readPresenceStatus({ recieverUid, log, error }) {
+async function readPresenceStatus({ recieverUid, apiKey, log, error }) {
   try {
     const client = new sdk.Client()
       .setEndpoint(
         process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
       )
       .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-      .setKey(process.env.APPWRITE_API_KEY);
+      .setKey(apiKey);
     const database = new sdk.TablesDB(client);
 
     const row = await database.getRow({
@@ -61,7 +61,12 @@ module.exports = async function ({ req, res, log, error }) {
   // Presence gate. This runs before the callee's device is ever rung and
   // before either side asks Join Room for a LiveKit token.
   if (recieverUid) {
-    const status = await readPresenceStatus({ recieverUid, log, error });
+    const status = await readPresenceStatus({
+      recieverUid,
+      apiKey: req.headers["x-appwrite-key"],
+      log,
+      error
+    });
     if (status && CALL_BLOCKING_STATUSES.includes(status)) {
       log(`Call to ${recieverUid} blocked by presence status: ${status}`);
       return res.json({

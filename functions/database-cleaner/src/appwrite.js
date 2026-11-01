@@ -2,44 +2,50 @@ import { Client, TablesDB, Query } from "node-appwrite";
 import { getExpiryDate } from "./utils.js";
 
 class AppwriteService {
-    constructor() {
+    constructor(apiKey) {
         const client = new Client();
         client
             .setEndpoint(
                 process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1"
             )
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-            .setKey(process.env.APPWRITE_API_KEY);
+            .setKey(apiKey);
 
         this.tables = new TablesDB(client);
     }
 
-    async doesRoomExist(roomId) {
-        try {
-            const result = await this.tables.listRows({
+    async liveIds(tableId) {
+        const ids = new Set();
+        let lastId = null;
+        for (;;) {
+            const queries = [Query.limit(100), Query.select(["$id"])];
+            if (lastId !== null) queries.push(Query.cursorAfter(lastId));
+            const page = await this.tables.listRows({
                 databaseId: process.env.MASTER_DATABASE_ID,
-                tableId: process.env.ROOMS_TABLE_ID,
-                queries: [Query.equal("$id", [roomId])]
+                tableId,
+                queries
             });
-            return result.rows.length > 0;
-        } catch (err) {
-            if (err.code !== 404) throw err;
-            return false;
+            if (page.rows.length === 0) return ids;
+            for (const row of page.rows) ids.add(row.$id);
+            lastId = page.rows[page.rows.length - 1].$id;
         }
     }
 
-    async doesPollExist(pollId) {
-        try {
-            const result = await this.tables.listRows({
-                databaseId: process.env.MASTER_DATABASE_ID,
-                tableId: process.env.POLLS_TABLE_ID,
-                queries: [Query.equal("$id", [pollId])]
-            });
-            return result.rows.length > 0;
-        } catch (err) {
-            if (err.code !== 404) throw err;
-            return false;
+    // Bulk-deletes rows by id, 100 per request.
+    async deleteByIds(tableId, ids) {
+        for (let i = 0; i < ids.length; i += 100) {
+            const chunk = ids.slice(i, i + 100);
+            try {
+                await Promise.all(chunk.map(rowId => this.tables.deleteRow({
+                    databaseId: process.env.MASTER_DATABASE_ID,
+                    tableId,
+                    rowId
+                })));
+            } catch (error) {
+                console.error(`Failed to delete ${chunk.length} rows from ${tableId}:`, error);
+            }
         }
+        return ids.length;
     }
 
     // Collects every row of a table up front (cursor pagination), so callers
@@ -64,67 +70,40 @@ class AppwriteService {
         return rows;
     }
 
-    async cleanParticipantsCollection() {
-        const participantsList = await this.tables.listRows({
-            databaseId: process.env.MASTER_DATABASE_ID,
-            tableId: process.env.PARTICIPANTS_TABLE_ID
-        });
+    // Drops every row of childTableId whose roomId no longer names a live room.
+    async cleanOrphansByRoom(childTableId) {
+        const liveRooms = await this.liveIds(process.env.ROOMS_TABLE_ID);
+        const rows = await this.listAllRows(childTableId);
+        const orphans = rows.filter((row) => !liveRooms.has(row.roomId)).map((row) => row.$id);
+        return this.deleteByIds(childTableId, orphans);
+    }
 
-        await Promise.all(
-            participantsList.rows.map(async(participantRow)=>{
-                try{
-                    if(!(await this.doesRoomExist(participantRow.roomId))){
-                        await this.tables.deleteRows({
-                            databaseId: process.env.MASTER_DATABASE_ID,
-                            tableId: process.env.PARTICIPANTS_TABLE_ID,
-                            queries: [Query.equal("$id", [participantRow.$id])]
-                        });
-                    }
-                }catch(error){
-                    console.error(`Failed to clean participant ${participantRow.$id}:`, error);
-                }
-            })
-        );
+    async cleanParticipantsCollection() {
+        return this.cleanOrphansByRoom(process.env.PARTICIPANTS_TABLE_ID);
     }
 
     async cleanRoomPollsCollection() {
-        const pollRows = await this.listAllRows(process.env.POLLS_TABLE_ID);
-
-        await Promise.all(
-            pollRows.map(async(pollRow)=>{
-                try{
-                    if(!(await this.doesRoomExist(pollRow.roomId))){
-                        await this.tables.deleteRows({
-                            databaseId: process.env.MASTER_DATABASE_ID,
-                            tableId: process.env.POLLS_TABLE_ID,
-                            queries: [Query.equal("$id", [pollRow.$id])]
-                        });
-                    }
-                }catch(error){
-                    console.error(`Failed to clean poll ${pollRow.$id}:`, error);
-                }
-            })
-        );
+        return this.cleanOrphansByRoom(process.env.POLLS_TABLE_ID);
     }
 
     async cleanRoomPollVotesCollection() {
-        const pollVoteRows = await this.listAllRows(process.env.POLL_VOTES_TABLE_ID);
+        const [liveRooms, livePolls] = await Promise.all([
+            this.liveIds(process.env.ROOMS_TABLE_ID),
+            this.liveIds(process.env.POLLS_TABLE_ID)
+        ]);
+        const rows = await this.listAllRows(process.env.POLL_VOTES_TABLE_ID);
+        const orphans = rows
+            .filter((row) => !liveRooms.has(row.roomId) || !livePolls.has(row.pollId))
+            .map((row) => row.$id);
+        return this.deleteByIds(process.env.POLL_VOTES_TABLE_ID, orphans);
+    }
 
-        await Promise.all(
-            pollVoteRows.map(async(pollVoteRow)=>{
-                try{
-                    if(!(await this.doesRoomExist(pollVoteRow.roomId)) || !(await this.doesPollExist(pollVoteRow.pollId))){
-                        await this.tables.deleteRows({
-                            databaseId: process.env.MASTER_DATABASE_ID,
-                            tableId: process.env.POLL_VOTES_TABLE_ID,
-                            queries: [Query.equal("$id", [pollVoteRow.$id])]
-                        });
-                    }
-                }catch(error){
-                    console.error(`Failed to clean poll vote ${pollVoteRow.$id}:`, error);
-                }
-            })
-        );
+    async cleanMessagesCollection() {
+        const liveRooms = await this.liveIds(process.env.ROOMS_TABLE_ID);
+        const rows = await this.listAllRows(process.env.MESSAGES_TABLE_ID);
+        const orphans = rows.filter((row) => !liveRooms.has(row.roomId)).map((row) => row.$id);
+        await this.deleteByIds(process.env.REPLY_TO_TABLE_ID, orphans);
+        return this.deleteByIds(process.env.MESSAGES_TABLE_ID, orphans);
     }
 
     async cleanActivePairsCollection() {

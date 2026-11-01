@@ -3,7 +3,6 @@ import { throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
-        'APPWRITE_API_KEY',
         'DATABASE_ID',
         'REQUESTS_TABLE_ID',
         'ACTIVE_PAIRS_TABLE_ID',
@@ -14,7 +13,7 @@ export default async ({ req, res, log, error }) => {
             process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
         )
         .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-        .setKey(process.env.APPWRITE_API_KEY);
+        .setKey(req.headers["x-appwrite-key"]);
 
     const db = new TablesDB(client);
 

@@ -1,13 +1,13 @@
 import { Client, TablesDB } from 'node-appwrite';
 
 class AppwriteService {
-    constructor() {
+    constructor(apiKey) {
         const client = new Client()
             .setEndpoint(
                 process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
             )
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-            .setKey(process.env.APPWRITE_API_KEY);
+            .setKey(apiKey);
 
         this.tables = new TablesDB(client);
     }

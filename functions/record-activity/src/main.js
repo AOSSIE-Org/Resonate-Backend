@@ -21,7 +21,6 @@ import {
 // The only writer of user_stats. Actions and responses are documented in README.md.
 export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
-        "APPWRITE_API_KEY",
         "USER_DATA_DATABASE_ID",
         "USER_STATS_TABLE_ID",
         "THRESHOLDS_TABLE_ID",
@@ -35,7 +34,7 @@ export default async ({ req, res, log, error }) => {
         new Client()
             .setEndpoint(process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1")
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-            .setKey(process.env.APPWRITE_API_KEY)
+            .setKey(req.headers["x-appwrite-key"])
     );
 
     // Whoever Appwrite authenticated; a uid in the body is deliberately ignored.

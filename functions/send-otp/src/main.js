@@ -5,14 +5,13 @@ import { randomInt } from "node:crypto"; // for generating cryptographically sec
 
 export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
-        "APPWRITE_API_KEY",
         "VERIFICATION_DATABASE_ID",
         "OTP_TABLE_ID",
         "SENDER_MAIL",
         "SENDER_PASSWORD",
     ]);
 
-    const appwrite = new AppwriteService();
+    const appwrite = new AppwriteService(req.headers["x-appwrite-key"]);
     const mailService = new MailService();
 
     try {

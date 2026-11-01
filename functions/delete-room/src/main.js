@@ -4,12 +4,13 @@ import { throwIfMissing } from "./utils.js";
 
 export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
-        "APPWRITE_API_KEY",
         "MASTER_DATABASE_ID",
         "ROOMS_TABLE_ID",
         "PARTICIPANTS_TABLE_ID",
         "POLLS_TABLE_ID",
         "POLL_VOTES_TABLE_ID",
+        "MESSAGES_TABLE_ID",
+        "REPLY_TO_TABLE_ID",
         "LIVEKIT_HOST",
         "LIVEKIT_API_KEY",
         "LIVEKIT_API_SECRET",
@@ -21,7 +22,7 @@ export default async ({ req, res, log, error }) => {
                 process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1"
             )
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-            .setKey(process.env.APPWRITE_API_KEY)
+            .setKey(req.headers["x-appwrite-key"])
     );
 
     const roomServiceClient = new RoomServiceClient(
@@ -60,68 +61,50 @@ export default async ({ req, res, log, error }) => {
         }
 
         //Delete Appwrite room doc
-        await tables.deleteRows({
+        await tables.deleteRow({
             databaseId: process.env.MASTER_DATABASE_ID,
             tableId: process.env.ROOMS_TABLE_ID,
-            queries: [Query.equal("$id", [appwriteRoomDocId])]
+            rowId: appwriteRoomDocId
         });
 
-        // Removing participants from collection
-        const participantColRef = await tables.listRows({
-            databaseId: process.env.MASTER_DATABASE_ID,
-            tableId: process.env.PARTICIPANTS_TABLE_ID,
-            queries: [Query.equal("roomId", [appwriteRoomDocId])]
-        });
-        log(participantColRef);
-        
-        if (participantColRef.rows.length > 0) {
-            const participantIds = participantColRef.rows.map(p => p.$id);
-            await tables.deleteRows({
-                databaseId: process.env.MASTER_DATABASE_ID,
-                tableId: process.env.PARTICIPANTS_TABLE_ID,
-                queries: [Query.equal("$id", participantIds)]
-            });
-        }
-
-        // Removing polls from collection
-        let pollColRef;
-        do {
-            pollColRef = await tables.listRows({
-                databaseId: process.env.MASTER_DATABASE_ID,
-                tableId: process.env.POLLS_TABLE_ID,
-                queries: [Query.equal("roomId", [appwriteRoomDocId]), Query.limit(100)]
-            });
-            log(pollColRef);
-
-            if (pollColRef.rows.length > 0) {
-                const pollIds = pollColRef.rows.map(p => p.$id);
-                await tables.deleteRows({
+        const purge = async (tableId, onEach) => {
+            let deleted = 0;
+            for (;;) {
+                const page = await tables.listRows({
                     databaseId: process.env.MASTER_DATABASE_ID,
-                    tableId: process.env.POLLS_TABLE_ID,
-                    queries: [Query.equal("$id", pollIds)]
+                    tableId,
+                    queries: [Query.equal("roomId", [appwriteRoomDocId]), Query.limit(100)]
                 });
-            }
-        } while (pollColRef.rows.length > 0);
+                if (page.rows.length === 0) return deleted;
 
-        // Removing poll votes from collection
-        let pollVoteColRef;
-        do {
-            pollVoteColRef = await tables.listRows({
-                databaseId: process.env.MASTER_DATABASE_ID,
-                tableId: process.env.POLL_VOTES_TABLE_ID,
-                queries: [Query.equal("roomId", [appwriteRoomDocId]), Query.limit(100)]
-            });
-            log(pollVoteColRef);
-
-            if (pollVoteColRef.rows.length > 0) {
-                const pollVoteIds = pollVoteColRef.rows.map(p => p.$id);
-                await tables.deleteRows({
+                const ids = page.rows.map(r => r.$id);
+                if (onEach) await onEach(ids);
+                await Promise.all(ids.map(rowId => tables.deleteRow({
                     databaseId: process.env.MASTER_DATABASE_ID,
-                    tableId: process.env.POLL_VOTES_TABLE_ID,
-                    queries: [Query.equal("$id", pollVoteIds)]
-                });
+                    tableId,
+                    rowId
+                })));
+                deleted += ids.length;
             }
-        } while (pollVoteColRef.rows.length > 0);
+        };
+
+        log(`participants deleted: ${await purge(process.env.PARTICIPANTS_TABLE_ID)}`);
+        log(`polls deleted: ${await purge(process.env.POLLS_TABLE_ID)}`);
+        log(`poll votes deleted: ${await purge(process.env.POLL_VOTES_TABLE_ID)}`);
+
+        const messagesDeleted = await purge(
+            process.env.MESSAGES_TABLE_ID,
+            async (messageIds) => {
+                await Promise.all(messageIds.map(rowId =>
+                    tables.deleteRow({
+                        databaseId: process.env.MASTER_DATABASE_ID,
+                        tableId: process.env.REPLY_TO_TABLE_ID,
+                        rowId
+                    }).catch(() => {})
+                ));
+            }
+        );
+        log(`messages deleted: ${messagesDeleted}`);
 
         // Delete livekit room
         await roomServiceClient.deleteRoom(appwriteRoomDocId);

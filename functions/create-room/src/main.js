@@ -4,16 +4,15 @@ import { throwIfMissing } from "./utils.js";
 
 export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, [
-        "APPWRITE_API_KEY",
         "MASTER_DATABASE_ID",
-        "ROOMS_COLLECTION_ID",
+        "ROOMS_TABLE_ID",
         "LIVEKIT_HOST",
         "LIVEKIT_API_KEY",
         "LIVEKIT_API_SECRET",
         "LIVEKIT_SOCKET_URL",
     ]);
 
-    const appwrite = new AppwriteService();
+    const appwrite = new AppwriteService(req.headers["x-appwrite-key"]);
     const livekit = new LivekitService();
 
     try {

@@ -6,15 +6,14 @@ export default async (context) => {
     const { req, res, log, error } = context;
 
     throwIfMissing(process.env, [
-        'APPWRITE_API_KEY',
         'MASTER_DATABASE_ID',
-        'ROOMS_COLLECTION_ID',
-        'PARTICIPANTS_COLLECTION_ID',
+        'ROOMS_TABLE_ID',
+        'PARTICIPANTS_TABLE_ID',
         'LIVEKIT_API_KEY',
         'LIVEKIT_API_SECRET',
     ]);
 
-    const appwrite = new AppwriteService();
+    const appwrite = new AppwriteService(context.req.headers["x-appwrite-key"]);
     const livekit = new LivekitService();
 
     try {

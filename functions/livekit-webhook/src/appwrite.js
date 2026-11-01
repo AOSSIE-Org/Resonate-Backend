@@ -1,26 +1,26 @@
-import { Client, Databases } from 'node-appwrite';
+import { Client, TablesDB, Query } from 'node-appwrite';
 
 class AppwriteService {
-    constructor() {
+    constructor(apiKey) {
         const client = new Client();
         client
             .setEndpoint(
                 process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
             )
             .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-            .setKey(process.env.APPWRITE_API_KEY);
+            .setKey(apiKey);
 
-        this.databases = new Databases(client);
+        this.tables = new TablesDB(client);
     }
 
     async doesRoomExist(roomId) {
         try {
-            await this.databases.getDocument(
-                process.env.MASTER_DATABASE_ID,
-                process.env.ROOMS_COLLECTION_ID,
-                roomId
-            );
-            return true;
+            const result = await this.tables.listRows({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId: process.env.ROOMS_TABLE_ID,
+                queries: [Query.equal('$id', [roomId])]
+            });
+            return result.rows.length > 0;
         } catch (err) {
             if (err.code !== 404) throw err;
             return false;
@@ -28,26 +28,27 @@ class AppwriteService {
     }
 
     async deleteRoom(roomId) {
-        // Deleting room doc inside rooms collection in master database
-        await this.databases.deleteDocument(
-            process.env.MASTER_DATABASE_ID,
-            process.env.ROOMS_COLLECTION_ID,
-            roomId
-        );
-
-        // Removing participants from collection
-        const participantColRef = await this.databases.listDocuments(
-            process.env.MASTER_DATABASE_ID,
-            process.env.PARTICIPANTS_COLLECTION_ID,
-            [Query.equal('roomId', [roomId])]
-        );
-        participantColRef.documents.forEach(async (participant) => {
-            await this.databases.deleteDocument(
-                process.env.MASTER_DATABASE_ID,
-                process.env.PARTICIPANTS_COLLECTION_ID,
-                participant.$id
-            );
+        await this.tables.deleteRow({
+            databaseId: process.env.MASTER_DATABASE_ID,
+            tableId: process.env.ROOMS_TABLE_ID,
+            rowId: roomId
         });
+
+        // Removing participants from table
+        const participantColRef = await this.tables.listRows({
+            databaseId: process.env.MASTER_DATABASE_ID,
+            tableId: process.env.PARTICIPANTS_TABLE_ID,
+            queries: [Query.equal('roomId', [roomId])]
+        });
+        
+        if (participantColRef.rows.length > 0) {
+            const participantIds = participantColRef.rows.map(p => p.$id);
+            await Promise.all(participantIds.map(rowId => this.tables.deleteRow({
+                databaseId: process.env.MASTER_DATABASE_ID,
+                tableId: process.env.PARTICIPANTS_TABLE_ID,
+                rowId
+            })));
+        }
     }
 }
 

@@ -9,11 +9,12 @@ This function is triggered (usually via HTTP or Appwrite function execution) whe
 
 ### How does it work
 1. Receives a payload containing the `roomId` and notification details (title, body, etc.).
-2. Fetches all subscribers of the specified upcoming room and collects their FCM registration tokens.
-3. Fetches the creator's FCM tokens for the room.
-4. Sends a push notification to all collected tokens using Firebase Cloud Messaging (FCM).
+2. Fetches all subscribers of the specified upcoming room, plus the room's creator.
+3. Addresses one `createPush` at those user ids, via Appwrite Messaging.
 
 **Note:**
 - The function expects the request body to include `roomId` and `payload`.
-- If no tokens are found, no notification is sent.
-- Make sure the environment variables for Appwrite and Firebase are set correctly.
+- No device tokens are involved: a user is addressed by id, and the app subscribes to its own
+  `users/<uid>` topic.
+- If the room has no subscribers, no notification is sent.
+- Scopes: `tables.read`, `rows.read`, `messages.write`.

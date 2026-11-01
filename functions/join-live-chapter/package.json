@@ -1,0 +1,17 @@
+{
+    "name": "join-room",
+    "version": "1.0.0",
+    "description": "Function to join room",
+    "main": "src/main.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/main.js",
+        "format": "prettier --write ."
+    },
+    "dependencies": {
+        "livekit-server-sdk": "^1.2.6"
+    },
+    "devDependencies": {
+        "prettier": "^3.0.0"
+    }
+}

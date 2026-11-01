@@ -2,14 +2,13 @@ import { Client, Users } from 'node-appwrite';
 import { throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log, error }) => {
-    throwIfMissing(process.env, ['APPWRITE_API_KEY']);
-
+    
     const client = new Client()
         .setEndpoint(
             process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
         )
         .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-        .setKey(process.env.APPWRITE_API_KEY);
+        .setKey(req.headers["x-appwrite-key"]);
 
     try {
         log(req.body);

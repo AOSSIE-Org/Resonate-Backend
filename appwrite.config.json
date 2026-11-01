@@ -1,5 +1,6 @@
 {
-    "projectId": "resonate",
+    "organizationId": "6abce02a002c76e19e7f",
+    "projectId": "6ae1c1d9003b3cba2f8a",
     "projectName": "Resonate",
     "settings": {
         "services": {
@@ -117,7 +118,8 @@
             "logging": true,
             "scopes": [
                 "tables.read",
-                "rows.read"
+                "rows.read",
+                "messages.write"
             ],
             "specification": "s-0.5vcpu-512mb"
         },
@@ -521,7 +523,8 @@
             "runtime": "node-24",
             "scopes": [
                 "tables.read",
-                "rows.read"
+                "rows.read",
+                "messages.write"
             ],
             "events": [],
             "schedule": "",
@@ -547,7 +550,8 @@
             "scopes": [
                 "tables.read",
                 "rows.read",
-                "users.read"
+                "users.read",
+                "messages.write"
             ],
             "vars": [
                 {
@@ -842,7 +846,7 @@
             "scopes": [
                 "tables.read",
                 "rows.read",
-                "rows.write"
+                "messages.write"
             ],
             "specification": "s-0.5vcpu-512mb"
         }
@@ -892,15 +896,6 @@
                     "required": false,
                     "array": false,
                     "size": 100,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "registrationTokens",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 1000,
                     "default": null,
                     "encrypt": false
                 }
@@ -993,15 +988,6 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "creator_fcm_tokens",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 1000,
                     "default": null,
                     "encrypt": false
                 }
@@ -1258,14 +1244,6 @@
                     "size": 40,
                     "default": null,
                     "encrypt": false
-                },
-                {
-                    "key": "fcmTokens",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 255,
-                    "default": null
                 }
             ],
             "indexes": [
@@ -1342,15 +1320,6 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "followerFCMToken",
-                    "type": "string",
-                    "required": true,
-                    "array": false,
-                    "size": 1000,
                     "default": null,
                     "encrypt": false
                 },
@@ -1543,24 +1512,6 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "senderFCMToken",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 5000,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "recieverFCMToken",
-                    "type": "string",
-                    "required": false,
-                    "array": false,
-                    "size": 5000,
                     "default": null,
                     "encrypt": false
                 },
@@ -3112,15 +3063,6 @@
                     "required": true,
                     "array": false,
                     "size": 100,
-                    "default": null,
-                    "encrypt": false
-                },
-                {
-                    "key": "followersFCMToken",
-                    "type": "string",
-                    "required": false,
-                    "array": true,
-                    "size": 1000,
                     "default": null,
                     "encrypt": false
                 },

@@ -1,14 +1,7 @@
 const sdk = require("node-appwrite");
 
-const admin = require('firebase-admin');
-const { getMessaging } = require('firebase-admin/messaging');
-const serviceAccount = require("./resonate-service-account.json");
-const app = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
 module.exports = async function ({ req, res, log, error }) {
-  var subscribersTokens = [];
+  var followerUids = [];
   const client = new sdk.Client();
   const database = new sdk.TablesDB(client);
   const query = sdk.Query;
@@ -38,39 +31,42 @@ module.exports = async function ({ req, res, log, error }) {
   let creatorDoc = creatorResult.rows[0];
   log("Creator document retrieved");
 
-  // Extract FCM tokens from followers
+  // Followers are addressed by account, not by device: Appwrite Messaging
+  // fans out to each user's own push subscription.
   if (creatorDoc.followers && Array.isArray(creatorDoc.followers)) {
     creatorDoc.followers.forEach(follower => {
-      if (follower.followerFCMToken) {
-        subscribersTokens.push(follower.followerFCMToken);
+      if (follower.followerUserId) {
+        followerUids.push(follower.followerUserId);
       }
     });
   }
 
-  log(subscribersTokens);
+  log(followerUids);
 
-  // Check if we have any tokens to send notifications to
-  if (!Array.isArray(subscribersTokens) || subscribersTokens.length === 0) {
-    log('No FCM tokens found, skipping notification.');
+  if (followerUids.length === 0) {
+    log('No followers found, skipping notification.');
     return res.json({ message: 'No followers to notify.' });
   }
 
-  const message = {
-    notification: payload,
-    tokens: subscribersTokens,
-    priority: "high",
-    android: {
-      priority: "high"
-    }
-  };
-  getMessaging(app).sendEachForMulticast(message)
-    .then((response) => {
-      if (response.failureCount > 0) {
-        log('Failed');
-      } else {
-        log('Notifications were sent successfully');
-      }
+  const messaging = new sdk.Messaging(client);
+  try {
+    const response = await messaging.createPush({
+      messageId: sdk.ID.unique(),
+      title: payload?.title,
+      body: payload?.body,
+      users: followerUids,
+      data: {
+        title: String(payload?.title ?? ''),
+        body: String(payload?.body ?? '')
+      },
+      priority: 'high'
     });
+    log('Notification queued ' + response.$id);
+  } catch (e) {
+    // The story is already published; a failed push must not fail the upload.
+    error('Error sending notification: ' + e);
+    return res.json({ message: 'Notification not sent', reason: String(e) });
+  }
 
   return res.json({
     message: 'Notification sent'

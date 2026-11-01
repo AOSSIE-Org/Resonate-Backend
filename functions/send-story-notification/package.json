@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "firebase-admin": "^11.11.0",
-    "node-appwrite": "^20.3.0"
+    "node-appwrite": ">=30.0.1 <31.0.0"
   }
 }

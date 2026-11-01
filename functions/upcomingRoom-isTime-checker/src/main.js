@@ -1,11 +1,5 @@
 const sdk = require("node-appwrite");
 
-const admin = require('firebase-admin');
-// const { getMessaging } = require('firebase-admin/messaging');
-// const serviceAccount = require("./resonate-service-account.json");
-// const app = admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount)
-// });
 
 module.exports = async function ({ req, res, log }) {
   var subscribersTokens = [];
@@ -57,37 +51,6 @@ module.exports = async function ({ req, res, log }) {
           "isTime": true
         }
       })
-      // log("Send Notification");
-      // let subscriberList = await database.listDocuments(process.env.UpcomingRoomsDataBaseID, process.env.SubscriberCollectionID, [query.equal('upcomingRoomId', [document.$id])]);
-      // log("here as well")
-      // subscriberList.documents.forEach(subscriber => {
-      //   for (const token of subscriber["registrationTokens"]) {
-      //     subscribersTokens.push(token);
-      //   }
-      // });
-      // for (const creator_token of document["creator_fcm_tokens"]) {
-      //   subscribersTokens.push(creator_token);
-      // }
-      // log(subscribersTokens);
-      // const message = {
-      //   notification: {
-      //     title: 'Room Reminder',
-      //     body: `The room ${document["name"]} will Start Soon`
-      //   },
-      //   tokens: subscribersTokens,
-      //   priority: "high",
-      //   android: {
-      //     priority: "high"
-      //   }
-      // };
-      // getMessaging(app).sendEachForMulticast(message)
-      //   .then((response) => {
-      //     if (response.failureCount > 0) {
-      //       log('Failed');
-      //     } else {
-      //       log('Notifications were sent successfully');
-      //     }
-      //   });
     }
   }
   return res.json({

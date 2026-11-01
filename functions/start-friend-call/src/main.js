@@ -1,12 +1,5 @@
 const sdk = require("node-appwrite");
 
-const admin = require('firebase-admin');
-const { getMessaging } = require('firebase-admin/messaging');
-const serviceAccount = require("./resonate-service-account.json");
-const app = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
 const CALL_BLOCKING_STATUSES = ['dnd', 'inroom'];
 
 function resolveRecieverUid(body) {
@@ -51,16 +44,15 @@ module.exports = async function ({ req, res, log, error }) {
     return res.json({ message: 'Malformed request body' }, 400);
   }
 
-  const { recieverFCMToken, data } = body;
-  if (!recieverFCMToken) {
-    return res.json({ message: 'Missing recieverFCMToken' }, 400);
-  }
-
+  const { data } = body;
   const recieverUid = resolveRecieverUid(body);
+  if (!recieverUid) {
+    return res.json({ message: 'Missing recieverUid' }, 400);
+  }
 
   // Presence gate. This runs before the callee's device is ever rung and
   // before either side asks Join Room for a LiveKit token.
-  if (recieverUid) {
+  {
     const status = await readPresenceStatus({
       recieverUid,
       apiKey: req.headers["x-appwrite-key"],
@@ -75,26 +67,31 @@ module.exports = async function ({ req, res, log, error }) {
         message: 'Reciever is not accepting calls'
       });
     }
-  } else {
-    log('No recieverUid in payload, skipping the presence check');
   }
 
-  log("Send Notification");
-  log(recieverFCMToken);
-  log(data);
+  log(`Sending incoming-call push to ${recieverUid}`);
 
-  const message = {
-    data: data,
-    token: recieverFCMToken,
-
-    android: {
-      priority: "high"
-    }
-  };
+  const stringData = {};
+  for (const [k, v] of Object.entries(data ?? {})) {
+    if (v !== null && v !== undefined) stringData[k] = String(v);
+  }
 
   try {
-    const response = await getMessaging(app).send(message);
-    log('Notifications were sent successfully, ' + JSON.stringify(response));
+    const client = new sdk.Client()
+      .setEndpoint(process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1')
+      .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+      .setKey(req.headers["x-appwrite-key"]);
+    const messaging = new sdk.Messaging(client);
+
+    const response = await messaging.createPush({
+      messageId: sdk.ID.unique(),
+      title: stringData.caller_name || 'Incoming call',
+      body: 'Incoming call',
+      users: [recieverUid],
+      data: stringData,
+      priority: 'high'
+    });
+    log('Notification queued, ' + JSON.stringify(response.$id));
   } catch (err) {
     // Reported rather than thrown: the call row already exists and the caller
     // side handles a ring that never connects.

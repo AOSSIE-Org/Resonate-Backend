@@ -14,25 +14,19 @@ story was liked, the user who was followed, the host whose room was subscribed t
 }
 ```
 
-`payload` becomes the FCM `notification` block, so Android renders it automatically while the app
-is backgrounded. `data` is optional and is passed through for the client to act on when tapped.
+`payload` becomes the push `notification` block, so the native Appwrite plugin renders it while
+the app is closed. `data` is optional and is passed through for the client to act on. The function
+also copies `title`/`body` **into** `data`, because the plugin renders the notification itself but
+the Dart callback only ever sees the payload.
 
-## Where the tokens come from
+Every `data` value is stringified (`String(v)`), so a boolean arrives as `"true"`, not `true`.
 
-`users.fcmTokens` (string array). The app writes it in `AuthRepository.addRegistrationToken` on
-login and removes the device's token on logout.
+## How a device is addressed
 
-Note the older token stores — `subscribedUsers.registrationTokens` and
-`upcomingRooms.creator_fcm_tokens` — are **per-row copies** of the same tokens, written by the same
-method. They exist because there was no per-user column before this function needed one. Prefer
-`users.fcmTokens` for anything new; the other two can be retired once the functions reading them
-(`upcomingRoom-Message-Notification`, `upcomingRoom-isTime-checker`) are migrated.
-
-## Stale tokens
-
-A token dies when the app is reinstalled or its data is cleared, and FCM then fails that send
-forever. On `registration-token-not-registered` / `invalid-registration-token` / `invalid-argument`
-the function prunes the offending tokens from `users.fcmTokens`, so the list self-heals.
+By **user id**. There are no device tokens anywhere. `createPush({users: [targetUid]})` publishes
+to the broker topic `users/<targetUid>`, and the app subscribes to its own topic with
+`push.subscribe(null, ...)`. Nothing is stored on login or cleaned up on logout, so the seven
+per-user and per-row token columns this design used to need have all been dropped from the schema.
 
 ## Environment
 
@@ -41,21 +35,16 @@ the function prunes the offending tokens from `users.fcmTokens`, so the list sel
 | `UserDataDatabaseID` | `main` |
 | `UsersCollectionID` | `64a52f0a6c41ded09def` |
 
-Scopes: `tables.read`, `rows.read`, `rows.write` — the write is only for pruning stale tokens.
+Scopes: `tables.read`, `rows.read`, `messages.write`.
 
 ## Deploy
 
-`src/resonate-service-account.json` is **gitignored** and must be present before deploying — copy
-it from another FCM function (e.g. `start-friend-call`). Then:
+No credential file is needed. The instance does need an enabled push provider, see the root
+README.
 
 ```bash
-appwrite push functions --function-id send-social-notification --with-variables
+appwrite push functions --function-id send-social-notification
 ```
 
-The `users.fcmTokens` column is new. Add it with a targeted command rather than a full push:
-
-```bash
-appwrite tables-db create-string-column \
-  --database-id main --table-id 64a52f0a6c41ded09def \
-  --key fcmTokens --size 255 --required false --array true
-```
+A 200 from `createPush` means **queued**, not delivered. Check it with
+`appwrite messaging get-message --message-id <id>`.

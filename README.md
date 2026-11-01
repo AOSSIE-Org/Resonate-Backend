@@ -140,12 +140,17 @@ Meilisearch keys already work this way.
 Supply **your own** Gmail address and a [Google App Password](https://myaccount.google.com/apppasswords).
 OTP email does not work without them, and sharing one mailbox between contributors is not intended.
 
-**Firebase credential.** `send-story-notification`, `start-friend-call`,
-`upcomingRoom-Message-Notification` and `upcomingRoom-isTime-checker` each `require` a
-`src/resonate-service-account.json`. It is gitignored, so a fresh clone has none and those
-functions crash at load with `Cannot find module`. Put your Firebase service-account JSON in
-**each** of those four directories. (`send-social-notification` instead reads a
-`FIREBASE_SERVICE_ACCOUNT` project variable, which avoids the per-directory copying.)
+**Push provider.** Push runs on Appwrite Messaging over MQTT, so no Firebase project or
+service-account JSON is needed anywhere. Messaging does need an **enabled push provider**, and
+without one `createPush` returns 200, then fails with `No enabled provider found.` and
+`deliveredTotal: 0`. Create the built-in one once per instance:
+
+```bash
+appwrite messaging create-appwrite-provider   --provider-id appwrite-push --name "Appwrite push provider"   --enabled --expiry 604800 --qos 1
+```
+
+A green function execution only means **queued**. Confirm delivery with
+`appwrite messaging get-message --message-id <id>`.
 
 ## Functions :
 

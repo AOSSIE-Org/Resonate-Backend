@@ -10,7 +10,7 @@
   "keywords": [],
   "dependencies": {
     "meilisearch": "^0.40.0",
-    "node-appwrite": "^20.3.0"
+    "node-appwrite": ">=30.0.1 <31.0.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"

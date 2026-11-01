@@ -1,0 +1,17 @@
+{
+    "name": "delete-account",
+    "version": "1.0.0",
+    "description": "Erases a signed-in user's data and their account",
+    "main": "src/main.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/main.js",
+        "format": "prettier --write ."
+    },
+    "dependencies": {
+        "node-appwrite": ">=30.0.1 <31.0.0"
+    },
+    "devDependencies": {
+        "prettier": "^3.0.0"
+    }
+}

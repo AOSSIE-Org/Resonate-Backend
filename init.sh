@@ -98,7 +98,7 @@ appwrite project create-apple-platform --project-id "$projectId" --platform-id a
 
 set_project_variable APPWRITE_ENDPOINT "http://host.docker.internal:80/v1"
 
-# Pushing the project's core defined in appwrite.json
+# Pushing the project's core defined in appwrite.config.json
 appwrite push tables --all --force
 appwrite push bucket --all --force
 

@@ -5,3 +5,4 @@ appwrite/
 **/node_modules/
 **/resonate-service-account.json
 meili_data/
+**/.env

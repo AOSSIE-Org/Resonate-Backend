@@ -45,7 +45,7 @@ Blocked calls return **200, not 4xx**, so the client can decode `blocked`/`reaso
 
 ## Environment / Setup
 - Requires the Firebase service account JSON file (`resonate-service-account.json`) inside the function folder — gitignored, provisioned out of band.
-- `UserDataDatabaseID` and `UsersCollectionID` — set in `appwrite.json` and `.env`.
+- `UserDataDatabaseID` and `UsersCollectionID` — set in `appwrite.config.json` and `.env`.
 - `APPWRITE_ENDPOINT`, `APPWRITE_API_KEY` and `APPWRITE_FUNCTION_PROJECT_ID` come from the project-level variables set by `init.sh`.
 - Scopes must include the database read scopes (`databases.read`, `collections.read`, `documents.read`, `tables.read`, `rows.read`) in addition to `users.read`.
 

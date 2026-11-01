@@ -1,0 +1,16 @@
+{
+  "name": "send-social-notification",
+  "version": "1.0.0",
+  "description": "Pushes a social notification (like / follow / subscribe) to a single target user.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^11.11.0",
+    "node-appwrite": "^20.3.0"
+  }
+}

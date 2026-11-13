@@ -48,6 +48,51 @@ docker run -it --add-host host.docker.internal:host-gateway --rm `
     --entrypoint="install" `
     appwrite/appwrite:2.3.0
 
+# The installer does not enable node-24 by default; functions target it.
+$envFile = Join-Path (Get-Location) "appwrite\.env"
+
+function Test-Node24Applied {
+    $id = docker compose -f appwrite/docker-compose.yml ps -q appwrite 2>$null
+    if (-not $id) { return $false }
+    $envs = docker inspect $id --format '{{range .Config.Env}}{{println .}}{{end}}' 2>$null
+    if ($envs -notmatch '(?m)^_APP_FUNCTIONS_RUNTIMES=.*node-24') { return $false }
+    $id = docker compose -f appwrite/docker-compose.yml ps -q openruntimes-executor 2>$null
+    if (-not $id) { return $false }
+    $envs = docker inspect $id --format '{{range .Config.Env}}{{println .}}{{end}}' 2>$null
+    return $envs -match '(?m)^OPR_EXECUTOR_IMAGES=.*openruntimes/node:v5-24'
+}
+
+if (Test-Path $envFile) {
+    $needsUpdate = $false
+    if (-not (Select-String -Path $envFile -Pattern '^_APP_FUNCTIONS_RUNTIMES=.*node-24' -Quiet)) { $needsUpdate = $true }
+    if (-not (Select-String -Path $envFile -Pattern '^_APP_EXECUTOR_IMAGES=.*openruntimes/node:v5-24' -Quiet)) { $needsUpdate = $true }
+
+    if ($needsUpdate -or -not (Test-Node24Applied)) {
+        Write-Host "Enabling the node-24 function runtime ..."
+        $content = [System.IO.File]::ReadAllText($envFile)
+        $nl = if ($content.Contains("`r`n")) { "`r`n" } else { "`n" }
+
+        if ($content -match '(?m)^_APP_FUNCTIONS_RUNTIMES="') {
+            $content = $content -replace '(?m)^(_APP_FUNCTIONS_RUNTIMES="[^"\r\n]*)"(\r?)$', '$1,node-24"$2'
+        }
+        else {
+            $content = $content.TrimEnd([char[]]"`r`n") + $nl + '_APP_FUNCTIONS_RUNTIMES="node-24"' + $nl
+        }
+
+        if ($content -match '(?m)^_APP_EXECUTOR_IMAGES="') {
+            $content = $content -replace '(?m)^(_APP_EXECUTOR_IMAGES="[^"\r\n]*)"(\r?)$', '$1,openruntimes/node:v5-24"$2'
+        }
+        else {
+            $content = $content.TrimEnd([char[]]"`r`n") + $nl + '_APP_EXECUTOR_IMAGES="openruntimes/node:v5-24"' + $nl
+        }
+
+        [System.IO.File]::WriteAllText($envFile, $content)
+        Push-Location appwrite
+        docker compose up -d
+        Pop-Location
+    }
+}
+
 $projectId = "resonate"
 
 # Remove previous Appwrite Cli data

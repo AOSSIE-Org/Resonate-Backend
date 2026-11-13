@@ -47,6 +47,42 @@ else
         appwrite/appwrite:2.3.0
 fi
 
+# The installer does not enable node-24 by default; functions target it.
+# appwrite/.env is root-owned, so edit it and hand it back through a container.
+compose_has_node24() {
+    local id envs
+    id=$(cd appwrite && docker compose ps -q appwrite 2>/dev/null) || return 1
+    [ -n "$id" ] || return 1
+    envs=$(docker inspect "$id" --format '{{range .Config.Env}}{{println .}}{{end}}' 2>/dev/null) || return 1
+    printf '%s\n' "$envs" | grep -q '^_APP_FUNCTIONS_RUNTIMES=.*node-24' || return 1
+    id=$(cd appwrite && docker compose ps -q openruntimes-executor 2>/dev/null) || return 1
+    [ -n "$id" ] || return 1
+    envs=$(docker inspect "$id" --format '{{range .Config.Env}}{{println .}}{{end}}' 2>/dev/null) || return 1
+    printf '%s\n' "$envs" | grep -q '^OPR_EXECUTOR_IMAGES=.*openruntimes/node:v5-24'
+}
+
+if [ -f appwrite/.env ] && { ! grep -q '^_APP_FUNCTIONS_RUNTIMES=.*node-24' appwrite/.env || ! grep -q '^_APP_EXECUTOR_IMAGES=.*openruntimes/node:v5-24' appwrite/.env || ! compose_has_node24; }; then
+    echo "Enabling the node-24 function runtime ..."
+    MSYS_NO_PATHCONV=1 docker run --rm -i -v "$(pwd)"/appwrite:/w \
+        -e HOST_UID="$(id -u)" -e HOST_GID="$(id -g)" alpine sh -s <<'EOS'
+set -e
+if grep -q '^_APP_FUNCTIONS_RUNTIMES="' /w/.env; then
+    grep -q '^_APP_FUNCTIONS_RUNTIMES=.*node-24' /w/.env || \
+        sed -i 's|^_APP_FUNCTIONS_RUNTIMES="\(.*\)"|_APP_FUNCTIONS_RUNTIMES="\1,node-24"|' /w/.env
+else
+    echo '_APP_FUNCTIONS_RUNTIMES="node-24"' >> /w/.env
+fi
+if grep -q '^_APP_EXECUTOR_IMAGES="' /w/.env; then
+    grep -q '^_APP_EXECUTOR_IMAGES=.*openruntimes/node:v5-24' /w/.env || \
+        sed -i 's|^_APP_EXECUTOR_IMAGES="\(.*\)"|_APP_EXECUTOR_IMAGES="\1,openruntimes/node:v5-24"|' /w/.env
+else
+    echo '_APP_EXECUTOR_IMAGES="openruntimes/node:v5-24"' >> /w/.env
+fi
+chown -R "$HOST_UID:$HOST_GID" /w
+EOS
+    (cd appwrite && docker compose up -d)
+fi
+
 projectId="resonate"
 
 

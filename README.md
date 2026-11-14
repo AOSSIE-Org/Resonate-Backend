@@ -37,7 +37,7 @@ The script pauses once, for the one thing Appwrite will not let a script do:
 instance has no accounts and the CLI cannot register one. Then log in at the terminal prompt with
 those same credentials.
 
-Everything else runs unattended. Expect 5–15 minutes, most of it building the 21 functions.
+Everything else runs unattended. Expect 5–15 minutes, most of it building the 22 functions.
 
 > **No API key needed.** Each function authenticates with the per-execution key Appwrite supplies
 > in the `x-appwrite-key` header, scoped to the `scopes` that function declares in `appwrite.config.json`.
@@ -46,7 +46,7 @@ Everything else runs unattended. Expect 5–15 minutes, most of it building the 
 ### Verify it worked
 
 ```bash
-appwrite functions list     # 21 functions, all "ready"
+appwrite functions list     # 22 functions, all "ready"
 appwrite tablesdb list-rows --database-id main --table-id achievement_thresholds
 ```
 

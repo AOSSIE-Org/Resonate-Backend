@@ -44,7 +44,45 @@ else
         --volume /var/run/docker.sock:/var/run/docker.sock \
         --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
         --entrypoint="install" \
-        appwrite/appwrite:2.3.0
+        appwrite/appwrite:2.5.0 \
+        --interactive=N --http-port=80 --https-port=443 --database=mariadb --topology=combined
+fi
+
+# The installer does not enable node-24 by default. Enable the runtime before
+# pushing functions. appwrite/.env is root-owned, so edit it and hand it back
+# through a container.
+compose_has_runtime_config() {
+    local id envs
+    id=$(cd appwrite && docker compose ps -q appwrite 2>/dev/null) || return 1
+    [ -n "$id" ] || return 1
+    envs=$(docker inspect "$id" --format '{{range .Config.Env}}{{println .}}{{end}}' 2>/dev/null) || return 1
+    printf '%s\n' "$envs" | grep -q '^_APP_FUNCTIONS_RUNTIMES=.*node-24' || return 1
+    id=$(cd appwrite && docker compose ps -q openruntimes-executor 2>/dev/null) || return 1
+    [ -n "$id" ] || return 1
+    envs=$(docker inspect "$id" --format '{{range .Config.Env}}{{println .}}{{end}}' 2>/dev/null) || return 1
+    printf '%s\n' "$envs" | grep -q '^OPR_EXECUTOR_IMAGES=.*openruntimes/node:v5-24'
+}
+
+if [ -f appwrite/.env ] && { ! grep -q '^_APP_FUNCTIONS_RUNTIMES=.*node-24' appwrite/.env || ! grep -q '^_APP_EXECUTOR_IMAGES=.*openruntimes/node:v5-24' appwrite/.env || ! compose_has_runtime_config; }; then
+    echo "Configuring the node-24 runtime ..."
+    MSYS_NO_PATHCONV=1 docker run --rm -i -v "$(pwd)"/appwrite:/w \
+        -e HOST_UID="$(id -u)" -e HOST_GID="$(id -g)" alpine sh -s <<'EOS'
+set -e
+if grep -q '^_APP_FUNCTIONS_RUNTIMES="' /w/.env; then
+    grep -q '^_APP_FUNCTIONS_RUNTIMES=.*node-24' /w/.env || \
+        sed -i 's|^_APP_FUNCTIONS_RUNTIMES="\(.*\)"|_APP_FUNCTIONS_RUNTIMES="\1,node-24"|' /w/.env
+else
+    echo '_APP_FUNCTIONS_RUNTIMES="node-24"' >> /w/.env
+fi
+if grep -q '^_APP_EXECUTOR_IMAGES="' /w/.env; then
+    grep -q '^_APP_EXECUTOR_IMAGES=.*openruntimes/node:v5-24' /w/.env || \
+        sed -i 's|^_APP_EXECUTOR_IMAGES="\(.*\)"|_APP_EXECUTOR_IMAGES="\1,openruntimes/node:v5-24"|' /w/.env
+else
+    echo '_APP_EXECUTOR_IMAGES="openruntimes/node:v5-24"' >> /w/.env
+fi
+chown -R "$HOST_UID:$HOST_GID" /w
+EOS
+    (cd appwrite && docker compose up -d)
 fi
 
 projectId="resonate"
@@ -199,7 +237,7 @@ set_project_variable LIVEKIT_HOST "$livekitHostURL"
 set_project_variable LIVEKIT_SOCKET_URL "$livekitSocketURL"
 set_project_variable LIVEKIT_API_KEY "$livekitAPIKey"
 set_project_variable LIVEKIT_API_SECRET "$livekitAPISecret"
-appwrite push functions --force --with-variables
+appwrite push functions --all --force --with-variables
 
 # Seed the achievement thresholds.
 echo "Seeding achievement thresholds ..."

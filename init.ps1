@@ -46,19 +46,21 @@ docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `
     --entrypoint="install" `
-    appwrite/appwrite:2.3.0
+    appwrite/appwrite:2.5.0 `
+    --interactive=N --http-port=80 --https-port=443 --database=mariadb --topology=combined
 
-# The installer does not enable node-24 by default; functions target it.
+# The installer does not enable node-24 by default. Enable the runtime before
+# pushing functions.
 $envFile = Join-Path (Get-Location) "appwrite\.env"
 
-function Test-Node24Applied {
+function Test-RuntimeConfigApplied {
     $id = docker compose -f appwrite/docker-compose.yml ps -q appwrite 2>$null
     if (-not $id) { return $false }
-    $envs = docker inspect $id --format '{{range .Config.Env}}{{println .}}{{end}}' 2>$null
+    $envs = docker inspect $id --format '{{range .Config.Env}}{{println .}}{{end}}' 2>$null | Out-String
     if ($envs -notmatch '(?m)^_APP_FUNCTIONS_RUNTIMES=.*node-24') { return $false }
     $id = docker compose -f appwrite/docker-compose.yml ps -q openruntimes-executor 2>$null
     if (-not $id) { return $false }
-    $envs = docker inspect $id --format '{{range .Config.Env}}{{println .}}{{end}}' 2>$null
+    $envs = docker inspect $id --format '{{range .Config.Env}}{{println .}}{{end}}' 2>$null | Out-String
     return $envs -match '(?m)^OPR_EXECUTOR_IMAGES=.*openruntimes/node:v5-24'
 }
 
@@ -67,8 +69,8 @@ if (Test-Path $envFile) {
     if (-not (Select-String -Path $envFile -Pattern '^_APP_FUNCTIONS_RUNTIMES=.*node-24' -Quiet)) { $needsUpdate = $true }
     if (-not (Select-String -Path $envFile -Pattern '^_APP_EXECUTOR_IMAGES=.*openruntimes/node:v5-24' -Quiet)) { $needsUpdate = $true }
 
-    if ($needsUpdate -or -not (Test-Node24Applied)) {
-        Write-Host "Enabling the node-24 function runtime ..."
+    if ($needsUpdate -or -not (Test-RuntimeConfigApplied)) {
+        Write-Host "Configuring the node-24 runtime ..."
         $content = [System.IO.File]::ReadAllText($envFile)
         $nl = if ($content.Contains("`r`n")) { "`r`n" } else { "`n" }
 
@@ -248,7 +250,7 @@ Set-ProjectVariable LIVEKIT_HOST $livekitHostURL
 Set-ProjectVariable LIVEKIT_SOCKET_URL $livekitSocketURL
 Set-ProjectVariable LIVEKIT_API_KEY $livekitAPIKey
 Set-ProjectVariable LIVEKIT_API_SECRET $livekitAPISecret
-appwrite push functions --force --with-variables
+appwrite push functions --all --force --with-variables
 
 # Seed the achievement thresholds.
 Write-Host "Seeding achievement thresholds ..."

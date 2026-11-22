@@ -407,7 +407,28 @@
                 "node_modules",
                 ".npm"
             ],
-            "vars": [],
+            "vars": [
+                {
+                    "key": "ROOMS_TABLE_ID",
+                    "value": "64a5217e695bf2c4ec9c"
+                },
+                {
+                    "key": "LIVE_CHAPTERS_TABLE_ID",
+                    "value": "68e5227e001b2f868c05"
+                },
+                {
+                    "key": "ACTIVE_PAIRS_TABLE_ID",
+                    "value": "64d980cd65ff2e08ab97"
+                },
+                {
+                    "key": "FRIENDS_TABLE_ID",
+                    "value": "68b43e30002f89343479"
+                },
+                {
+                    "key": "MASTER_DATABASE_ID",
+                    "value": "main"
+                }
+            ],
             "execute": [
                 "any"
             ],
@@ -417,7 +438,9 @@
             "commands": "npm install",
             "enabled": true,
             "logging": true,
-            "scopes": [],
+            "scopes": [
+                "rows.read"
+            ],
             "specification": "s-0.5vcpu-512mb"
         },
         {

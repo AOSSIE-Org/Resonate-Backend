@@ -1,254 +1,287 @@
-import { Client, Databases, ID, Query } from "node-appwrite";
+import { createHash } from "node:crypto";
+import { Client, ID, Query, TablesDB } from "node-appwrite";
 import { throwIfMissing } from "./utils.js";
 
-export default async ({ req, res, log, error }) => {
-    throwIfMissing(process.env, [
-        "APPWRITE_API_KEY",
-        "MASTER_DATABASE_ID",
-        "MESSAGES_COLLECTION_ID",
-        "MUTES_COLLECTION_ID",
-        "ROOMS_COLLECTION_ID",
-        "PARTICIPANTS_COLLECTION_ID",
-    ]);
+const MAX_PAGE_SIZE = 200;
+const MAX_MESSAGE_INDEX = 1000;
 
-    const client = new Client()
-        .setEndpoint(
-            process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1"
-        )
-        .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-        .setKey(process.env.APPWRITE_API_KEY);
+class InvalidInput extends Error {}
 
-    const db = new Databases(client);
+function requireStrings(body, ...fields) {
+    const missing = fields.filter(
+        (key) => typeof body[key] !== "string" || !body[key].trim(),
+    );
+    if (missing.length) {
+        throw new InvalidInput(
+            `Missing required fields: ${missing.join(", ")}`,
+        );
+    }
+}
 
+function muteRowId(roomId, uid) {
+    return createHash("sha256")
+        .update(JSON.stringify([roomId, uid]))
+        .digest("hex")
+        .slice(0, 36);
+}
+
+function isMissingRow(err) {
+    return err.code === 404 && (!err.type || err.type === "row_not_found");
+}
+
+export default async ({ req, res, error }) => {
+    let body;
     try {
-        throwIfMissing(JSON.parse(req.body), ["action"]);
-    } catch (err) {
-        return res.json({ msg: err.message }, 400);
+        body = JSON.parse(req.bodyText ?? req.body);
+    } catch {
+        return res.json({ msg: "Malformed request body" }, 400);
+    }
+    if (typeof body?.action !== "string" || !body.action.trim()) {
+        return res.json({ msg: "Missing required fields: action" }, 400);
     }
 
+    // Appwrite supplies this identity for authenticated function executions.
+    const actorId = req.headers["x-appwrite-user-id"];
+    if (!actorId) return res.json({ msg: "Sign in to use room chat" }, 401);
+
     try {
-        const { action, ...params } = JSON.parse(req.body);
+        const env = process.env;
+        throwIfMissing(env, [
+            "APPWRITE_FUNCTION_PROJECT_ID",
+            "MASTER_DATABASE_ID",
+            "ROOMS_TABLE_ID",
+            "PARTICIPANTS_TABLE_ID",
+            "MESSAGES_TABLE_ID",
+            "MUTES_TABLE_ID",
+            "USERS_TABLE_ID",
+        ]);
+        const client = new Client()
+            .setEndpoint(
+                env.APPWRITE_ENDPOINT ??
+                    env.APPWRITE_FUNCTION_API_ENDPOINT ??
+                    "https://cloud.appwrite.io/v1",
+            )
+            .setProject(env.APPWRITE_FUNCTION_PROJECT_ID)
+            .setKey(req.headers["x-appwrite-key"]);
+        const db = new TablesDB(client);
+        const databaseId = env.MASTER_DATABASE_ID;
+
+        async function optionalRow(tableId, rowId) {
+            try {
+                return await db.getRow({ databaseId, tableId, rowId });
+            } catch (err) {
+                if (isMissingRow(err)) return null;
+                throw err;
+            }
+        }
+
+        async function isParticipant(roomId) {
+            const { rows } = await db.listRows({
+                databaseId,
+                tableId: env.PARTICIPANTS_TABLE_ID,
+                queries: [
+                    Query.equal("uid", [actorId]),
+                    Query.equal("roomId", [roomId]),
+                    Query.limit(1),
+                ],
+            });
+            return rows.length > 0;
+        }
+
+        async function isMuted(roomId) {
+            return (
+                (await optionalRow(
+                    env.MUTES_TABLE_ID,
+                    muteRowId(roomId, actorId),
+                )) !== null
+            );
+        }
+
+        const { action, roomId } = body;
+        if (
+            action === "send" ||
+            action === "history" ||
+            action === "checkMute"
+        ) {
+            requireStrings(body, "roomId");
+            if (!(await isParticipant(roomId))) {
+                return res.json(
+                    { msg: "User is not a participant in this room" },
+                    403,
+                );
+            }
+        }
 
         switch (action) {
             case "send": {
-                throwIfMissing(params, [
-                    "roomId",
-                    "creatorId",
-                    "creatorUsername",
-                    "creatorName",
-                    "content",
-                ]);
-                const {
-                    roomId,
-                    creatorId,
-                    creatorUsername,
-                    creatorName,
-                    creatorImgUrl = "",
-                    content,
-                    hasValidTag = false,
-                } = params;
-
-                const participantCheck = await db.listDocuments(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.PARTICIPANTS_COLLECTION_ID,
-                    [
-                        Query.equal("roomId", [roomId]),
-                        Query.equal("uid", [creatorId]),
-                        Query.limit(1),
-                    ]
-                );
-                if (participantCheck.documents.length === 0) {
-                    return res.json(
-                        {
-                            msg: "User is not a participant in this room",
-                        },
-                        403
+                requireStrings(body, "content");
+                if (body.content.length > 1000) {
+                    throw new InvalidInput(
+                        "Message content must fit within 1000 characters",
                     );
                 }
-
-                const muteCheck = await db.listDocuments(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.MUTES_COLLECTION_ID,
-                    [
-                        Query.equal("roomId", [roomId]),
-                        Query.equal("uid", [creatorId]),
-                        Query.limit(1),
-                    ]
-                );
-                if (muteCheck.documents.length > 0) {
+                if (await isMuted(roomId)) {
                     return res.json({ msg: "User is muted in this room" }, 403);
                 }
+                const rowId = body.messageId ?? ID.unique();
+                if (
+                    typeof rowId !== "string" ||
+                    !/^[A-Za-z0-9][A-Za-z0-9._-]{0,35}$/.test(rowId)
+                ) {
+                    throw new InvalidInput("Invalid messageId");
+                }
+                const profile = await optionalRow(env.USERS_TABLE_ID, actorId);
+                if (!profile)
+                    return res.json({ msg: "User profile not found" }, 404);
 
-                const messageId = params.messageId || ID.unique();
-                const now = new Date();
-                const message = await db.createDocument(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.MESSAGES_COLLECTION_ID,
-                    messageId,
-                    {
+                const previous = await db.listRows({
+                    databaseId,
+                    tableId: env.MESSAGES_TABLE_ID,
+                    queries: [
+                        Query.equal("roomId", [roomId]),
+                        Query.orderDesc("index"),
+                        Query.limit(1),
+                    ],
+                });
+                // `index` is a bounded integer in the existing messages table.
+                const nextIndex = Math.min(
+                    (previous.rows[0]?.index ?? -1) + 1,
+                    MAX_MESSAGE_INDEX,
+                );
+                const message = await db.createRow({
+                    databaseId,
+                    tableId: env.MESSAGES_TABLE_ID,
+                    rowId,
+                    data: {
                         roomId,
-                        messageId,
-                        creatorId,
-                        creatorUsername,
-                        creatorName,
-                        creatorImgUrl,
-                        content,
-                        hasValidTag,
-                        index: now.getTime(),
+                        messageId: rowId,
+                        creatorId: actorId,
+                        creatorUsername: profile.username.slice(0, 20),
+                        creatorName: profile.name.slice(0, 20),
+                        ...(profile.profileImageUrl
+                            ? { creatorImgUrl: profile.profileImageUrl }
+                            : {}),
+                        content: body.content,
+                        hasValidTag: false,
+                        index: nextIndex,
                         isEdited: false,
                         isDeleted: false,
-                        creationDateTime: now.toISOString(),
-                    }
-                );
-
+                        creationDateTime: new Date().toISOString(),
+                    },
+                });
                 return res.json({ msg: "Message sent", message });
             }
-
             case "history": {
-                throwIfMissing(params, ["roomId"]);
-                const { roomId, limit = 100, offset } = params;
-                const queries = [
-                    Query.equal("roomId", [roomId]),
-                    Query.equal("isDeleted", [false]),
-                    Query.orderAsc("index"),
-                    Query.limit(Math.min(Number(limit), 200)),
-                ];
-                if (offset) {
-                    queries.push(Query.offset(Number(offset)));
+                const { limit = 100, offset = 0 } = body;
+                if (
+                    !Number.isSafeInteger(limit) ||
+                    limit < 1 ||
+                    limit > MAX_PAGE_SIZE ||
+                    !Number.isSafeInteger(offset) ||
+                    offset < 0
+                ) {
+                    throw new InvalidInput(
+                        "limit must be an integer from 1 to 200 and offset a non-negative integer",
+                    );
                 }
-
-                const result = await db.listDocuments(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.MESSAGES_COLLECTION_ID,
-                    queries
-                );
-
+                const result = await db.listRows({
+                    databaseId,
+                    tableId: env.MESSAGES_TABLE_ID,
+                    queries: [
+                        Query.equal("roomId", [roomId]),
+                        Query.equal("isDeleted", [false]),
+                        Query.orderAsc("index"),
+                        Query.orderAsc("$sequence"),
+                        Query.limit(limit),
+                        ...(offset ? [Query.offset(offset)] : []),
+                    ],
+                });
                 return res.json({
                     msg: "Success",
-                    messages: result.documents,
+                    messages: result.rows,
                     total: result.total,
                 });
             }
-
             case "delete": {
-                throwIfMissing(params, ["messageId", "uid"]);
-                const { messageId, uid } = params;
-
-                const message = await db.getDocument(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.MESSAGES_COLLECTION_ID,
-                    messageId
+                requireStrings(body, "messageId");
+                const message = await optionalRow(
+                    env.MESSAGES_TABLE_ID,
+                    body.messageId,
                 );
-
-                if (message.creatorId !== uid) {
-                    const room = await db.getDocument(
-                        process.env.MASTER_DATABASE_ID,
-                        process.env.ROOMS_COLLECTION_ID,
-                        message.roomId
+                if (!message)
+                    return res.json({ msg: "Message not found" }, 404);
+                if (message.creatorId !== actorId) {
+                    const room = await optionalRow(
+                        env.ROOMS_TABLE_ID,
+                        message.roomId,
                     );
-                    if (room.adminUid !== uid) {
+                    if (room?.adminUid !== actorId) {
                         return res.json(
                             { msg: "Not authorized to delete this message" },
-                            403
+                            403,
                         );
                     }
                 }
-
-                await db.updateDocument(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.MESSAGES_COLLECTION_ID,
-                    messageId,
-                    { isDeleted: true }
-                );
-
+                await db.updateRow({
+                    databaseId,
+                    tableId: env.MESSAGES_TABLE_ID,
+                    rowId: body.messageId,
+                    data: { isDeleted: true },
+                });
                 return res.json({ msg: "Message deleted" });
             }
-
-            case "checkMute": {
-                throwIfMissing(params, ["roomId", "uid"]);
-                const { roomId, uid } = params;
-
-                const muteCheck = await db.listDocuments(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.MUTES_COLLECTION_ID,
-                    [
-                        Query.equal("roomId", [roomId]),
-                        Query.equal("uid", [uid]),
-                        Query.limit(1),
-                    ]
-                );
-
+            case "checkMute":
                 return res.json({
                     msg: "Success",
-                    isMuted: muteCheck.documents.length > 0,
+                    isMuted: await isMuted(roomId),
                 });
-            }
-
             case "mute": {
-                throwIfMissing(params, [
-                    "roomId",
-                    "targetUid",
-                    "moderatorId",
-                ]);
-                const { roomId, targetUid, moderatorId, isMuted = true } =
-                    params;
-
-                const room = await db.getDocument(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.ROOMS_COLLECTION_ID,
-                    roomId
-                );
-                if (room.adminUid !== moderatorId) {
+                requireStrings(body, "roomId", "targetUid");
+                const { targetUid, isMuted: shouldMute = true } = body;
+                if (typeof shouldMute !== "boolean")
+                    throw new InvalidInput("isMuted must be a boolean");
+                const room = await optionalRow(env.ROOMS_TABLE_ID, roomId);
+                if (room?.adminUid !== actorId) {
                     return res.json(
                         { msg: "Only room admin can mute users" },
-                        403
+                        403,
                     );
                 }
 
-                if (isMuted) {
-                    const existing = await db.listDocuments(
-                        process.env.MASTER_DATABASE_ID,
-                        process.env.MUTES_COLLECTION_ID,
-                        [
-                            Query.equal("roomId", [roomId]),
-                            Query.equal("uid", [targetUid]),
-                            Query.limit(1),
-                        ]
-                    );
-                    if (existing.documents.length === 0) {
-                        await db.createDocument(
-                            process.env.MASTER_DATABASE_ID,
-                            process.env.MUTES_COLLECTION_ID,
-                            ID.unique(),
-                            { roomId, uid: targetUid, mutedBy: moderatorId }
-                        );
+                const row = {
+                    databaseId,
+                    tableId: env.MUTES_TABLE_ID,
+                    rowId: muteRowId(roomId, targetUid),
+                };
+                if (shouldMute) {
+                    try {
+                        await db.createRow({
+                            ...row,
+                            data: { roomId, uid: targetUid, mutedBy: actorId },
+                        });
+                    } catch (err) {
+                        if (
+                            err.code !== 409 ||
+                            (err.type && err.type !== "row_already_exists")
+                        )
+                            throw err;
                     }
                     return res.json({ msg: "User muted" });
                 }
-
-                const toUnmute = await db.listDocuments(
-                    process.env.MASTER_DATABASE_ID,
-                    process.env.MUTES_COLLECTION_ID,
-                    [
-                        Query.equal("roomId", [roomId]),
-                        Query.equal("uid", [targetUid]),
-                    ]
-                );
-                for (const doc of toUnmute.documents) {
-                    await db.deleteDocument(
-                        process.env.MASTER_DATABASE_ID,
-                        process.env.MUTES_COLLECTION_ID,
-                        doc.$id
-                    );
+                try {
+                    await db.deleteRow(row);
+                } catch (err) {
+                    if (!isMissingRow(err)) throw err;
                 }
                 return res.json({ msg: "User unmuted" });
             }
-
             default:
-                return res.json({ msg: `Unknown action: ${action}` }, 400);
+                return res.json({ msg: "Unknown action" }, 400);
         }
-    } catch (e) {
-        error(String(e));
+    } catch (err) {
+        if (err instanceof InvalidInput)
+            return res.json({ msg: err.message }, 400);
+        error(`Chat operation failed: ${err.type ?? err.name}`);
         return res.json({ msg: "Chat operation failed" }, 500);
     }
 };

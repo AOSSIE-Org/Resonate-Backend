@@ -1,163 +1,94 @@
-import { Client, Databases } from 'node-appwrite';
-import { throwIfMissing } from './utils.js';
+import { timingSafeEqual } from "node:crypto";
+import { Client, TablesDB } from "node-appwrite";
+import { throwIfMissing } from "./utils.js";
 
-export default async ({ req, res, log, error }) => {
+const OTP_TTL_MS = 5 * 60 * 1000;
+
+export default async ({ req, res, error }) => {
+  const fail = (message, status) =>
+    res.json({ success: false, message }, status);
+
+  let body;
+  try {
+    body = JSON.parse(req.bodyText ?? req.body);
+  } catch {
+    return fail("Malformed request body", 400);
+  }
+  const { otpID, userOTP, verify_ID: verificationId } = body ?? {};
+  if (
+    ![otpID, userOTP, verificationId].every(
+      (value) => typeof value === "string" && value.trim() !== "",
+    )
+  ) {
+    return fail("otpID, userOTP, and verify_ID are required", 400);
+  }
+
+  try {
     throwIfMissing(process.env, [
-        'APPWRITE_API_KEY',
-        'VERIFICATION_DATABASE_ID',
-        'OTP_COLLECTION_ID',
-        'VERIFY_COLLECTION_ID',
+      "APPWRITE_FUNCTION_PROJECT_ID",
+      "VERIFICATION_DATABASE_ID",
+      "OTP_TABLE_ID",
+      "VERIFY_TABLE_ID",
     ]);
-
     const client = new Client()
-        .setEndpoint(
-            process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
-        )
-        .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-        .setKey(process.env.APPWRITE_API_KEY);
+      .setEndpoint(
+        process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1",
+      )
+      .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+      .setKey(req.headers["x-appwrite-key"]);
+    const db = new TablesDB(client);
+    const databaseId = process.env.VERIFICATION_DATABASE_ID;
+    const otpParams = {
+      databaseId,
+      tableId: process.env.OTP_TABLE_ID,
+      rowId: otpID,
+    };
 
-    const db = new Databases(client);
-    log(req.body);
-    const {
-        otpID,
-        userOTP: userOtp,
-        verify_ID: verificationId,
-    } = JSON.parse(req.body);
-
-    let otpDocument;
-
-    // Step 1: Retrieve OTP document
+    let otpRow;
     try {
-        otpDocument = await db.getDocument(
-            process.env.VERIFICATION_DATABASE_ID,
-            process.env.OTP_COLLECTION_ID,
-            otpID
-        );
-    } catch (e) {
-        log("Error retrieving OTP document");
-        error(String(e));
-        return res.json({ 
-            success: false,
-            message: 'OTP not found or invalid' 
-        }, 404);
+      otpRow = await db.getRow(otpParams);
+    } catch (err) {
+      if (err.code === 404) return fail("OTP not found or already used", 401);
+      throw err;
     }
 
-    // Step 2: Check if OTP has expired
-    const now = new Date();
-    
-    // Validate expiresAt field exists and is valid
-    if (!otpDocument.expiresAt) {
-        log("OTP missing expiresAt field - treating as expired");
-        // Delete OTP with missing expiry
-        try {
-            await db.deleteDocument(
-                process.env.VERIFICATION_DATABASE_ID,
-                process.env.OTP_COLLECTION_ID,
-                otpID
-            );
-        } catch (deleteError) {
-            log("Failed to delete expired OTP");
-            error(String(deleteError));
-        }
-        
-        return res.json({ 
-            success: false,
-            message: 'OTP has expired' 
-        }, 401);
-    }
-    
-    const expiryTime = new Date(otpDocument.expiresAt);
-    
-    // Check if expiresAt is a valid date
-    if (isNaN(expiryTime.getTime())) {
-        log("OTP has invalid expiresAt field - treating as expired");
-        // Delete OTP with invalid expiry
-        try {
-            await db.deleteDocument(
-                process.env.VERIFICATION_DATABASE_ID,
-                process.env.OTP_COLLECTION_ID,
-                otpID
-            );
-        } catch (deleteError) {
-            log("Failed to delete expired OTP");
-            error(String(deleteError));
-        }
-        
-        return res.json({ 
-            success: false,
-            message: 'OTP has expired' 
-        }, 401);
-    }
-    
-    if (now > expiryTime) {
-        log("OTP has expired");
-        // Delete expired OTP
-        try {
-            await db.deleteDocument(
-                process.env.VERIFICATION_DATABASE_ID,
-                process.env.OTP_COLLECTION_ID,
-                otpID
-            );
-        } catch (deleteError) {
-            log("Failed to delete expired OTP");
-            error(String(deleteError));
-        }
-        
-        return res.json({ 
-            success: false,
-            message: 'OTP has expired' 
-        }, 401);
-    }
+    // Use Appwrite's creation timestamp so verification needs no new column.
+    const createdAt = Date.parse(otpRow.$createdAt);
+    const now = Date.now();
+    const expired =
+      !Number.isFinite(createdAt) ||
+      now < createdAt ||
+      now - createdAt >= OTP_TTL_MS;
 
-    // Step 3: Validate OTP
-    const isValid = otpDocument.otp === userOtp;
-    
-    // Step 4: Delete OTP document (one-time use)
+    // Consume the row before creating a verification record. Only a request
+    // whose delete succeeds can record a result, including incorrect codes.
     try {
-        await db.deleteDocument(
-            process.env.VERIFICATION_DATABASE_ID,
-            process.env.OTP_COLLECTION_ID,
-            otpID
-        );
-        log("OTP document deleted after verification attempt");
-    } catch (deleteError) {
-        log("Failed to delete OTP document");
-        error(String(deleteError));
-        return res.json({ 
-            success: false,
-            message: 'Internal server error' 
-        }, 500);
+      await db.deleteRow(otpParams);
+    } catch (err) {
+      if (err.code === 404) return fail("OTP not found or already used", 401);
+      throw err;
     }
+    if (expired) return fail("OTP has expired", 401);
 
-    // Step 5: Create verification document
-    try {
-        await db.createDocument(
-            process.env.VERIFICATION_DATABASE_ID,
-            process.env.VERIFY_COLLECTION_ID,
-            verificationId,
-            {
-                status: isValid,
-            }
-        );
-    } catch (e) {
-        log("Error creating verification document");
-        error(String(e));
-        return res.json({ 
-            success: false,
-            message: 'Failed to create verification record' 
-        }, 500);
-    }
+    const expected = Buffer.from(
+      typeof otpRow.otp === "string" ? otpRow.otp : "",
+    );
+    const entered = Buffer.from(userOTP);
+    const valid =
+      expected.length === entered.length && timingSafeEqual(expected, entered);
 
-    // Step 6: Return appropriate response
-    if (isValid) {
-        return res.json({ 
-            success: true,
-            message: 'OTP verified successfully' 
-        }, 200);
-    } else {
-        return res.json({ 
-            success: false,
-            message: 'Invalid OTP' 
-        }, 401);
-    }
+    await db.createRow({
+      databaseId,
+      tableId: process.env.VERIFY_TABLE_ID,
+      rowId: verificationId,
+      data: { status: String(valid) },
+    });
+
+    return valid
+      ? res.json({ success: true, message: "OTP verified successfully" }, 200)
+      : fail("Invalid OTP", 401);
+  } catch (err) {
+    error(`OTP verification failed: ${err.type ?? err.name}`);
+    return fail("OTP verification failed", 500);
+  }
 };

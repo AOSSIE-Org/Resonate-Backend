@@ -196,6 +196,8 @@ A green function execution only means **queued**. Confirm delivery with
 
 (u) [reconcile-achievements](functions/reconcile-achievements/) : Nightly cron function that seeds the badge threshold catalogue and repairs any badge award the event-driven path missed.
 
+(v) [Chat function](functions/chat/) : Optional function for authenticated in-room messaging and moderation.
+
 ## Communication Channels
 
 If you have any questions, need clarifications, or want to discuss ideas, feel free to reach out through the following channels:

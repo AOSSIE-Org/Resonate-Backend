@@ -5,4 +5,6 @@ A Cron Function to check all the exsistent upcoming room scheduled timings and c
 It is a Cron function repeating itself after every 5 minutes
 
 ### How does it work 
-Fetches all the list of upcoming rooms, for each upcoming room compares the time difference from current time to scheduled, if the difference is less than or equal to 5 minutes updates the isTime attrubute of that upcoming room document in the upcoming room collection to "True" and sends a push notification to all the subscribers of that upcoming room via FCM
+Fetches all the list of upcoming rooms, for each upcoming room compares the time difference from current time to scheduled, and if the difference is less than or equal to 5 minutes it updates the `isTime` attribute of that upcoming room row to `true`.
+
+It sends **no** notification itself, despite what older copies of this file said: notifying subscribers is `upcomingRoom-Message-Notification`'s job, which is why this function carries no `messages.write` scope.

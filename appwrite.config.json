@@ -849,6 +849,126 @@
                 "messages.write"
             ],
             "specification": "s-0.5vcpu-512mb"
+        },
+        {
+            "$id": "delete-account",
+            "name": "Delete Account",
+            "runtime": "node-24",
+            "path": "functions/delete-account",
+            "entrypoint": "src/main.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "vars": [
+                {
+                    "key": "DATABASE_ID",
+                    "value": "main"
+                },
+                {
+                    "key": "USERS_TABLE_ID",
+                    "value": "64a52f0a6c41ded09def"
+                },
+                {
+                    "key": "USERNAMES_TABLE_ID",
+                    "value": "64a131980b5388c2a0af"
+                },
+                {
+                    "key": "USER_STATS_TABLE_ID",
+                    "value": "user_stats"
+                },
+                {
+                    "key": "PARTICIPANTS_TABLE_ID",
+                    "value": "64a63e508145d1084abf"
+                },
+                {
+                    "key": "POLL_VOTES_TABLE_ID",
+                    "value": "room_poll_votes"
+                },
+                {
+                    "key": "ROOM_CREDITS_TABLE_ID",
+                    "value": "room_credits"
+                },
+                {
+                    "key": "MESSAGES_TABLE_ID",
+                    "value": "670d812c0002c33c09a8"
+                },
+                {
+                    "key": "LIKES_TABLE_ID",
+                    "value": "670259e20000ddda49a0"
+                },
+                {
+                    "key": "PAIR_REQUESTS_TABLE_ID",
+                    "value": "64d980211f1395263ebe"
+                },
+                {
+                    "key": "SUBSCRIBED_USERS_TABLE_ID",
+                    "value": "6522fd267db6fdad3392"
+                },
+                {
+                    "key": "LIVE_CHAPTERS_TABLE_ID",
+                    "value": "68e5227e001b2f868c05"
+                },
+                {
+                    "key": "ROOMS_TABLE_ID",
+                    "value": "64a5217e695bf2c4ec9c"
+                },
+                {
+                    "key": "FRIENDS_TABLE_ID",
+                    "value": "68b43e30002f89343479"
+                },
+                {
+                    "key": "FRIEND_CALLS_TABLE_ID",
+                    "value": "68b764ba002794fa2f61"
+                },
+                {
+                    "key": "ACTIVE_PAIRS_TABLE_ID",
+                    "value": "64d980cd65ff2e08ab97"
+                },
+                {
+                    "key": "FOLLOWERS_TABLE_ID",
+                    "value": "68b16bae0027e57ba2c6"
+                },
+                {
+                    "key": "USER_REPORTS_TABLE_ID",
+                    "value": "68dfcba90010d07ee333"
+                },
+                {
+                    "key": "STORIES_TABLE_ID",
+                    "value": "670259e900321c12a5a2"
+                },
+                {
+                    "key": "CHAPTERS_TABLE_ID",
+                    "value": "670277ad002530531daf"
+                },
+                {
+                    "key": "USER_IMAGES_BUCKET_ID",
+                    "value": "64a52ab306331f167ce6"
+                },
+                {
+                    "key": "STORIES_BUCKET_ID",
+                    "value": "6703f4c70037edfd8429"
+                }
+            ],
+            "execute": [
+                "users"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 120,
+            "commands": "npm install",
+            "enabled": true,
+            "logging": true,
+            "scopes": [
+                "tables.read",
+                "rows.read",
+                "rows.write",
+                "files.read",
+                "files.write",
+                "users.read",
+                "users.write"
+            ],
+            "specification": "s-0.5vcpu-512mb"
         }
     ],
     "tablesDB": [

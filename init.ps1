@@ -46,7 +46,30 @@ docker run -it --add-host host.docker.internal:host-gateway --rm `
     --volume /var/run/docker.sock:/var/run/docker.sock `
     --volume "$(pwd)/appwrite:/usr/src/code/appwrite:rw" `
     --entrypoint="install" `
-    appwrite/appwrite:2.3.0
+    appwrite/appwrite:2.5.0 `
+    --interactive=N --http-port=80 --https-port=443 --database=mariadb --topology=combined
+
+# Add node-24 to _APP_FUNCTIONS_RUNTIMES; the installer omits it, but every
+# function in appwrite.config.json targets node-24.
+$envFile = Join-Path (Get-Location) "appwrite\.env"
+
+if ((Test-Path $envFile) -and -not (Select-String -Path $envFile -Pattern '^_APP_FUNCTIONS_RUNTIMES=.*node-24' -Quiet)) {
+    Write-Host "Enabling the node-24 function runtime ..."
+    $content = [System.IO.File]::ReadAllText($envFile)
+    $nl = if ($content.Contains("`r`n")) { "`r`n" } else { "`n" }
+
+    if ($content -match '(?m)^_APP_FUNCTIONS_RUNTIMES="') {
+        $content = $content -replace '(?m)^(_APP_FUNCTIONS_RUNTIMES="[^"\r\n]*)"(\r?)$', '$1,node-24"$2'
+    }
+    else {
+        $content = $content.TrimEnd([char[]]"`r`n") + $nl + '_APP_FUNCTIONS_RUNTIMES="node-24"' + $nl
+    }
+
+    [System.IO.File]::WriteAllText($envFile, $content)
+    Push-Location appwrite
+    docker compose up -d
+    Pop-Location
+}
 
 $projectId = "resonate"
 
@@ -203,7 +226,7 @@ Set-ProjectVariable LIVEKIT_HOST $livekitHostURL
 Set-ProjectVariable LIVEKIT_SOCKET_URL $livekitSocketURL
 Set-ProjectVariable LIVEKIT_API_KEY $livekitAPIKey
 Set-ProjectVariable LIVEKIT_API_SECRET $livekitAPISecret
-appwrite push functions --force --with-variables
+appwrite push functions --all --force --with-variables
 
 # Seed the achievement thresholds.
 Write-Host "Seeding achievement thresholds ..."

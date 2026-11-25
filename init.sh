@@ -36,6 +36,8 @@ fi
 echo "Installing Appwrite CLI via npm"
 npm install -g appwrite-cli@28.1.0
 
+appwriteImage="appwrite/appwrite:2.5.0"
+
 if curl -fsS -m 5 http://localhost:80/v1/health/version >/dev/null 2>&1; then
     echo "Appwrite is already running - skipping the installer."
 else
@@ -44,7 +46,34 @@ else
         --volume /var/run/docker.sock:/var/run/docker.sock \
         --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
         --entrypoint="install" \
-        appwrite/appwrite:2.3.0
+        "$appwriteImage" \
+        --interactive=N --http-port=80 --https-port=443 --database=mariadb --topology=combined
+fi
+
+# Add node-24 to _APP_FUNCTIONS_RUNTIMES; the installer omits it, but every
+# function in appwrite.config.json targets node-24.
+if [ -f appwrite/.env ] && ! grep -q '^_APP_FUNCTIONS_RUNTIMES=.*node-24' appwrite/.env; then
+    echo "Enabling the node-24 function runtime ..."
+    MSYS_NO_PATHCONV=1 docker run --rm -i -v "$(pwd)"/appwrite:/w \
+        -e HOST_UID="$(id -u)" -e HOST_GID="$(id -g)" alpine sh -s <<'EOS'
+set -e
+if grep -q '^_APP_FUNCTIONS_RUNTIMES="' /w/.env; then
+    sed -i 's|^_APP_FUNCTIONS_RUNTIMES="\(.*\)"|_APP_FUNCTIONS_RUNTIMES="\1,node-24"|' /w/.env
+else
+    echo '_APP_FUNCTIONS_RUNTIMES="node-24"' >> /w/.env
+fi
+chown -R "$HOST_UID:$HOST_GID" /w
+EOS
+    if [ "$OS_TYPE" = "Linux" ]; then
+        MSYS_NO_PATHCONV=1 docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
+            -w /usr/src/code/appwrite \
+            --entrypoint docker \
+            "$appwriteImage" compose up -d
+    else
+        (cd appwrite && docker compose up -d)
+    fi
 fi
 
 projectId="resonate"
@@ -199,7 +228,7 @@ set_project_variable LIVEKIT_HOST "$livekitHostURL"
 set_project_variable LIVEKIT_SOCKET_URL "$livekitSocketURL"
 set_project_variable LIVEKIT_API_KEY "$livekitAPIKey"
 set_project_variable LIVEKIT_API_SECRET "$livekitAPISecret"
-appwrite push functions --force --with-variables
+appwrite push functions --all --force --with-variables
 
 # Seed the achievement thresholds.
 echo "Seeding achievement thresholds ..."

@@ -1,0 +1,82 @@
+{
+  "$id": "realtime-chat-function",
+  "name": "Real-time In-Room Text Chat",
+  "runtime": "node-16.0",
+  "path": "functions/realtime-chat",
+  "entrypoint": "src/main.js",
+  "ignore": [
+    "node_modules",
+    ".npm",
+    "test.js",
+    ".env.example",
+    "README.md"
+  ],
+  "vars": [
+    {
+      "key": "APPWRITE_API_KEY",
+      "value": ""
+    },
+    {
+      "key": "MASTER_DATABASE_ID",
+      "value": ""
+    },
+    {
+      "key": "ROOMS_TABLE_ID",
+      "value": ""
+    },
+    {
+      "key": "MESSAGES_TABLE_ID",
+      "value": ""
+    },
+    {
+      "key": "APPWRITE_FUNCTION_PROJECT_ID",
+      "value": ""
+    },
+    {
+      "key": "RATE_LIMIT_MAX_REQUESTS",
+      "value": "10"
+    },
+    {
+      "key": "RATE_LIMIT_WINDOW_MS",
+      "value": "60000"
+    },
+    {
+      "key": "MAX_MESSAGE_LENGTH",
+      "value": "1000"
+    },
+    {
+      "key": "MESSAGE_HISTORY_LIMIT",
+      "value": "50"
+    },
+    {
+      "key": "ENABLE_PROFANITY_FILTER",
+      "value": "true"
+    },
+    {
+      "key": "ENABLE_XSS_PROTECTION",
+      "value": "true"
+    },
+    {
+      "key": "ENABLE_RATE_LIMITING",
+      "value": "true"
+    }
+  ],
+  "execute": [
+    "any"
+  ],
+  "events": [],
+  "schedule": "",
+  "timeout": 30,
+  "commands": "npm install",
+  "enabled": true,
+  "logging": true,
+  "scopes": [
+    "databases.read",
+    "databases.write",
+    "collections.read",
+    "collections.write",
+    "documents.read",
+    "documents.write"
+  ],
+  "specification": "s-1vcpu-512mb"
+}

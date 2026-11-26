@@ -1,0 +1,21 @@
+{
+    "name": "realtime-chat",
+    "version": "1.0.0",
+    "description": "Real-time in-room text chat function with WebSocket support",
+    "main": "src/main.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/main.js",
+        "format": "prettier --write .",
+        "dev": "node --watch src/main.js"
+    },
+    "dependencies": {
+        "node-appwrite": "^20.3.0",
+        "socket.io": "^4.7.2",
+        "socket.io-client": "^4.7.2",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "prettier": "^3.0.0"
+    }
+}
